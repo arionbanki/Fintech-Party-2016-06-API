@@ -1,0 +1,418 @@
+﻿<!DOCTYPE HTML><html><head><title>Accounts API - Arion banki Fintech Party API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/kevinrenskers/raml2html 2.4.0"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          try {
+            if (history && history.replaceState) {
+                history.replaceState({}, '', '#');
+            }
+          } catch(e) {}
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Accounts API - Arion banki Fintech Party API documentation <small>version v1</small></h1><p>https://arionapi-sandbox.azure-api.net/accounts/v1</p><h3 id="Um-Accounts---Innl-nsreikninga"><a href="#Um-Accounts---Innl-nsreikninga">Um Accounts - Innlánsreikninga</a></h3><p>Undir þessari <a href="/" title="e. resource, gæti verið þýtt is. auðlind\viðfang">þjónustu</a> er að finna upplýsingar um bankareikninga sem innskráður notandi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram.</p><p>Upplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Þannig sér notandi bæði veltureikninga sína sem og sparnaðarreikninga. Grunnupplýsingar um eiginleika reiknings eru á honum sjálfum en undir hverjum reikningi má svo nálgast hreyfingar og stöður.</p><p>Hér má skoða mun ítarlegri <a href="https://rawgit.com/kristinnstefansson/intechParty201606Documentation/master/Accounts/Accounts.html" title="sjá Accounts.html">html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.</p><h3 id="-ryggi"><a href="#-ryggi">Öryggi</a></h3><p>Köll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.</p><p>Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar, eftir því sem passar þjónustuveitendum.</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="accounts" class="panel-title">Accounts</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_accounts"><span class="parent"></span>/accounts</a> <span class="methods"><a href="#accounts_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_accounts" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#accounts_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrieves information about available accounts.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="accounts_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/accounts</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieves information about available accounts.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_2_0<p>OAuth2 is a protocol that lets external apps request authorization to private details in a user&#39;s financial data.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#accounts_get_request" data-toggle="tab">Request</a></li><li><a href="#accounts_get_response" data-toggle="tab">Response</a></li><li><a href="#accounts_get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="accounts_get_request"><h3>Headers</h3><ul><li><strong>Ocp-Apim-Subscription-Key</strong>: <em>(string)</em><p>Used to send a valid subscription key.</p></li></ul></div><div class="tab-pane" id="accounts_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "type": "object",
+  "properties": {
+  "totalCount": {
+      "type": "integer",
+      "description": "The total count of transaction available by selection. If 0, then",
+      "description": "Fjöldi færslna í sem hægt er að sækja."
+  },
+  "account": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "accountID": {
+            "type": "string",
+            "required": true,
+            "description": "The ID of the account.",
+            "comment": "Reikningsnúmer. Einkvæmt númer reiknings sem er gefið út af viðskiptabanka."
+          },
+          "overdraft": {
+            "type": "number",
+            "required": true,
+            "description": "Overdraft permission of the account.",
+            "comment": "Upphæð yfirdráttarheimildar sem skráð er á bankareikninginn."
+          },
+          "balance": {
+            "type": "number",
+            "required": true,
+            "description": "The balance of the account.",
+            "comment": "Staða bankareiknings."
+          },
+          "availableAmount": {
+            "type": "number", 
+            "required": true,
+            "description": "The amount available to the account holder. Balance and overdraft used for calculation.",
+            "comment": "Upphæð ráðstöfunar. Staða og yfirdráttur reiknings mynda þessa upphæð."
+          },
+          "status": {
+            "enum": [ "open", "closed", "onhold" ],
+            "description": "The status of the account (open/closed/onhold).",
+            "comment": "Ástand bankareiknings. Segir til um hvort reikningur er opinn eða lokaður."
+          },
+          "totalAmountWaiting": {
+            "type": "number",
+            "required": true,
+            "description": "The total amount of transactions waiting and exceeding amount available. Transaction is executed as soon as the amount becomes available.",
+            "comment": "Heildarupphæð innistæðulausra úttekta sem bíða eftir skuldfærslu út af viðkomandi bankareikningi. Skuldfærsla á sér stað um leið og innstæða er næg á reikningi."
+          },
+          "accountOwnerID": {
+            "type": "string",
+            "description": "Personal identifier, kennitala, of account owner.",
+            "comment": "Kennitala reikningseiganda."
+          },
+          "customAccountName": {
+              "type": "string",
+              "description": "Name set by account owner. Account owner can name his/hers account. Name set by account owner. Account owner can name his/her account.",
+              "comment": "Nafn (gælunafn) sett inn af eiganda bankareiknings. Reikningseigandi getur gefið reikningi gælunafn t.d. í gegnum netbanka viðskiptabanka."
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "TotalCount": 2,
+  "Account": [
+    {
+      "AccountID": "039926011462",
+      "Overdraft": 0,
+      "Balance": 299,
+      "AvailableAmount": 299,
+      "TotalAmountWaiting": 0,
+      "AccountOwnerID": "1725704905",
+      "CustomAccountName": "Félag áhugamanna um heimabanka",
+      "Id": 1
+    }
+  ]
+}
+</code></pre></div><div class="tab-pane" id="accounts_get_securedby">Secured by oauth_2_0<h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>(string)</em><p>Used to send a valid OAuth 2 access token.</p></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Unauthorized</p></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_accounts__accountId_"><span class="parent">/accounts</span>/{accountId}</a> <span class="methods"><a href="#accounts__accountId__get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_accounts__accountId_" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>A single account identified by account ID.</p></div><div class="list-group"><div onclick="window.location.href = '#accounts__accountId__get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Information about an account.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="accounts__accountId__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/accounts</span>/{accountId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Information about an account.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_2_0<p>OAuth2 is a protocol that lets external apps request authorization to private details in a user&#39;s financial data.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#accounts__accountId__get_request" data-toggle="tab">Request</a></li><li><a href="#accounts__accountId__get_response" data-toggle="tab">Response</a></li><li><a href="#accounts__accountId__get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="accounts__accountId__get_request"><h3>URI Parameters</h3><ul><li><strong>accountId</strong>: <em>required (string)</em></li></ul><h3>Headers</h3><ul><li><strong>Ocp-Apim-Subscription-Key</strong>: <em>(string)</em><p>Used to send a valid subscription key.</p></li></ul></div><div class="tab-pane" id="accounts__accountId__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "id": "http://jsonschema.net",
+  "description": "A bank account.",
+  "comment": "Bankareikningur.",
+  "required": true,
+  "properties": {
+    "accountID": {
+      "type": "string",
+      "required": true,
+      "description": "The ID of the account.",
+      "comment": "Reikningsnúmer. Einkvæmt númer reiknings sem er gefið út af viðskiptabanka."
+    },
+    "overdraft": {
+      "type": "number",
+      "required": true,
+      "description": "Overdraft permission of the account.",
+      "comment": "Upphæð yfirdráttarheimildar sem skráð er á bankareikninginn."
+    },
+    "balance": {
+      "type": "number",
+      "required": true,
+      "description": "The balance of the account.",
+      "comment": "Staða bankareiknings."
+    },
+    "availableAmount": {
+      "type": "number",
+      "required": true,
+      "description": "The amount available to the account holder. Balance and overdraft used for calculation.",
+      "comment": "Upphæð ráðstöfunar. Staða og yfirdráttur reiknings mynda þessa upphæð."
+    },
+    "status": {
+      "enum": [ "open", "closed", "onhold" ],
+      "description": "The status of the account (open/closed/onhold).",
+      "comment": "Ástand bankareiknings. Segir til um hvort reikningur er opinn eða lokaður."
+    },
+    "totalAmountWaiting": {
+      "type": "number",
+      "required": true,
+      "description": "The total amount of transactions waiting and exceeding amount available. Transaction is executed as soon as the amount becomes available.",
+      "comment": "Heildarupphæð innistæðulausra úttekta sem bíða eftir skuldfærslu út af viðkomandi bankareikningi. Skuldfærsla á sér stað um leið og innstæða er næg á reikningi."
+    },
+    "accountOwnerID": {
+      "type": "string",
+      "description": "PersonID of account owner.",
+      "comment": "Kennitala reikningseiganda."
+    },
+    "customAccountName": {
+        "type": "string",
+        "description": "Name set by account owner. Account owner can name his/hers account. Name set by account owner. Account owner can name his/her description.",
+        "comment": "Nafn (gælunafn) sett inn af eiganda bankareiknings. Reikningseigandi getur gefið reikningi gælunafn t.d. í gegnum netbanka viðskiptabanka."
+    }
+  }
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "AccountID": "039926011462",
+  "Overdraft": 0,
+  "Balance": 299,
+  "AvailableAmount": 299,
+  "TotalAmountWaiting": 0,
+  "AccountOwnerID": "1725704905",
+  "CustomAccountName": "Félag áhugamanna um heimabanka",
+  "Id": 1
+}          
+</code></pre></div><div class="tab-pane" id="accounts__accountId__get_securedby">Secured by oauth_2_0<h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>(string)</em><p>Used to send a valid OAuth 2 access token.</p></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Unauthorized</p></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_accounts_accountTransactions"><span class="parent">/accounts</span>/accountTransactions</a> <span class="methods"><a href="#accounts_accountTransactions_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_accounts_accountTransactions" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>Provides an overview of account transactions.It is not permitted to get all transactions at once. Instead you have to define page number and transactions per page.</p></div><div class="list-group"><div onclick="window.location.href = '#accounts_accountTransactions_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Some requests can be filtered by a date range.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="accounts_accountTransactions_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/accounts</span>/accountTransactions</h4></div><div class="modal-body"><div class="alert alert-info"><p>Some requests can be filtered by a date range.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_2_0<p>OAuth2 is a protocol that lets external apps request authorization to private details in a user&#39;s financial data.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#accounts_accountTransactions_get_request" data-toggle="tab">Request</a></li><li><a href="#accounts_accountTransactions_get_response" data-toggle="tab">Response</a></li><li><a href="#accounts_accountTransactions_get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="accounts_accountTransactions_get_request"><h3>Headers</h3><ul><li><strong>Ocp-Apim-Subscription-Key</strong>: <em>(string)</em><p>Used to send a valid subscription key.</p></li></ul><h3>Query Parameters</h3><ul><li><strong>page</strong>: <em>(integer - default: 1 - minimum: 1)</em><p>The page parameter defines the page number of the result set to return the data. For example, if your query returns 500 records, you can specify pageCount as 50 to return 50 records in a page, which implies that you’ll have 10 pages of data (50 records * 10 pages = 500). Now, if you want to return records 100-150, specify the page value as 3</p><p><strong>Example</strong>:</p><pre><code>1</code></pre></li><li><strong>perPage</strong>: <em>(integer - default: 10 - maximum: 500)</em><p>The perPage parameter defines the number of records to return per page.</p><p><strong>Example</strong>:</p><pre><code>10</code></pre></li><li><strong>Start date</strong>: <em>(string)</em><p>Date from, inclusive</p><p><strong>Example</strong>:</p><pre>2012-01-31</pre></li><li><strong>Final date</strong>: <em>(string)</em><p>Date to, inclusive</p><p><strong>Example</strong>:</p><pre>2012-01-31</pre></li><li><strong>Account number</strong>: <em>required (string)</em><p>Account number being queried</p><p><strong>Example</strong>:</p><pre>117526011462</pre></li></ul></div><div class="tab-pane" id="accounts_accountTransactions_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "type": "object",
+  "properties": {
+  
+  
+  
+  
+ "paging": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-03/schema",
+      "description": "Contains information on paging on the transaction overview.",
+      "required": true,
+      "properties": {
+        "totalPages": {
+          "type": "integer",
+          "description": "Total pages"
+        },                                                                    
+        "totalRecords": {
+          "type": "integer",
+          "description": "Total number of transactions during period"
+        }
+      }
+    },                              
+  "transaction": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "AccountID": {
+            "type": "string",
+            "required": true,
+            "description": "The ID of the account. Unique number of an account issued by the bank.",
+            "comment": "Einkvæmt númer bankareiknings, útgefið af viðskiptabanka."
+          },
+          "transactionID": {
+            "type": "string",
+            "required": true,
+            "description": "Unique identifier for this transaction with the originating system.",
+            "comment": "Einkennisnúmer færslu"
+          },
+          "transactionDate": {
+            "type": "string",
+            "format": "date-time",
+            "required": true,
+            "description": "The date when this transaction was booked.",
+            "comment": "Bókunardagur færslunnar"
+          },
+          "valueDate": {
+            "type": "string",
+            "format": "date-time",
+            "required": true,
+            "description": "Value Date. Used when transactions need to be corrected and new date for interest calculation is used instead. Notuð þegar verið er að leiðrétta færslur aftur í tímann og þá segir þessi dagsetning hvaða vaxtadag er miðað við.",
+            "comment": "Vaxtadagsetning færslunnar"
+          },
+          "batchNumber": {
+            "type": "string",
+            "required": true,
+            "comment": "Unique batch identifier. Number represents the executor of a transaction within the bank.",
+            "description": "Bunkanúmer. Segir til um hver framkvæmdi færslu innan viðskiptabanka (einkvæmt númer afgreiðslu)"
+          },
+          "redeemingBank": {
+            "type": "string",
+            "required": true,
+            "description": "The bank where the transaction originated.",
+            "comment": "Innlausnarbanki, bankanúmer viðskiptabanka sem framkvæmdi færslu"
+          },
+          "transactionKey": {
+            "type": "string",
+            "required": true,
+            "description": "Transaction Key. Indicates the type of transaction.",
+            "comment": "Færslulykill. Segir til um tegund færslu t.d. innborgun, útborgun, krafa eða C gíró"
+          },
+          "reference": {
+            "type": "string",
+            "required": true,
+            "comment": "Reference. Commonly used for social security number of the payer.",
+            "comment": "Tilvísun. Oftast notað fyrir kennitölu greiðanda"
+          },
+          "billNumber": {
+            "type": "string",
+            "required": true,
+            "description": "Bill number. Seven letter reference number.",
+            "comment": "Seðilnúmer. Sjö stafa tilvísunarnúmer"
+          },
+          "categoryCode": {
+            "type": "string",
+            "required": true,
+            "description": "Category code. Descripes the type of transaction, defined by the bank.",
+            "comment": "Textalykill. Skilgreining á tegund færslu. Textalykill er skilgreindur í viðskiptabanka"
+          },
+          "category": {
+            "type": "string",
+            "required": true,
+            "description": "Expands on the category code and gives the fulltext explanation.",
+            "comment": "Skýring textalykils. Nánari lýsing á textalykli"
+          },
+          "referenceDetail": {
+            "type": "string",
+            "required": true,
+            "description": "Expands on the information in the reference, usually by trying to matching the information entered with person identification numbers.",
+            "comment": "Skýring tilvísunar. Nánari upplýsingar byggðar á gögnum í svæðinu Tilvísun"
+          },
+          "payorID": {
+            "type": "string",
+            "required": true,
+            "description": "Person ID of payor.",
+            "comment": "Kennitala greiðanda"
+          },
+          "amount": {
+            "type": "number",
+            "required": true,
+            "description": "The balance of the account after this transaction.",
+            "comment": "Upphæð"
+          },
+          "balance": {
+            "type": "number",
+            "required": true,
+            "description": "The balance of the account after this transaction ",
+            "comment": "Staða eftir færslu."
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "transactionID": "1725704905",
+  "transactionDate": "2012-01-30"
+}</code></pre></div><div class="tab-pane" id="accounts_accountTransactions_get_securedby">Secured by oauth_2_0<h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>(string)</em><p>Used to send a valid OAuth 2 access token.</p></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Unauthorized</p></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#accounts">Accounts</a></li></ul></div></div></div></div></body></html>

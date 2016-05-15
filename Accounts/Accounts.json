@@ -1,0 +1,338 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "Accounts API - Arion banki Fintech Party",
+    "description": "Undir þessari [þjónustu](/ \"e. resource, gæti verið þýtt is. auðlind\\viðfang\") er að finna upplýsingar um bankareikninga sem innskráður notandi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram.\n\nUpplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Þannig sér notandi bæði veltureikninga sína sem og sparnaðarreikninga. Grunnupplýsingar um eiginleika reiknings eru á honum sjálfum en undir hverjum reikningi má svo nálgast hreyfingar og stöður.\n      \nHér má skoða mun ítarlegri [html lýsingu](/accounts.html \"sjá Accounts.html\") á samningnum í GitHub repo fyrir Fintech partý.\nKöll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.\n\nSem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar, eftir því sem passar þjónustuveitendum.",
+    "license": {
+      "name": "",
+      "url": ""
+    }
+  },
+  "host": "arionapi-sandbox.azure-api.net",
+  "basePath": "/accounts/v1",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize",
+      "tokenUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/token"
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/accounts/{accountId}": {
+      "get": {
+        "description": "Information about an account.",
+        "tags": [
+          "accounts"
+        ],
+        "operationId": "Get_AccountsByAccountId_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/account"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/accounts/accountTransactions": {
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "operationId": "Get_AccountsAccountTransactions_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": "Account number being queried"
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "Date from, inclusive"
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "Date to, inclusive"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/transactionCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/accounts": {
+      "get": {
+        "description": "Retrieves information about available accounts.",
+        "tags": [
+          "accounts"
+        ],
+        "operationId": "Get_Accounts_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/accountCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "account": {
+      "title": "account",
+      "description": "A bank account.",
+      "type": "object",
+      "properties": {
+        "accountID": {
+          "description": "The ID of the account.",
+          "default": ""
+        },
+        "accountOwnerID": {
+          "description": "PersonID of account owner.",
+          "default": ""
+        },
+        "availableAmount": {
+          "description": "The amount available to the account holder. Balance and overdraft used for calculation.",
+          "default": ""
+        },
+        "balance": {
+          "description": "The balance of the account.",
+          "default": ""
+        },
+        "customAccountName": {
+          "description": "Name set by account owner. Account owner can name his/hers account. Name set by account owner. Account owner can name his/her description.",
+          "default": ""
+        },
+        "overdraft": {
+          "description": "Overdraft permission of the account.",
+          "default": ""
+        },
+        "status": {
+          "description": "The status of the account (open/closed/onhold).",
+          "$ref": "#/definitions/Status",
+          "default": ""
+        },
+        "totalAmountWaiting": {
+          "description": "The total amount of transactions waiting and exceeding amount available. Transaction is executed as soon as the amount becomes available.",
+          "default": ""
+        }
+      },
+      "required": [
+        "accountID",
+        "availableAmount",
+        "balance",
+        "overdraft",
+        "totalAmountWaiting"
+      ]
+    },
+    "Status": {
+      "title": "Status",
+      "enum": [
+        "closed",
+        "onhold",
+        "open"
+      ]
+    },
+    "transactionCollection": {
+      "title": "transactionCollection",
+      "type": "object",
+      "properties": {
+        "paging": {
+          "description": "Contains information on paging on the transaction overview.",
+          "$ref": "#/definitions/Paging",
+          "default": ""
+        },
+        "transaction": {
+          "description": "",
+          "type": "array",
+          "default": "",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          }
+        }
+      },
+      "required": [
+        "paging"
+      ]
+    },
+    "Paging": {
+      "title": "Paging",
+      "type": "object",
+      "properties": {
+        "totalPages": {
+          "description": "Total pages",
+          "default": ""
+        },
+        "totalRecords": {
+          "description": "Total number of transactions during period",
+          "default": ""
+        }
+      }
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "type": "object",
+      "properties": {
+        "AccountID": {
+          "description": "The ID of the account. Unique number of an account issued by the bank.",
+          "default": ""
+        },
+        "transactionID": {
+          "description": "Unique identifier for this transaction with the originating system.",
+          "default": ""
+        },
+        "transactionDate": {
+          "description": "The date when this transaction was booked.",
+          "default": ""
+        },
+        "valueDate": {
+          "description": "Value Date. Used when transactions need to be corrected and new date for interest calculation is used instead. Notuð þegar verið er að leiðrétta færslur aftur í tímann og þá segir þessi dagsetning hvaða vaxtadag er miðað við.",
+          "default": ""
+        },
+        "batchNumber": {
+          "description": "Bunkanúmer. Segir til um hver framkvæmdi færslu innan viðskiptabanka (einkvæmt númer afgreiðslu)",
+          "default": ""
+        },
+        "redeemingBank": {
+          "description": "The bank where the transaction originated.",
+          "default": ""
+        },
+        "transactionKey": {
+          "description": "Transaction Key. Indicates the type of transaction.",
+          "default": ""
+        },
+        "reference": {
+          "description": "",
+          "default": ""
+        },
+        "billNumber": {
+          "description": "Bill number. Seven letter reference number.",
+          "default": ""
+        },
+        "categoryCode": {
+          "description": "Category code. Descripes the type of transaction, defined by the bank.",
+          "default": ""
+        },
+        "category": {
+          "description": "Expands on the category code and gives the fulltext explanation.",
+          "default": ""
+        },
+        "referenceDetail": {
+          "description": "Expands on the information in the reference, usually by trying to matching the information entered with person identification numbers.",
+          "default": ""
+        },
+        "payorID": {
+          "description": "Person ID of payor.",
+          "default": ""
+        },
+        "amount": {
+          "description": "The balance of the account after this transaction.",
+          "default": ""
+        },
+        "balance": {
+          "description": "The balance of the account after this transaction",
+          "default": ""
+        }
+      },
+      "required": [
+        "AccountID",
+        "transactionID",
+        "transactionDate",
+        "valueDate",
+        "batchNumber",
+        "redeemingBank",
+        "transactionKey",
+        "reference",
+        "billNumber",
+        "categoryCode",
+        "category",
+        "referenceDetail",
+        "payorID",
+        "amount",
+        "balance"
+      ]
+    },
+    "accountCollection": {
+      "title": "accountCollection",
+      "type": "object",
+      "properties": {
+        "totalCount": {
+          "description": "Fjöldi færslna í sem hægt er að sækja.",
+          "default": ""
+        },
+        "account": {
+          "description": "",
+          "type": "array",
+          "default": "",
+          "items": {
+            "$ref": "#/definitions/account"
+          }
+        }
+      }
+    }
+  }
+}

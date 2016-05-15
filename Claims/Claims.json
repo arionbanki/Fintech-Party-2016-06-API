@@ -1,0 +1,291 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "Claims API - Arion banki Fintech Party",
+    "description": "Undir þessari [þjónustu](/ \"e. resource, gæti verið þýtt is. auðlind\\viðfang\") er að vinna með innheimtukröfur innskráður notandi sem kröfuhafi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram. Þess utan uppfærir notandi gögnin með eigin aðgerðum og halda þau sér milli innskráninga.\n\nUpplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka og B2B lausnir Arion banka og er því ekki  í boðið að vinna með auðkenni, kröfustofna eða aðgerðir félagaþjónustu sem stendur.\n      \nHér má skoða mun ítarlegri [html lýsingu](/claims.html \"sjá Claims.html\") á samningnum í GitHub repo fyrir Fintech partý.\nKöll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.\n      \nSem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar og sleppa eða jafnvel maska svæði eftir því hvað passar tengt þjónustuveitendum.",
+    "license": {
+      "name": "",
+      "url": ""
+    }
+  },
+  "host": "arionapi-sandbox.azure-api.net",
+  "basePath": "/claims/v1",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize",
+      "tokenUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/token"
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/claims/{claimId}/claimTransactions": {
+      "get": {
+        "description": "Returnes a list of transactions that encapsulate information about the status of a claim associated with a particular event in its lifetime.",
+        "tags": [
+          "claims"
+        ],
+        "operationId": "Get_ClaimsClaimTransactionsByClaimId_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "claimId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/claims/{claimId}": {
+      "get": {
+        "description": "Returns a representation of a claim.",
+        "tags": [
+          "claims"
+        ],
+        "operationId": "Get_ClaimsByClaimId_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "claimId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      },
+      "patch": {
+        "description": "Allows you to modify the properties of a claim. For example to cancel a claim.",
+        "tags": [
+          "claims"
+        ],
+        "operationId": "Update_ClaimsByClaimId_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "claimId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/claims": {
+      "get": {
+        "description": "Returnes a list of claims belonging to the claimant used to make the API request.",
+        "tags": [
+          "claims"
+        ],
+        "operationId": "Get_Claims_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "claimantKennitala",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "The kennitala of the claimant whose data is being queried. If empty, data will be returned for all claimants linked to the authenticated user."
+          },
+          {
+            "name": "identifier",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "The unique identifier of the claimant used to filter the query. If empty, data will be returned for all identifiers."
+          },
+          {
+            "name": "payorKennitala",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "Payor's kennitala."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "enum": [
+              "unpaid",
+              "paid",
+              "cancelled",
+              "invalid"
+            ],
+            "default": "",
+            "description": "Status of the claim."
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "enum": [
+              "primary",
+              "secondary",
+              "legal"
+            ],
+            "default": "",
+            "description": "State of the claim. Indicates the collections state the claim is in."
+          },
+          {
+            "name": "referenceDate",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "enum": [
+              "duedate",
+              "finalduedate",
+              "cancellationdate",
+              "creationdate"
+            ],
+            "default": "",
+            "description": "Reference date for the datespan of the query."
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "Date from inclusive."
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "Date to inclusive."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      },
+      "post": {
+        "description": "Create a new claim.",
+        "tags": [
+          "claims"
+        ],
+        "operationId": "Create_Claims_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": "",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "statusEnum": {
+      "title": "statusEnum",
+      "enum": [
+        "unpaid",
+        "paid",
+        "cancelled",
+        "invalid"
+      ]
+    },
+    "stateEnum": {
+      "title": "stateEnum",
+      "enum": [
+        "primary",
+        "secondary",
+        "legal"
+      ]
+    },
+    "referenceDateEnum": {
+      "title": "referenceDateEnum",
+      "enum": [
+        "duedate",
+        "finalduedate",
+        "cancellationdate",
+        "creationdate"
+      ]
+    }
+  }
+}

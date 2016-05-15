@@ -1,0 +1,241 @@
+﻿#%RAML 0.8
+---
+title: National Registry API - Arion banki Fintech Party
+documentation: 
+  - title: Um NationalRegistry - Þjóðskrá
+    content: |
+      Undir þessari [þjónustu](/ "e. resource, gæti verið þýtt is. auðlind\viðfang") má fletta upp í þjóðskrá, ef innskráður notandi hefur aðgang að henni. Virknin er sambærileg við uppflettingar sem notendur hafa aðgang í gegnum netbanka Arion banka. Ákveðið þýði af kennitölum er til staðar sem nota má fyrir aðgang að prófunargögnum.
+                  
+      Hér má skoða mun ítarlegri [html lýsingu](/nationalregistry.html "sjá NationalRegistry.html") á samningnum í GitHub repo fyrir Fintech partý.
+  - title: Öryggi
+    content: |
+      Köll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
+
+      Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum undir auðlindinni.      
+baseUri: https://arionapi-sandbox.azure-api.net/nationalregistry/{version}
+version: v1
+mediaType: application/json
+securitySchemes:
+  - oauth_2_0:
+      description: |
+        OAuth2 is a protocol that lets external apps request authorization to private
+        details in a user's financial data.
+      type: OAuth 2.0
+      describedBy:
+        headers:
+          Authorization:
+            description: |
+              Used to send a valid OAuth 2 access token.
+            type: string
+          Ocp-Apim-Subscription-Key:
+            description: |
+              Used to send a valid subscription key.
+            type: string
+        responses:
+          404:
+            description: Unauthorized
+      settings:
+        authorizationUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize
+        accessTokenUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/token
+        authorizationGrants: [ authorization_code, implicit ]
+        scopes:
+          - "financial"
+securedBy: [ null, oauth_2_0 ]
+
+traits:  
+  - subscribable:
+      usage: Include your API subscription.
+      headers:
+        Ocp-Apim-Subscription-Key:
+          description: |
+            Used to send a valid subscription key.
+          type: string        
+  - pageable:
+          queryParameters:
+            page:
+              description: The page parameter defines the page number of the result set to return the data. For example, if your query returns 500 records, you can specify pageCount as 50 to return 50 records in a page, which implies that you’ll have 10 pages of data (50 records * 10 pages = 500). Now, if you want to return records 100-150, specify the page value as 3
+              type: integer
+              required: true
+              minimum: 1
+              example: 1
+              default: 1
+            perPage:
+              description: The perPage parameter defines the number of records to return per page.
+              type: integer
+              required: true
+              maximum: 500
+              example: 10
+              default: 10             
+
+schemas:
+  - nationalRegistryPartyCollection: |
+      {
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "type": "object",
+        "properties": {     
+       "paging": {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "comment": "Contains information for paging on the result overview.",
+            "required": true,
+            "properties": {
+              "totalPages": {
+                "type": "integer",
+                "comment": "Total pages"
+              },                                                                    
+              "totalRecords": {
+                "type": "integer",
+                "comment": "Total number of results matching search."
+              }
+            }
+          },                              
+        "nationalRegistryParty": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kennitala": {
+                  "type": "string",
+                  "required": true,
+                  "comment": "The unique identification of the party, individual or organization, in the national registry. Icelandic kennitala.",
+                  "description": "Kennitala úr Þjóðskrá."
+                },
+                "fullName": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Full name of the individual or organization.",
+                  "comment": "Fullt nafn einstaklings eða lögaðila."
+                },
+                "home": {
+                  "type": "string",
+                  "required": true,
+                  "description": "The legal residence of the party in question.",
+                  "comment": "Lögheimili eða aðsetur samkvæmt Þjóðskrá."
+                },
+                "postalCode": {
+                  "type": "string",
+                  "required": true,
+                  "description": "The postal code of the residence.",
+                  "comment": "Póstnúmer samkvæmt þjóðskrá."
+                },
+                "city": {
+                  "type": "string",
+                  "required": true,
+                  "description": "City or town indicated by the postal code.",
+                  "comment": "Staður í póstnúmeraskrá samkvæmt póstnúmeri aðila í Þjóðskrá."
+                },
+                "fate": {
+                  "enum": [ "alive", "deceased", "removed", "changed", "other" ],
+                  "required": true,
+                  "description": "Fate of the party.",
+                  "comment": "Afdrif (fate): Tómt (alive), LÉST (deceased), BRFL (removed) brottfluttur af landi, oftast útlendingar, BRFD (changed) Breytt kennitala og fæðingardagur."
+                }
+              }
+            }
+          }
+        }
+      }
+  - nationalRegistryParty: |
+      {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "id": "http://jsonschema.net",
+        "description": "Legal entity, individual or organization.",
+        "comment": "Aðili, einstaklingur eða lögaðili í Þjóðskrá.",
+        "required": true,
+        "properties": {
+          "kennitala": {
+                "type": "string",
+                "required": true,
+                "comment": "The unique identification of the party, individual or organization, in the national registry. Icelandic kennitala.",
+            "description": "Kennitala úr Þjóðskrá eða fyrirtækjaskrá."
+          },
+          "fullName": {
+            "type": "string",
+            "required": true,
+            "description": "Full name of the individual or organization.",
+            "comment": "Fullt nafn einstaklings eða lögaðila."
+          },
+          "home": {
+            "type": "string",
+            "required": true,
+            "description": "The legal residence of the party in question.",
+            "comment": "Lögheimili eða aðsetur samkvæmt þjóðskrá."
+          },
+          "postalCode": {
+            "type": "string",
+            "required": true,
+            "description": "The postal code of the residence.",
+            "comment": "Póstnúmer samkvæmt Þjóðskrá."
+          },
+          "city": {
+            "type": "string",
+            "required": true,
+            "description": "City or town indicated by the postal code.",
+            "comment": "Staður í póstnúmeraskrá samkvæmt póstnúmeri aðila í Þjóðskrá."
+          },
+          "fate": {
+            "enum": [ "alive", "deceased", "removed", "changed", "other" ],
+            "required": true,
+            "description": "Fate of the party.",
+            "comment": "Afdrif (fate): Tómt (alive), LÉST (deceased), BRFL (removed) brottfluttur af landi, oftast útlendingar, BRFD (changed) Breytt kennitala og fæðingardagur."
+          }
+        }
+      }
+
+/nationalRegistryParties:
+    securedBy: [ oauth_2_0 ]
+    is: [ subscribable ]
+    displayName: National Registry Parties
+    get:
+      queryParameters:
+        partialName:
+            description: "The name, either in full or partial entry."
+            type: string
+            required: false
+            example: 'Jón Jónss'
+        partialKennitala:
+            description: "The kennitala, either in full or partial entry."
+            type: string
+            required: false
+            example: '11111'                  
+      description: Returns information about parties from the Icelandic National Registry, both individuals and corporationss.
+      responses:
+        200:
+          body:
+              application/json:
+                schema: nationalRegistryPartyCollection
+                example: |
+                  {
+                    "totalCount": 1,
+                    "nationalRegistryParty": [
+                      {
+                        "kennitala": "1111111119",
+                        "fullName": "Ingólfur Björnólfsson",
+                        "home": "Aðalstræti 1
+                        "postalCode": "101",
+                        "city": "Reykjavík",
+                        "fate": "deceased"
+                      }
+                    ]
+                  }
+    /{kennitala}:
+        securedBy: [ oauth_2_0 ]
+        is: [ subscribable ]
+        description: A valid kennitala.
+        get:
+          description: A uniquely identifiable party, by kennitala.
+          responses:
+            200:
+              body:
+                  application/json:
+                    schema: nationalRegistryParty
+                    example: |
+                      {
+                        "kennitala": "1111111119",
+                        "fullName": "Ingólfur Björnólfsson",
+                        "home": "Aðalstræti 1
+                        "postalCode": "101",
+                        "city": "Reykjavík",
+                        "fate": "deceased"
+                      }  

@@ -1,0 +1,568 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "Creditcards API - Arion banki Fintech Party",
+    "description": "Undir þessari [þjónustu](/ \"e. resource, gæti verið þýtt is. auðlind\\viðfang\") er að finna upplýsingar um greiðslukort sem innskráður notandi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram.\n\nUpplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Grunnupplýsingar um eiginleika greiðslukorts má skoða en undir hverjum korti má svo nálgast hreyfingar eftir tímabilum.\n      \nHér má skoða mun ítarlegri [html lýsingu](/creditCards.html \"sjá CreditCards.html\") á samningnum í GitHub repo fyrir Fintech partý.\nKöll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.\n      \nSem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar og sleppa eða jafnvel maska svæði eftir því hvað passar tengt þjónustuveitendum.",
+    "license": {
+      "name": "",
+      "url": ""
+    }
+  },
+  "host": "arionapi-sandbox.azure-api.net",
+  "basePath": "/creditcards/v1",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize",
+      "tokenUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/token"
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/creditCards/{cardId}/creditCardTransactions": {
+      "get": {
+        "description": "Allows the user to view the transactions on a card performed during a specific period. The logged-in user has to be a cardholder or the owner of a card and also have permission to see the card. It is possible to get the data by defining page number and page size.",
+        "tags": [
+          "creditCards"
+        ],
+        "operationId": "Get_CreditCardsCreditCardTransactions_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/creditCardTransactionCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/creditCards/{cardId}": {
+      "get": {
+        "description": "Provides detailed information on individual cards. The logged in user has to be a cardholder or the owner of a card and also have permission to see the card. It does not show amounts on cards in the legal collection process as collection costs are not included in the balance. In such cases null is returned in the field for amounts.",
+        "tags": [
+          "creditCards"
+        ],
+        "operationId": "Get_CreditCardsByCardId_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/creditCardDetail"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/creditCards": {
+      "get": {
+        "description": "Provides an overview of credit cards. It provides information on cards where the logged-in user is a cardholder or owner of a card, provided that user is entitled to see the credit card. It shows information on cards in active use and cards in the legal collection process. It does not show amounts on cards in the legal collection process as collection costs are not included in the balance. In such cases null is returned in the field for amounts",
+        "tags": [
+          "creditCards"
+        ],
+        "operationId": "Get_CreditCards_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/creditCardCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "creditCardTransactionCollection": {
+      "title": "creditCardTransactionCollection",
+      "type": "object",
+      "properties": {
+        "paging": {
+          "description": "Contains information on paging on the transaction overview.",
+          "$ref": "#/definitions/Paging",
+          "default": ""
+        },
+        "transaction": {
+          "description": "",
+          "type": "array",
+          "default": "",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          }
+        }
+      },
+      "required": [
+        "paging"
+      ]
+    },
+    "Paging": {
+      "title": "Paging",
+      "type": "object",
+      "properties": {
+        "totalPages": {
+          "description": "Total pages",
+          "default": ""
+        },
+        "totalRecords": {
+          "description": "Total number of transactions during period",
+          "default": ""
+        }
+      }
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "type": "object",
+      "properties": {
+        "cardId": {
+          "description": "Unique card number",
+          "default": ""
+        },
+        "panId": {
+          "description": "Unique card number from Issuer",
+          "default": ""
+        },
+        "transactionDate": {
+          "description": "Transaction date",
+          "default": ""
+        },
+        "amount": {
+          "description": "Domestic amount",
+          "default": ""
+        },
+        "currencyCode": {
+          "description": "Currency, e.g. ISK, SEK, GBP, USD",
+          "default": ""
+        },
+        "transactionId": {
+          "description": "Transaction number from systems at Borgun and Valitor",
+          "default": ""
+        },
+        "dueDate": {
+          "description": "Due date yyyymm, e.g. 201106. In which period transaction was made",
+          "default": ""
+        },
+        "transactionKey": {
+          "description": "Transaction key description, description e.g. fee for printed bills, money withdrawals, automatic debits",
+          "default": ""
+        },
+        "authorizationNumber": {
+          "description": "Authorization number.",
+          "default": ""
+        },
+        "icelandairLoyaltyClubTransaction": {
+          "description": "Icelandair Loyalty Club Transaction e.g. 81, 187, 17, 9",
+          "default": ""
+        },
+        "issuerBranch": {
+          "description": "Issuer branch, e.g. 0301",
+          "default": ""
+        },
+        "merchantName": {
+          "description": "Name of merchant, e.g. SOS BARNAÞORP Skeljungur - 302 Hagkaup, Skeifan VÍNBÚÐIN HEIÐRÚN",
+          "default": ""
+        },
+        "merchantCity": {
+          "description": "City of merchant , e.g. REYKJAVIK, KOPAVOGUR, LONDON PADDIN, TÁLKNAFJÖRÐDUR",
+          "default": ""
+        },
+        "merchantCountryCode": {
+          "description": "Merchant country code, e.g. IS, GB, US, SE",
+          "default": ""
+        },
+        "processingDate": {
+          "description": "Processing date yyyymmdd, e.g. 20151231. When the transaction was processed",
+          "default": ""
+        }
+      }
+    },
+    "creditCardDetail": {
+      "title": "creditCardDetail",
+      "description": "Notar einfalda nálgun til samræmis við eldri útfærslu.",
+      "type": "object",
+      "properties": {
+        "cardOwnerName": {
+          "description": "Name of cardowner/payer",
+          "default": ""
+        },
+        "cardHolderName": {
+          "description": "Name of cardholder",
+          "default": ""
+        },
+        "cardId": {
+          "description": "Unique ID of card",
+          "default": ""
+        },
+        "cardOwnerKennitala": {
+          "description": "Kennitala of owner/payer",
+          "default": ""
+        },
+        "cardHolderKennitala": {
+          "description": "Kennitala of cardholder",
+          "default": ""
+        },
+        "amountDue": {
+          "description": "Amount due/estimated to be due in ISK",
+          "default": ""
+        },
+        "balance": {
+          "description": "Total balance on card in ISK. Can be both + and – figure. Minus figure indicates positive balance. The figure appears as null if card is in legal collection process.",
+          "default": ""
+        },
+        "active": {
+          "description": "Is the card active or inactive? This ascertained from status codes from card companies.",
+          "default": ""
+        },
+        "lastYearTurnover": {
+          "description": "Last year’s turnover in ISK",
+          "default": ""
+        },
+        "cardType": {
+          "description": "Card type e.g. purchasing card, general Arion Bank card, Platinum Arion Bank card",
+          "default": ""
+        },
+        "cardBrand": {
+          "description": "Brand: V = Visa, M=Mastercard",
+          "default": ""
+        },
+        "cardRole": {
+          "description": "Main card, extra card or corporate card",
+          "default": ""
+        },
+        "bankNumber": {
+          "description": "Bank branch number e.g. 0301",
+          "default": ""
+        },
+        "issueDate": {
+          "description": "Card issue date, e.g. 12.01.2016",
+          "default": ""
+        },
+        "expiryDate": {
+          "description": "Card expiry date e.g. 31.05.2018",
+          "default": ""
+        },
+        "limit": {
+          "description": "Credit limit+ Extra credit limit in ISK e.g. 30,000",
+          "default": ""
+        },
+        "cardNumber": {
+          "description": "Formated card number e.g. 4804 28** **** 0557",
+          "default": ""
+        },
+        "currentYearTurnover": {
+          "description": "Turnover in current year in ISK",
+          "default": ""
+        },
+        "availableBalance": {
+          "description": "Available balance in ISK",
+          "default": ""
+        },
+        "creditLimit": {
+          "description": "Credit limit. Total amount that card owner owes on all cards combined",
+          "default": ""
+        },
+        "issuer": {
+          "description": "Issuer, e.g. Valitor and Borgun",
+          "default": ""
+        },
+        "chargeBranch": {
+          "description": "Branch number for charge account",
+          "default": ""
+        },
+        "chargeLedger": {
+          "description": "Account code for charge account",
+          "default": ""
+        },
+        "chargeAccount": {
+          "description": "Charge account",
+          "default": ""
+        },
+        "minPaymentAmount": {
+          "description": "Minimum required payment on card this month. Card companies calculate this amount. Percentage of total debt.",
+          "default": ""
+        },
+        "authorizationLimitValidTo": {
+          "description": "Expiry date of credit limit",
+          "default": ""
+        },
+        "augmentedAuthorizationLimit": {
+          "description": "Increased credit limit in ISK.",
+          "default": ""
+        },
+        "augmentedAuthorizationLimitExpiration": {
+          "description": "Expiry date of increased credit limit",
+          "default": ""
+        },
+        "icelandairLoyaltyClub": {
+          "description": "Icelandair Loyalty Club? True/false value.",
+          "default": ""
+        },
+        "paymentMethod": {
+          "description": "Is it Veltikort True/false values",
+          "default": ""
+        },
+        "paymentDueDate": {
+          "description": "Available balance in ISK",
+          "default": ""
+        },
+        "lastPaymentDate": {
+          "description": "Date of last deposit, e.g. 02.08.2013",
+          "default": ""
+        },
+        "declineBillingStatement": {
+          "description": "Paper free. Billing statement declined. True/false value.",
+          "default": ""
+        },
+        "inCollection": {
+          "description": "In legal collection process. True/false values.",
+          "default": ""
+        },
+        "olderDebtAmount": {
+          "description": "Older debt. Debt calculated on last due bill, i.e. due date reached and bill still unpaid.",
+          "default": ""
+        },
+        "penaltyInterestBase": {
+          "description": "Penalty interest base",
+          "default": ""
+        },
+        "lastDueAmount": {
+          "description": "Last due amount",
+          "default": ""
+        },
+        "billingStatementInDefaultNr": {
+          "description": "Number of defaults",
+          "default": ""
+        },
+        "duePenaltyInterest": {
+          "description": "Due penalty interest",
+          "default": ""
+        },
+        "penaltyInterestCurrentPeriod": {
+          "description": "Penalty interest in current period/Calculated penalty interest",
+          "default": ""
+        },
+        "transactionAmountCurrentPeriod": {
+          "description": "Transactions in current period. Total use during period",
+          "default": ""
+        },
+        "cardPaymentDistributionLoanRemainingBalance": {
+          "description": "Remaining payments on payment distribution plan",
+          "default": ""
+        },
+        "cardPaymentDistributionCount": {
+          "description": "Number of distribution plans",
+          "default": ""
+        },
+        "cardPaymentDistributionRemainingMonths": {
+          "description": "Months remaining on payment distribution plans",
+          "default": ""
+        },
+        "lightCardInstallmentLoanRemainingBalance": {
+          "description": "Remaining light payments",
+          "default": ""
+        },
+        "isPrepaid": {
+          "description": "Is it pre-paid card or not (Plús card) True/false values",
+          "default": ""
+        },
+        "isPrePaidBalance": {
+          "description": "Is there any credit on card? True/false values.",
+          "default": ""
+        },
+        "cardTypeDescription": {
+          "description": "Card type, Kreditkort, Veltikort or Plúskort",
+          "default": ""
+        },
+        "oldestDefaultDate": {
+          "description": "The date of oldest default",
+          "default": ""
+        },
+        "daysDefaulting": {
+          "description": "Days in default. Calculated from the date of oldest default",
+          "default": ""
+        },
+        "authorizationLimit": {
+          "description": "Credit limit",
+          "default": ""
+        },
+        "payorId": {
+          "description": "Unique ID of payor.",
+          "default": ""
+        },
+        "firstStageCollection": {
+          "description": "In primary collection process. True/false values.",
+          "default": ""
+        },
+        "intermediateCollection": {
+          "description": "In intermediate collection process. True/false values.",
+          "default": ""
+        },
+        "isDefaulted": {
+          "description": "The card is defaulted. True/false values.",
+          "default": ""
+        },
+        "cardStatus": {
+          "description": "The status of the card.",
+          "default": ""
+        },
+        "panId": {
+          "description": "Unique ID of card from Issuer",
+          "default": ""
+        }
+      }
+    },
+    "creditCardCollection": {
+      "title": "creditCardCollection",
+      "type": "object",
+      "properties": {
+        "creditCard": {
+          "description": "",
+          "type": "array",
+          "default": "",
+          "items": {
+            "$ref": "#/definitions/CreditCard"
+          }
+        }
+      }
+    },
+    "CreditCard": {
+      "title": "CreditCard",
+      "type": "object",
+      "properties": {
+        "cardOwnerName": {
+          "description": "Name of cardowner/payer",
+          "default": ""
+        },
+        "cardHolderName": {
+          "description": "Name of cardholder",
+          "default": ""
+        },
+        "cardId": {
+          "description": "Unique ID of card",
+          "default": ""
+        },
+        "panId": {
+          "description": "Unique ID of card from Issuer",
+          "default": ""
+        },
+        "cardOwnerKennitala": {
+          "description": "Kennitala of owner/payer",
+          "default": ""
+        },
+        "cardHolderKennitala": {
+          "description": "Kennitala of cardholder",
+          "default": ""
+        },
+        "amountDue": {
+          "description": "Amount due/estimated to be due in ISK",
+          "default": ""
+        },
+        "balance": {
+          "description": "Total balance on card in ISK. Can be both + and – figure. Minus figure indicates positive balance. The figure appears as null if card is in legal collection process.",
+          "default": ""
+        },
+        "active": {
+          "description": "Is the card active or inactive? This ascertained from status codes from card companies.",
+          "default": ""
+        },
+        "lastYearTurnover": {
+          "description": "Last year’s turnover in ISK",
+          "default": ""
+        },
+        "cardType": {
+          "description": "Card type e.g. purchasing card, general Arion Bank card, Platinum Arion Bank card",
+          "default": ""
+        },
+        "cardBrand": {
+          "description": "Brand: V = Visa, M=Mastercard",
+          "default": ""
+        },
+        "cardRole": {
+          "description": "Main card, extra card or corporate card",
+          "default": ""
+        },
+        "bankNumber": {
+          "description": "Bank branch number e.g. 0301",
+          "default": ""
+        },
+        "issueDate": {
+          "description": "Card issue date, e.g. 12.01.2016",
+          "default": ""
+        },
+        "expiryDate": {
+          "description": "Card expiry date e.g. 31.05.2018",
+          "default": ""
+        },
+        "limit": {
+          "description": "Credit limit+ Extra credit limit in ISK e.g. 30,000",
+          "default": ""
+        },
+        "cardNumber": {
+          "description": "Formated card number e.g. 4804 28** **** 0557",
+          "default": ""
+        },
+        "currentYearTurnover": {
+          "description": "Turnover in current year in ISK",
+          "default": ""
+        },
+        "availableBalance": {
+          "description": "Available balance in ISK",
+          "default": ""
+        }
+      }
+    }
+  }
+}

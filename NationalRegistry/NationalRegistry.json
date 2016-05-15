@@ -1,0 +1,182 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "National Registry API - Arion banki Fintech Party",
+    "description": "Undir þessari [þjónustu](/ \"e. resource, gæti verið þýtt is. auðlind\\viðfang\") má fletta upp í þjóðskrá, ef innskráður notandi hefur aðgang að henni. Virknin er sambærileg við uppflettingar sem notendur hafa aðgang í gegnum netbanka Arion banka. Ákveðið þýði af kennitölum er til staðar sem nota má fyrir aðgang að prófunargögnum.\n            \nHér má skoða mun ítarlegri [html lýsingu](/nationalregistry.html \"sjá NationalRegistry.html\") á samningnum í GitHub repo fyrir Fintech partý.\nKöll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.\n\nSem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum undir auðlindinni.",
+    "license": {
+      "name": "",
+      "url": ""
+    }
+  },
+  "host": "arionapi-sandbox.azure-api.net",
+  "basePath": "/nationalregistry/v1",
+  "securityDefinitions": {},
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/nationalRegistryParties/{kennitala}": {
+      "get": {
+        "description": "A uniquely identifiable party, by kennitala.",
+        "tags": [
+          "nationalRegistryParties"
+        ],
+        "operationId": "Get_NationalRegistryPartiesByKennitala_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "kennitala",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "default": "",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/nationalRegistryParty"
+            }
+          }
+        }
+      }
+    },
+    "/nationalRegistryParties": {
+      "get": {
+        "description": "Returns information about parties from the Icelandic National Registry, both individuals and corporationss.",
+        "tags": [
+          "nationalRegistryParties"
+        ],
+        "operationId": "Get_NationalRegistryParties_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "partialName",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "The name, either in full or partial entry."
+          },
+          {
+            "name": "partialKennitala",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "",
+            "description": "The kennitala, either in full or partial entry."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/nationalRegistryPartyCollection"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "nationalRegistryParty": {
+      "title": "nationalRegistryParty",
+      "description": "Legal entity, individual or organization.",
+      "type": "object",
+      "properties": {
+        "city": {
+          "description": "City or town indicated by the postal code.",
+          "default": ""
+        },
+        "fate": {
+          "description": "Fate of the party.",
+          "$ref": "#/definitions/Fate",
+          "default": ""
+        },
+        "fullName": {
+          "description": "Full name of the individual or organization.",
+          "default": ""
+        },
+        "home": {
+          "description": "The legal residence of the party in question.",
+          "default": ""
+        },
+        "kennitala": {
+          "description": "Kennitala úr Þjóðskrá eða fyrirtækjaskrá.",
+          "default": ""
+        },
+        "postalCode": {
+          "description": "The postal code of the residence.",
+          "default": ""
+        }
+      },
+      "required": [
+        "city",
+        "fate",
+        "fullName",
+        "home",
+        "kennitala",
+        "postalCode"
+      ]
+    },
+    "Fate": {
+      "title": "Fate",
+      "enum": [
+        "alive",
+        "changed",
+        "deceased",
+        "other",
+        "removed"
+      ]
+    },
+    "nationalRegistryPartyCollection": {
+      "title": "nationalRegistryPartyCollection",
+      "type": "object",
+      "properties": {
+        "paging": {
+          "description": "",
+          "$ref": "#/definitions/Paging",
+          "default": ""
+        },
+        "nationalRegistryParty": {
+          "description": "",
+          "type": "array",
+          "default": "",
+          "items": {
+            "$ref": "#/definitions/nationalRegistryParty"
+          }
+        }
+      },
+      "required": [
+        "paging"
+      ]
+    },
+    "Paging": {
+      "title": "Paging",
+      "type": "object",
+      "properties": {
+        "totalPages": {
+          "description": "",
+          "default": ""
+        },
+        "totalRecords": {
+          "description": "",
+          "default": ""
+        }
+      }
+    }
+  }
+}

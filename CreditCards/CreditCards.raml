@@ -1,0 +1,668 @@
+#%RAML 0.8
+---
+title: Creditcards API - Arion banki Fintech Party
+documentation: 
+  - title: Um CreditCards - Greiðslukort
+    content: |
+      Undir þessari [þjónustu](/ "e. resource, gæti verið þýtt is. auðlind\viðfang") er að finna upplýsingar um greiðslukort sem innskráður notandi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram.
+
+      Upplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Grunnupplýsingar um eiginleika greiðslukorts má skoða en undir hverjum korti má svo nálgast hreyfingar eftir tímabilum.
+            
+      Hér má skoða mun ítarlegri [html lýsingu](/creditCards.html "sjá CreditCards.html") á samningnum í GitHub repo fyrir Fintech partý.
+  - title: Öryggi
+    content: |
+      Köll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
+            
+      Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar og sleppa eða jafnvel maska svæði eftir því hvað passar tengt þjónustuveitendum.
+baseUri: https://arionapi-sandbox.azure-api.net/creditcards/{version}
+version: v1
+mediaType: application/json
+securitySchemes:
+  - oauth_2_0:
+      description: |
+        OAuth2 is a protocol that lets external apps request authorization to private
+        details in a user's financial data.
+      type: OAuth 2.0
+      describedBy:
+        headers:
+          Authorization:
+            description: |
+              Used to send a valid OAuth 2 access token. 
+            type: string
+        responses:
+          404:
+            description: Unauthorized
+      settings:
+        authorizationUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize
+        accessTokenUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/token
+        authorizationGrants: [ authorization_code, implicit ]
+        scopes:
+          - "financial"
+securedBy: [ oauth_2_0 ]
+
+traits:  
+  - subscribable:
+      usage: Include your API subscription.
+      headers:
+        Ocp-Apim-Subscription-Key:
+          description: |
+            Used to send a valid subscription key.
+          type: string       
+  - pageable:
+          queryParameters:
+            page:
+              description: The page parameter defines the page number of the result set to return the data. For example, if your query returns 500 records, you can specify pageCount as 50 to return 50 records in a page, which implies that you’ll have 10 pages of data (50 records * 10 pages = 500). Now, if you want to return records 100-150, specify the page value as 3
+              type: integer
+              required: false
+              minimum: 1
+              example: 1
+              default: 1
+            perPage:
+              description: The perPage parameter defines the number of records to return per page.
+              type: integer
+              required: false
+              maximum: 500
+              example: 10
+              default: 10
+  - searchable:
+      usage: Apply this to any method that can be filtered by a search field and value.
+      description: |
+        Some requrest can be filtered by a search field and value.
+      queryParameters:
+        searchField:
+          description: |
+            The field to be searched on.
+          type: string
+          required: false
+          example: 'cardBrand'
+        searchValue:
+          description: |
+            The value to search the field against.
+          type: string
+          required: false
+          example: 'VISA'
+          
+  - date_searchable:
+      usage: Apply this to any method that can be filtered by a start and end date.
+      description: |
+        Some requests can be filtered by a date range.
+      queryParameters:
+        dateFrom:
+          description: |
+            The start date used to filter the results.
+          type: string
+          required: false
+          example: '2016-01-01' 
+        dateTo:
+          description: |
+            The end date used to filter the results.
+          type: string
+          required: false
+          example: '2016-12-31'
+
+schemas:
+  - creditCardCollection: |
+      {
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "type": "object",
+        "properties": {       
+        "creditCard": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cardOwnerName": {
+                  "type": "string",
+                  "description": "Name of cardowner/payer"
+                },
+                "cardHolderName": {
+                  "type": "string",
+                  "description": "Name of cardholder"
+                },
+                "cardId": {
+                  "type": "integer",
+                  "description": "Unique ID of card"                  
+                },
+                "panId": {
+                  "type": "string",
+                  "description": "Unique ID of card from Issuer"                  
+                },                
+                "cardOwnerKennitala": {
+                  "type": "string",
+                  "description": "Kennitala of owner/payer"
+                },
+                "cardHolderKennitala": {
+                  "type": "string",
+                  "description": "Kennitala of cardholder"
+                },
+                "amountDue": {
+                  "type": "number",
+                  "description": "Amount due/estimated to be due in ISK"
+                },
+                "balance": {
+                  "type": "number",
+                  "description": "Total balance on card in ISK. Can be both + and – figure. Minus figure indicates positive balance. The figure appears as null if card is in legal collection process. "
+                },
+                "active": {
+                  "type": "boolean",
+                  "description": "Is the card active or inactive? This ascertained from status codes from card companies."
+                },
+                "lastYearTurnover": {
+                  "type": "number",
+                  "description": "Last year’s turnover in ISK"
+                },
+                "cardType": {
+                  "type": "string",
+                  "description": "Card type e.g. purchasing card, general Arion Bank card, Platinum Arion Bank card"
+                },
+                "cardBrand": {
+                  "type": "string",
+                  "description": "Brand: V = Visa, M=Mastercard"
+                },
+                "cardRole": {
+                  "type": "string",
+                  "description": "Main card, extra card or corporate card"
+                },
+                "bankNumber": {
+                  "type": "string",
+                  "description": "Bank branch number e.g. 0301"
+                },
+                "issueDate": {
+                  "type": "string",
+                  "description": "Card issue date, e.g. 12.01.2016"
+                },
+                "expiryDate": {
+                  "type": "string",
+                  "description": "Card expiry date e.g. 31.05.2018"
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Credit limit+ Extra credit limit in ISK e.g. 30,000"
+                },
+                "cardNumber": {
+                  "type": "string",
+                  "description": "Formated card number e.g. 4804 28** **** 0557"
+                },
+                "currentYearTurnover": {
+                  "type": "number",
+                  "description": "Turnover in current year in ISK"
+                },
+                "availableBalance": {
+                  "type": "number",
+                  "description": "Available balance in ISK"
+                }
+              }
+            }
+          }
+        }
+      }
+  - creditCardDetail: |
+      {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "id": "http://jsonschema.net",
+        "comment": "Sía til að velja sjóði til að skoða.",
+        "description": "Notar einfalda nálgun til samræmis við eldri útfærslu.",
+        "required": true,
+        "properties": {
+          "cardOwnerName": {
+            "type": "string",
+            "description": "Name of cardowner/payer"
+          },
+          "cardHolderName": {
+            "type": "string",
+            "description": "Name of cardholder"
+          },
+          "cardId": {
+            "type": "integer",
+            "description": "Unique ID of card"                  
+          },            
+          "cardOwnerKennitala": {
+            "type": "string",
+            "description": "Kennitala of owner/payer"
+          },
+          "cardHolderKennitala": {
+            "type": "string",
+            "description": "Kennitala of cardholder"
+          },
+          "amountDue": {
+            "type": "number",
+            "description": "Amount due/estimated to be due in ISK"
+          },
+          "balance": {
+            "type": "number",
+            "description": "Total balance on card in ISK. Can be both + and – figure. Minus figure indicates positive balance. The figure appears as null if card is in legal collection process. "
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Is the card active or inactive? This ascertained from status codes from card companies."
+          },
+          "lastYearTurnover": {
+            "type": "number",
+            "description": "Last year’s turnover in ISK"
+          },
+          "cardType": {
+            "type": "string",
+            "description": "Card type e.g. purchasing card, general Arion Bank card, Platinum Arion Bank card"
+          },
+          "cardBrand": {
+            "type": "string",
+            "description": "Brand: V = Visa, M=Mastercard"
+          },
+          "cardRole": {
+            "type": "string",
+            "description": "Main card, extra card or corporate card"
+          },
+          "bankNumber": {
+            "type": "string",
+            "description": "Bank branch number e.g. 0301"
+          },
+          "issueDate": {
+            "type": "string",
+            "description": "Card issue date, e.g. 12.01.2016"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "Card expiry date e.g. 31.05.2018"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Credit limit+ Extra credit limit in ISK e.g. 30,000"
+          },
+          "cardNumber": {
+            "type": "string",
+            "description": "Formated card number e.g. 4804 28** **** 0557"
+          },
+          "currentYearTurnover": {
+            "type": "number",
+            "description": "Turnover in current year in ISK"
+          },
+          "availableBalance": {
+            "type": "number",
+            "description": "Available balance in ISK"
+          },
+          "creditLimit": {
+              "type": "number",
+              "description": "Credit limit. Total amount that card owner owes on all cards combined"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Issuer, e.g. Valitor and Borgun"
+          },
+          "chargeBranch": {
+            "type": "string",
+            "description": "Branch number for charge account"
+          },
+          "chargeLedger": {
+            "type": "string",
+            "description": "Account code for charge account"
+          },
+          "chargeAccount": {
+            "type": "string",
+            "description": "Charge account"
+          },
+          "minPaymentAmount": {
+            "type": "number",
+            "description": "Minimum required payment on card this month. Card companies calculate this amount. Percentage of total debt."
+          },
+          "authorizationLimitValidTo": {
+            "type": "string",
+            "description": "Expiry date of credit limit"
+          },
+          "augmentedAuthorizationLimit": {
+            "type": "number",
+            "description": "Increased credit limit in ISK."
+          },
+          "augmentedAuthorizationLimitExpiration": {
+            "type": "string",
+            "description": "Expiry date of increased credit limit"
+          },
+          "icelandairLoyaltyClub": {
+            "type": "boolean",
+            "description": "Icelandair Loyalty Club? True/false value."
+          },
+          "paymentMethod": {
+            "type": "boolean",
+            "description": "Is it Veltikort True/false values"
+          },
+          "paymentDueDate": {
+            "type": "string",
+            "description": "Available balance in ISK"
+          },
+          "lastPaymentDate": {
+            "type": "string",
+            "description": "Date of last deposit, e.g. 02.08.2013"
+          },
+          "declineBillingStatement": {
+            "type": "boolean",
+            "description": "Paper free. Billing statement declined. True/false value."
+          },
+          "inCollection": {
+            "type": "boolean",
+            "description": "In legal collection process. True/false values."
+          },
+          "olderDebtAmount": {
+            "type": "number",
+            "description": "Older debt. Debt calculated on last due bill, i.e. due date reached and bill still unpaid."
+          },
+          "penaltyInterestBase": {
+            "type": "number",
+            "description": "Penalty interest base"
+          },
+          "lastDueAmount": {
+            "type": "number",
+            "description": "Last due amount"
+          },
+          "billingStatementInDefaultNr": {
+            "type": "integer",
+            "description": "Number of defaults"
+          },
+          "duePenaltyInterest": {
+            "type": "number",
+            "description": "Due penalty interest"
+          },
+          "penaltyInterestCurrentPeriod": {
+            "type": "number",
+            "description": "Penalty interest in current period/Calculated penalty interest"
+          },
+          "transactionAmountCurrentPeriod": {
+            "type": "number",
+            "description": "Transactions in current period. Total use during period"
+          },
+          "cardPaymentDistributionLoanRemainingBalance": {
+            "type": "number",
+            "description": "Remaining payments on payment distribution plan"
+          },
+          "cardPaymentDistributionCount": {
+            "type": "integer",
+            "description": "Number of distribution plans"
+          },    
+          "cardPaymentDistributionRemainingMonths": {
+            "type": "integer",
+            "description": "Months remaining on payment distribution plans"
+          },                
+          "lightCardInstallmentLoanRemainingBalance": {
+            "type": "number",
+            "description": "Remaining light payments"
+          },
+          "isPrepaid": {
+            "type": "boolean",
+            "description": "Is it pre-paid card or not (Plús card) True/false values"
+          },
+          "isPrePaidBalance": {
+            "type": "boolean",
+            "description": "Is there any credit on card? True/false values."
+          },
+          "cardTypeDescription": {
+            "type": "string",
+            "description": "Card type, Kreditkort, Veltikort or Plúskort"
+          },
+          "oldestDefaultDate": {
+            "type": "string",
+            "description": "The date of oldest default"
+          },
+          "daysDefaulting": {
+            "type": "integer",
+            "description": "Days in default. Calculated from the date of oldest default"
+          },          
+          "authorizationLimit": {
+            "type": "number",
+            "description": "Credit limit"
+          },
+          "payorId": {
+            "type": "string",
+            "description": "Unique ID of payor."
+          },
+          "firstStageCollection": {
+            "type": "boolean",
+            "description": "In primary collection process. True/false values."
+          },
+          "intermediateCollection": {
+            "type": "boolean",
+            "description": "In intermediate collection process. True/false values."
+          },          
+          "isDefaulted": {
+            "type": "boolean",
+            "description": "The card is defaulted. True/false values."
+          },
+          "cardStatus": {
+            "type": "string",
+            "description": "The status of the card."
+          },  
+          "panId": {
+             "type": "string",
+             "description": "Unique ID of card from Issuer"                  
+          }                             
+        }        
+      }                        
+  - creditCardTransactionCollection: |
+      {
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "type": "object",
+        "properties": {                          
+
+          "paging": {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "description": "Contains information on paging on the transaction overview.",
+            "required": true,
+            "properties": {
+              "totalPages": {
+                "type": "integer",
+                "description": "Total pages"
+              },                                                                    
+              "totalRecords": {
+                "type": "integer",
+                "description": "Total number of transactions during period"
+              }
+            }
+          },
+                    
+          "transaction": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cardId": {
+                    "type": "integer",
+                    "description": "Unique card number"
+                  },
+                  "panId": {
+                    "type": "string",
+                    "description": "Unique card number from Issuer"
+                  },                
+                  "transactionDate": {
+                    "type": "string",
+                    "description": "Transaction date"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "Domestic amount"
+                  },
+                  "currencyCode": {
+                    "type": "string",
+                    "description": "Currency, e.g. ISK, SEK, GBP, USD"
+                  },
+                  "transactionId": {
+                    "type": "string",
+                    "description": "Transaction number from systems at Borgun and Valitor"
+                  },
+                  "dueDate": {
+                    "type": "string",
+                    "description": "Due date yyyymm, e.g. 201106. In which period transaction was made"
+                  },
+                  "transactionKey": {
+                    "type": "string",
+                    "description": "Transaction key description, description e.g. fee for printed bills, money withdrawals, automatic debits"
+                  },                  
+                  "authorizationNumber": {
+                    "type": "string",
+                    "description": "Authorization number."
+                  },
+                  "icelandairLoyaltyClubTransaction": {
+                    "type": "integer",
+                    "description": "Icelandair Loyalty Club Transaction e.g. 81, 187, 17, 9"
+                  },
+                  "issuerBranch": {
+                    "type": "string",
+                    "description": "Issuer branch, e.g. 0301"
+                  },
+                  "merchantName": {
+                    "type": "string",
+                    "description": "Name of merchant, e.g. SOS BARNAÞORP Skeljungur - 302 Hagkaup, Skeifan VÍNBÚÐIN HEIÐRÚN"
+                  },
+                  "merchantCity": {
+                    "type": "string",
+                    "description": "City of merchant , e.g. REYKJAVIK, KOPAVOGUR, LONDON PADDIN, TÁLKNAFJÖRÐDUR"
+                  },
+                  "merchantCountryCode": {
+                    "type": "string",
+                    "description": "Merchant country code, e.g. IS, GB, US, SE"
+                  },
+                  "processingDate": {
+                    "type": "string",
+                    "description": "Processing date yyyymmdd, e.g. 20151231. When the transaction was processed"
+                  }                   
+                }
+              }
+            }
+          }
+        }      
+
+/creditCards:
+    securedBy: [ oauth_2_0 ]
+    is: [ subscribable, searchable ]
+    displayName: CreditCards
+    description: Provides an overview of credit cards
+    get:     
+      description: Provides an overview of credit cards. It provides information on cards where the logged-in user is a cardholder or owner of a card, provided that user is entitled to see the credit card. It shows information on cards in active use and cards in the legal collection process. It does not show amounts on cards in the legal collection process as collection costs are not included in the balance. In such cases null is returned in the field for amounts
+      responses:
+        200:
+          body:
+              application/json:
+                schema: creditCardCollection
+                example: |
+                  {
+                    "totalCount": 2,
+                    "creditCard": [
+                      {
+                        "cardOwnerName": "Gunnar á hlíðarenda",
+                        "cardHolderName": "Hallgerður Höskuldsdóttir",
+                        "cardId": 1234,
+                        "cardOwnerKennitala": "1234567890",
+                        "cardHolderKennitala": "2234567890",
+                        "amountDue": -8000,
+                        "balance": -10000,
+                        "active": true,
+                        "lastYearTurnover": 0,
+                        "cardType": "string",
+                        "cardBrand": "string",
+                        "cardRole": "string",
+                        "bankNumber": "string",
+                        "issueDate": "string",
+                        "expiryDate": "string",
+                        "limit": 0,
+                        "cardNumber": "string",
+                        "currentYearTurnover": 0,
+                        "availableBalance": 0,
+                      }
+                    ]
+                  }
+    /{cardId}:
+        securedBy: [ oauth_2_0 ]
+        is: [ subscribable, searchable ]
+        displayName: Creditcard Details
+        description:  Provides detailed information on individual cards.
+        get:
+          description:  Provides detailed information on individual cards. The logged in user has to be a cardholder or the owner of a card and also have permission to see the card. It does not show amounts on cards in the legal collection process as collection costs are not included in the balance. In such cases null is returned in the field for amounts.
+          responses:
+            200:
+              body:
+                  application/json:
+                    schema: creditCardDetail
+                    example: |
+                      {                        
+                        "cardOwnerName": "Gunnar á hlíðarenda",
+                        "cardHolderName": "Hallgerður Höskuldsdóttir",
+                        "cardId": 1234,
+                        "cardOwnerKennitala": "1234567890",
+                        "cardHolderKennitala": "2234567890",
+                        "amountDue": -8000,
+                        "balance": -10000,
+                        "active": true,
+                        "lastYearTurnover": 0,
+                        "cardType": "string",
+                        "cardBrand": "string",
+                        "cardRole": "string",
+                        "bankNumber": "string",
+                        "issueDate": "string",
+                        "expiryDate": "string",
+                        "limit": 0,
+                        "cardNumber": "string",
+                        "currentYearTurnover": 0,
+                        "availableBalance": 0,
+                        "creditLimit": 0,
+                        "issuer": "string",
+                        "chargeBranch": "string",
+                        "chargeLedger": "string",
+                        "chargeAccount": "string",
+                        "minPaymentAmount": 0,
+                        "authorizationLimitValidTo": "string",
+                        "augmentedAuthorizationLimit": 0,
+                        "augmentedAuthorizationLimitExpiration": "string",
+                        "icelandairLoyaltyClub": true,
+                        "paymentMethod": true,
+                        "paymentDueDate": "string",
+                        "lastPaymentDate": "string",
+                        "declineBillingStatement": true,
+                        "inCollection": true,
+                        "olderDebtAmount": 0,
+                        "penaltyInterestBase": 0,
+                        "lastDueAmount": 0,
+                        "billingStatementInDefaultNr": 0,
+                        "duePenaltyInterest": 0,
+                        "penaltyInterestCurrentPeriod": 0,
+                        "transactionAmountCurrentPeriod": 0,
+                        "cardPaymentDistributionLoanRemainingBalance": 0,
+                        "lightCardInstallmentLoanRemainingBalance": 0,
+                        "isPrepaid": true,
+                        "isPrePaidBalance": true,
+                        "cardTypeDescription": "string",
+                        "oldestDefaultDate": "string",
+                        "authorizationLimit": 0    
+                      }                   
+        /creditCardTransactions:          
+          securedBy: [ oauth_2_0 ]
+          is: [ subscribable, date_searchable, pageable ]
+          displayName: Creditcard Transactions
+          description: Provides an overview of credit card transactions.It is not permitted to get all transactions at once. Instead you have to define page number and transactions per page.
+          get:     
+            description: Allows the user to view the transactions on a card performed during a specific period. The logged-in user has to be a cardholder or the owner of a card and also have permission to see the card. It is possible to get the data by defining page number and page size.
+            responses:
+              200:
+                body:
+                    application/json:
+                      schema: creditCardTransactionCollection
+                      example: |
+                        {
+                          "totalCount": 2,
+                          "transaction": [
+                            {
+                              "cardId": 1234,
+                              "panId": 3456,                              
+                              "transactionDate": "2015-31-12",
+                              "amount": 280,
+                              "currencyCode": "ISK",
+                              "transactionId": "456",
+                              "dueDate": "2016-31-12",
+                              "transactionKey": "TEST",
+                              "authorizationNumber": "223344",
+                              "icelandairLoyaltyClubTransaction": 0,
+                              "issuerBranch": "0301",
+                              "merchantName": "HAGKAUP",
+                              "merchantCity": "REYKJAVIK",
+                              "merchantCountryCode": "IS",
+                              "isEcardTransaction": false
+                            }
+                          ]
+                        }

@@ -1,0 +1,3443 @@
+﻿<!DOCTYPE HTML><html><head><title>Claims API - Arion banki Fintech Party API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/kevinrenskers/raml2html 2.4.0"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          try {
+            if (history && history.replaceState) {
+                history.replaceState({}, '', '#');
+            }
+          } catch(e) {}
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Claims API - Arion banki Fintech Party API documentation <small>version v1</small></h1><p>https://arionapi-sandbox.azure-api.net/claims/v1</p><h3 id="Um-Claims---Innheimtukr-fur"><a href="#Um-Claims---Innheimtukr-fur">Um Claims - Innheimtukröfur</a></h3><p>Undir þessari <a href="/" title="e. resource, gæti verið þýtt is. auðlind\viðfang">þjónustu</a> er að vinna með innheimtukröfur innskráður notandi sem kröfuhafi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram. Þess utan uppfærir notandi gögnin með eigin aðgerðum og halda þau sér milli innskráninga.</p><p>Upplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka og B2B lausnir Arion banka og er því ekki í boðið að vinna með auðkenni, kröfustofna eða aðgerðir félagaþjónustu sem stendur.</p><p>Hér má skoða mun ítarlegri <a href="https://rawgit.com/kristinnstefansson/intechParty201606Documentation/master/Claims/Claims.html" title="sjá Claims.html">html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.</p><h3 id="-ryggi"><a href="#-ryggi">Öryggi</a></h3><p>Köll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.</p><p>Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar og sleppa eða jafnvel maska svæði eftir því hvað passar tengt þjónustuveitendum.</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="claims" class="panel-title">Claims</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_claims"><span class="parent"></span>/claims</a> <span class="methods"><a href="#claims_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#claims_post"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_claims" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#claims_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Returnes a list of claims belonging to the claimant used to make the API request.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#claims_post'" class="list-group-item"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Create a new claim.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="claims_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/claims</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returnes a list of claims belonging to the claimant used to make the API request.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_2_0<p>OAuth2 is a protocol that lets external apps request authorization to private details in a user&#39;s financial data.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#claims_get_request" data-toggle="tab">Request</a></li><li><a href="#claims_get_response" data-toggle="tab">Response</a></li><li><a href="#claims_get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="claims_get_request"><h3>Headers</h3><ul><li><strong>Ocp-Apim-Subscription-Key</strong>: <em>(string)</em><p>Used to send a valid subscription key.</p></li></ul><h3>Query Parameters</h3><ul><li><strong>page</strong>: <em>(integer - default: 1 - minimum: 1)</em><p>The page parameter defines the page number of the result set to return the data. For example, if your query returns 500 records, you can specify pageCount as 50 to return 50 records in a page, which implies that you’ll have 10 pages of data (50 records * 10 pages = 500). Now, if you want to return records 100-150, specify the page value as 3</p><p><strong>Example</strong>:</p><pre><code>1</code></pre></li><li><strong>perPage</strong>: <em>(integer - default: 10 - maximum: 500)</em><p>The perPage parameter defines the number of records to return per page.</p><p><strong>Example</strong>:</p><pre><code>10</code></pre></li><li><strong>Claimant's kennitala</strong>: <em>(string)</em><p>The kennitala of the claimant whose data is being queried. If empty, data will be returned for all claimants linked to the authenticated user.</p><p><strong>Example</strong>:</p><pre>6606129980</pre></li><li><strong>Identifier</strong>: <em>(string)</em><p>The unique identifier of the claimant used to filter the query. If empty, data will be returned for all identifiers.</p><p><strong>Example</strong>:</p><pre>100</pre></li><li><strong>Payor's kennitala</strong>: <em>(string)</em><p>Payor&#39;s kennitala.</p><p><strong>Example</strong>:</p><pre>6606129980</pre></li><li><strong>Claim status.</strong>: <em>(one of unpaid, paid, cancelled, invalid)</em><p>Status of the claim.</p></li><li><strong>Claim state.</strong>: <em>(one of primary, secondary, legal)</em><p>State of the claim. Indicates the collections state the claim is in.</p></li><li><strong>Reference date.</strong>: <em>(one of duedate, finalduedate, cancellationdate, creationdate)</em><p>Reference date for the datespan of the query.</p></li><li><strong>Date from</strong>: <em>(string)</em><p>Date from inclusive.</p><p><strong>Example</strong>:</p><pre>Sun Jan 31 2016 00:00:00 GMT+0000 (Greenwich Standard Time)</pre></li><li><strong>Date to</strong>: <em>(string)</em><p>Date to inclusive.</p><p><strong>Example</strong>:</p><pre>Sun Jan 31 2016 00:00:00 GMT+0000 (Greenwich Standard Time)</pre></li></ul></div><div class="tab-pane" id="claims_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "type": "object",
+  "properties": {
+    "paging": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-03/schema",
+      "description": "Contains information on paging on the claim overview.",
+      "required": true,
+      "properties": {
+        "totalPages": {
+          "type": "integer",
+          "description": "Total pages"
+        },                                                                    
+        "totalRecords": {
+          "type": "integer",
+          "description": "Total number of claims during period"
+        }
+      }
+    },
+    "claim": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claimID": {
+            "type": "string",
+            "required": true,
+            "comment": "Einkvæmt númer kröfu.",
+            "description": "The ID of the claim. Consists of claimantKennitala + dueDate + account. e.g. 660612998020160414032366000001"
+          },
+          "claimKey": {
+            "type": "object",
+            "properties": {
+              "claimantKennitala": {
+                "type": "string",
+                "required": true,
+                "comment": "Kennitala þess kröfuhafa sem verið er að fletta gögnum upp fyrir. Innskráður notandi þarf að hafa heimildir til að vinna með tiltekinn kröfuhafa.",
+                "description": "Claimant&#39;s kennitala."
+              },
+              "account": {
+                "type": "string",
+                "required": true,
+                "comment": "Bankanúmer, höfuðbók (66) og númer innheimtukröfu",
+                "description": "The branch number of the claim, ledger number (66) and number of claim. "
+              },
+              "dueDate": {
+                "type": "string",
+                "required": true,
+                "comment": "Gjalddagi innheimtukröfu",
+                "description": "Due date of the claim."
+              }
+            }
+          },
+          "payorKennitala": {
+            "type": "string",
+            "required": true,
+            "comment": "Kennitala kröfugreiðanda",
+            "description": "Payor&#39;s kennitala."
+          },
+          "cancellationDate": {
+            "type": "string",
+            "required": true,
+            "comment": "Niðurfellingardagur innheimtukröfu. Má ekki vera sami dagur og gjalddagi eða eindagi.",
+            "description": "Date of cancellation, how long should the claim be valid in the system."
+          },
+          "identifier": {
+            "type": "string",
+            "required": true,
+            "comment": "Þriggja stafa auðkenni kröfuhafa segir til um inn á hvaða bankareikning krafan greiðist. Kröfuhafar nota auðkenni t.d. til að stýra greiðsluflæði inná mismunandi reikninga eftir mismunandi þjónustu.",
+            "description": "Three letter unique identifier of the claimant that the claim relates to. Indicates which of claimant&#39;s accounts the system should use. e.g. 001"
+          },
+          "amount": {
+            "type": "string",
+            "required": true,
+            "comment": "Upphæð innheimtukröfu. Ekki hægt að breyta svæðinu ef greitt hefur verið inn á kröfuna.",
+            "description": "Amount of claim. Can&#39;t be changed after a partial payment has been made."
+          },
+          "reference": {
+            "type": "string",
+            "required": true,
+            "comment": "Tilvísunarnúmer ákveðið af kröfuhafa. Má vera tölu- og bókstafir, 16 stafa langt að hámarki.",
+            "description": "Refence determined by claimant. Alphanumeric, maximum 16 letters."
+          },
+          "finalDueDate": {
+            "type": "string",
+            "required": true,
+            "comment": "Eindagi innheimtukröfu.",
+            "description": "Final due date of claim."
+          },
+          "status":
+          {
+            "enum": ["unpaid", "paid", "cancelled", "invalid"],
+            "required": false,
+            "description": "Status of the claim."
+          },
+          "state":
+          {
+            "enum": ["primary", "secondary", "legal"],
+            "required": "false",
+            "description": "State of the claim. Indicates the collections state the claim is in."
+          },
+          "billNumber": {
+            "type": "string",
+            "required": true,
+            "comment": "Seðilnúmer, valkvætt. Upplýsingar settar af kröfuhafa.",
+            "description": "Billnumber, optional. Information provided by claimant."
+          },
+          "customerNumber": {
+            "type": "string",
+            "required": true,
+            "comment": "Viðskiptanúmer greiðanda. Einkvæmur lykill greiðanda kröfunnar hjá kröfuhafa. Nauðsynlegur ef hægt á að vera að stofna beingreiðslusamning tengdan innheimtukröfu.",
+            "description": "Customer number, optional key used by claimant to identify payor. Necessary if payor is to be able to enable automotic debiting of claims."
+          },
+          "noticeAndPaymentFee": {
+            "type": "object",
+            "required": false,
+            "comment": "Upplýsingar um gjald fyrir útreikning og útskrift greiðsluseðils ásamt sendingu hans til greiðanda",
+            "description": "Charge for calculation and printout of payment slip and sending to payer.",
+            "properties": {
+              "printing": {
+                "type": "number",
+                "required": true,
+                "comment": "Gjald fyrir prentun og póstlagningu",
+                "description": "Charge used if claim is printed."
+              },
+              "paperless": {
+                "type": "number",
+                "required": true,
+                "comment": "Gjald ef ekki er prentað og póstlagt",
+                "description": "Charge used if claim is not printed."
+              }
+            }
+          },
+          "defaultCharge": {
+            "type": "object",
+            "required": false,
+            "comment": "DefaultCharge inniheldur upplýsingar um vanskilagjald, annað hvort í fastri upphæð eða prósentum. Athugið að upphæðin þarf að vera innan þeirra reglna sem gilda skv. reglugerð 37/2009.",
+            "description": "Default charge that claims incur when they default, either a percentage or fixed amount",
+            "properties": {
+              "firstDefaultCharge": {
+                "type": "object",
+                "required": true,
+                "comment": "Fyrra vanskilagjald",
+                "description": "First default charge.",
+                "properties": {
+                  "days": {
+                    "type": "number",
+                    "required": true,
+                    "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+                    "description": "Indicates the number of days relative to reference date when rule takes effect."
+                  },
+                  "value": {
+                    "type": "number",
+                    "required": true,
+                    "comment": "Upphæð eða prósenta.",
+                    "description": "Amount or percentage of default charge."
+                  }
+                }
+              },
+              "secondDefaultCharge": {
+                "type": "object",
+                "required": true,
+                "comment": "Seinna vanskilagjald",
+                "description": "Second default charge.",
+                "properties": {
+                  "days": {
+                    "type": "number",
+                    "required": true,
+                    "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+                    "description": "Indicates the count of days relative to reference date when rule takes effect."
+                  },
+                  "value": {
+                    "type": "number",
+                    "required": true,
+                    "comment": "Upphæð eða prósenta.",
+                    "description": "Amount or percentage of default charge."
+                  }
+                }
+              },
+              "referenceDate": {
+                "enum": ["dueDate","finalDueDate"],
+                "required": true,
+                "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+                "description": "Indicates which date is used as basis for calculation."
+              }
+            }
+          },
+          "otherCosts": {
+            "type": "number",
+            "required": false,
+            "comment": "Annar kostnaður, fyrir sérákvörðuð gjöld sem greidd eru af greiðanda innheimtukröfu.",
+            "description": "Other cost, for special charges to be paid by the payer of the claim."
+          },
+          "otherDefaultCosts": {
+            "type": "number",
+            "required": false,
+            "comment": "Fyrir sérákvörðuð gjöld, t.d. milliinnheimtugjald.",
+            "description": "For special charges, e.g. secondary collection charge, to be paid by the payer of the claim."
+          },
+          "defaultInterest": {
+            "type": "object",
+            "required": false,
+            "comment": "Upplýsingar um hvernig dráttarvextir eru reiknaðir",
+            "description": "Rule for calculating default interest.",
+            "properties": {
+              "defaultInterestRule": {
+                "enum": [ "noDefaultInterest", "defaultInterestAmount", "defaultInterestAmountAndDefaultCharge" ],
+                "required": true,
+                "comment": "Segir til um hvort dráttarvextir skuli reiknast eftir viðmiðunardag og ef svo, þá hverning. noDefaultInterest = Engir dráttavextir skulu vera á kröfu. defaultInterestAmount = Segir til um að dráttarvextir reiknast út frá upphæð kröfu. defaultInterestAmountAndDefaultCharge = Segir til um hvort dráttarvextir reiknast út frá upphæð kröfu.",
+                "description": "Determines if the claim should incur default interests after the reference date and if so, how it should be calculated. noDefaultInterest = No default interest. defaultInterestAmount = Default interests are calculations are based on claim amount. defaultInterestAmountAndDefaultCharge = Default interests are calculations are based on claim amount and default charge."
+              },
+              "percentage": {
+                "type": "number",
+                "required": true,
+                "comment": "Segir til um prósentu dráttarvaxta, má ekki vera hærra en hæsta leyfilega dráttarvaxtaprósenta Seðlabankans. Ef dráttarvaxtaregla tilgreinir að dráttarvextir eigi að reiknast og þetta gildi er ekki tilgreint, eru hæstu leyfilegu dráttarvextir Seðlabankans notaðir sjálfkrafa.",
+                "description": "If used, default interest on a claim is calculated based on this percentage and not on the default interest period, as in the case of Central Bank default interest. Not specifying the percentage ensures that the Central Bank default interest is used, and interest is compounded every twelve months, i.e. the default interest is added to the principal."
+              },
+              "specialCode": {
+                "type": "string",
+                "required": false,
+                "comment": "Til að setja tiltekin gildi á kröfu þarf að senda inn gildi sem eru í samræmi við dráttavaxtareglur RB. Frekari upplýsingar er að finna í skjölun RB.",
+                "description": "Sending in a special code is the only way to set certain interest rules that map to RB Penalty interest rules. Further documentation can be found in RB documentation."
+              }
+            }
+          },
+          "currencyInformation": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "comment": "Notist ef innheimtukrafa er í erlendri mynt.",
+            "description": "For claims which are linked to a foreign currency.",
+            "properties": {
+              "currencyInformationReferenceRate": {
+                "enum": ["exchangeRate", "noteRate", "centralBankMidRate", "centralBankStatutoryRate"]
+              },
+              "currency": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "currencyInformationPaymentRate": {
+                "enum": ["dueDateRate", "paymentDateRate"]
+              }
+            }
+          },
+          "permitOutOfSequencePayment": {
+            "type": "boolean",
+            "required": false,
+            "comment": "Greiðsluregla, segir til um hvort megi greiða innheimtukröfu sem á ógreidda eldri gjalddaga.",
+            "description": "Payment of claim allowed if earlier due date is unpaid."
+          },
+          "discount": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "comment": "Afsláttur er gefin upp annaðhvort í prósentum eða sem föst upphæð.",
+            "description": "Two amount or percentage fields can be attached to a claim base, the first and second discount, which are used to reduce the payment if made before a fixed date.",
+            "properties": {
+              "isPostRefDate": {
+                "type": "boolean",
+                "comment": "Segir til um hvort uppgefinn dagafjöldi er fyrir eða eftir viðmiðunardag.",
+                "description": "Indicates whether number of days is before or after reference date."
+              },
+              "firstDiscount": {
+                "type": "object",
+                "required": true,
+                "comment": "Fyrri afsláttur",
+                "description": "First discount",
+                "properties": {
+                  "days": {
+                    "type": "number",
+                    "required": true,
+                    "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+                    "description": "Indicates the count of days relative to reference date when rule takes effect."
+                  },
+                  "amount": {
+                    "type": "number",
+                    "required": true,
+                    "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+                    "description": "Base for discount or default charge."
+                  }
+                }
+              },
+              "secondDiscount": {
+                "type": "object",
+                "required": true,
+                "comment": "Seinna vanskilagjald",
+                "description": "Second discount.",
+                "properties": {
+                  "days": {
+                    "type": "number",
+                    "required": true,
+                    "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+                    "description": "Indicates the count of days relative to reference date when rule takes effect."
+                  },
+                  "amount": {
+                    "type": "number",
+                    "required": true,
+                    "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+                    "description": "Base for discount or default charge."
+                  }
+                }
+              },
+              "referenceDate": {
+                "type": "integer",
+                "required": true,
+                "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+                "description": "Indicates which date is used as basis for calculation.",
+                "enum": ["dueDate","finalDueDate"]
+              }
+            }
+          },
+          "isPartialPaymentAllowed": {
+            "type": "boolean",
+            "reqired": false,
+            "comment": "Segir til um hvort greiða megi inn á innheimtukröfu eða ekki.",
+            "description": "Indicates whether partial payment is permitted."
+          },
+          "billPresentmentSystem": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": false,
+            "description": "Indicates the bill presentment system to which the claim pertains.",
+            "properties": {
+              "type": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Which bill presentment system."
+              },
+              "parameters": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Parameters and values needed to display a unique document from a bill presentment system. (URL style)"
+              }
+            }
+          },
+          "printing": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Contains information used for displaying and printing the claim. Changing this info on a claim that has already been created will not result in it being printed again.",
+            "properties": {
+              "claimantAddress": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": true,
+                "description": "Alternate address for claimant if address from the National Register should not be used.",
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "Name of resident/recipient."
+                  },
+                  "addressLine1": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "First part of address."
+                  },
+                  "addressLine2": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "First part of address."
+                  },
+                  "postalCode": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "Postal code."
+                  },
+                  "city": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "Place of residence, be it city, town, etc."
+                  },
+                  "region": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "The country region where the person lives."
+                  },
+                  "country": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "Country."
+                  }
+                }
+              },
+              "payorAddress": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": true,
+                "description": "Alternate address for payor if address from the National Register should not be used.",
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "Name of resident/recipient."
+                  },
+                  "addressLine1": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "First part of address."
+                  },
+                  "addressLine2": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "First part of address."
+                  },
+                  "postalCode": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "Postal code."
+                  },
+                  "city": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "Place of residence, be it city, town, etc."
+                  },
+                  "region": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "The country region where the person lives."
+                  },
+                  "country": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "required": true,
+                    "description": "Country."
+                  }
+                }
+              },
+              "itemRows": {
+                "type": "object",
+                "required": false,
+                "description": "Breakdown of items that a claim consists of.",
+                "properties": {
+                  "itemRow": {
+                    "type": "array",
+                    "description": "Breakdown items that a claim consists of.",
+                    "items": {
+                      "type": "object",
+                      "description": "A sub-item of a claim, used for printing.",
+                      "properties": {
+                        "text": {
+                          "type": "string",
+                          "description": "Item text."
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "The amount of the item."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "comments": {
+                "type": "array",
+                "description": "Comments that are displayed on the lower half of the payment slip.",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "TotalCount": 2,
+   "Claim": [
+     {
+       "AccountID": "039926011462",
+       "Overdraft": 0,
+       "Balance": 299,
+       "AvailableAmount": 299,
+       "TotalAmountWaiting": 0,
+       "AccountOwnerID": "1725704905",
+       "CustomAccountName": "Félag áhugamanna um heimabanka",
+       "Id": 1
+     }
+   ]
+ }
+</code></pre></div><div class="tab-pane" id="claims_get_securedby">Secured by oauth_2_0<h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>(string)</em><p>Used to send a valid OAuth 2 access token.</p></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Unauthorized</p></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="claims_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/claims</h4></div><div class="modal-body"><div class="alert alert-info"><p>Create a new claim.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_2_0<p>OAuth2 is a protocol that lets external apps request authorization to private details in a user&#39;s financial data.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#claims_post_request" data-toggle="tab">Request</a></li><li><a href="#claims_post_response" data-toggle="tab">Response</a></li><li><a href="#claims_post_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="claims_post_request"><h3>Headers</h3><ul><li><strong>Ocp-Apim-Subscription-Key</strong>: <em>(string)</em><p>Used to send a valid subscription key.</p></li></ul><h3>Query Parameters</h3><ul><li><strong>page</strong>: <em>(integer - default: 1 - minimum: 1)</em><p>The page parameter defines the page number of the result set to return the data. For example, if your query returns 500 records, you can specify pageCount as 50 to return 50 records in a page, which implies that you’ll have 10 pages of data (50 records * 10 pages = 500). Now, if you want to return records 100-150, specify the page value as 3</p><p><strong>Example</strong>:</p><pre><code>1</code></pre></li><li><strong>perPage</strong>: <em>(integer - default: 10 - maximum: 500)</em><p>The perPage parameter defines the number of records to return per page.</p><p><strong>Example</strong>:</p><pre><code>10</code></pre></li></ul><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "id": "http://jsonschema.net",
+  "comment": "Krafa",
+  "description": "Claim",
+  "required": true,
+  "properties": {
+    "claimID": {
+      "type": "string",
+      "required": true,
+      "comment": "Einkvæmt númer kröfu.",
+      "description": "The ID of the claim. Consists of claimantKennitala + dueDate + account. e.g. 660612998020160414032366000001"
+    },
+    "claimKey": {
+      "type": "object",
+      "properties": {
+        "claimantKennitala": {
+          "type": "string",
+          "required": true,
+          "comment": "Kennitala þess kröfuhafa sem verið er að fletta gögnum upp fyrir. Innskráður notandi þarf að hafa heimildir til að vinna með tiltekinn kröfuhafa.",
+          "description": "Claimant&#39;s kennitala."
+        },
+        "account": {
+          "type": "string",
+          "required": true,
+          "comment": "Bankanúmer, höfuðbók (66) og númer innheimtukröfu",
+          "description": "The branch number of the claim, ledger number (66) and number of claim. "
+        },
+        "dueDate": {
+          "type": "string",
+          "required": true,
+          "comment": "Gjalddagi innheimtukröfu",
+          "description": "Due date of the claim."
+        }
+      }
+    },
+    "payorKennitala": {
+      "type": "string",
+      "required": true,
+      "comment": "Kennitala kröfugreiðanda",
+      "description": "Payor&#39;s kennitala."
+    },
+    "cancellationDate": {
+      "type": "string",
+      "required": true,
+      "comment": "Niðurfellingardagur innheimtukröfu. Má ekki vera sami dagur og gjalddagi eða eindagi.",
+      "description": "Date of cancellation, how long should the claim be valid in the system."
+    },
+    "identifier": {
+      "type": "string",
+      "required": true,
+      "comment": "Þriggja stafa auðkenni kröfuhafa segir til um inn á hvaða bankareikning krafan greiðist. Kröfuhafar nota auðkenni t.d. til að stýra greiðsluflæði inná mismunandi reikninga eftir mismunandi þjónustu.",
+      "description": "Three letter unique identifier of the claimant that the claim relates to. Indicates which of claimant&#39;s accounts the system should use. e.g. 001"
+    },
+    "amount": {
+      "type": "string",
+      "required": true,
+      "comment": "Upphæð innheimtukröfu. Ekki hægt að breyta svæðinu ef greitt hefur verið inn á kröfuna.",
+      "description": "Amount of claim. Can&#39;t be changed after a partial payment has been made."
+    },
+    "reference": {
+      "type": "string",
+      "required": true,
+      "comment": "Tilvísunarnúmer ákveðið af kröfuhafa. Má vera tölu- og bókstafir, 16 stafa langt að hámarki.",
+      "description": "Refence determined by claimant. Alphanumeric, maximum 16 letters."
+    },
+    "finalDueDate": {
+      "type": "string",
+      "required": true,
+      "comment": "Eindagi innheimtukröfu.",
+      "description": "Final due date of claim."
+    },
+    "status":
+    {
+      "enum": ["unpaid", "paid", "cancelled", "invalid"],
+      "required": false,
+      "description": "Status of the claim."
+    },
+    "state":
+    {
+      "enum": ["primary", "secondary", "legal"],
+      "required": "false",
+      "description": "State of the claim. Indicates the collections state the claim is in."
+    },
+    "billNumber": {
+      "type": "string",
+      "required": true,
+      "comment": "Seðilnúmer, valkvætt. Upplýsingar settar af kröfuhafa.",
+      "description": "Billnumber, optional. Information provided by claimant."
+    },
+    "customerNumber": {
+      "type": "string",
+      "required": true,
+      "comment": "Viðskiptanúmer greiðanda. Einkvæmur lykill greiðanda kröfunnar hjá kröfuhafa. Nauðsynlegur ef hægt á að vera að stofna beingreiðslusamning tengdan innheimtukröfu.",
+      "description": "Customer number, optional key used by claimant to identify payor. Necessary if payor is to be able to enable automotic debiting of claims."
+    },
+    "noticeAndPaymentFee": {
+      "type": "object",
+      "required": false,
+      "comment": "Upplýsingar um gjald fyrir útreikning og útskrift greiðsluseðils ásamt sendingu hans til greiðanda",
+      "description": "Charge for calculation and printout of payment slip and sending to payer.",
+      "properties": {
+        "printing": {
+          "type": "number",
+          "required": true,
+          "comment": "Gjald fyrir prentun og póstlagningu",
+          "description": "Charge used if claim is printed."
+        },
+        "paperless": {
+          "type": "number",
+          "required": true,
+          "comment": "Gjald ef ekki er prentað og póstlagt",
+          "description": "Charge used if claim is not printed."
+        }
+      }
+    },
+    "defaultCharge": {
+      "type": "object",
+      "required": false,
+      "comment": "DefaultCharge inniheldur upplýsingar um vanskilagjald, annað hvort í fastri upphæð eða prósentum. Athugið að upphæðin þarf að vera innan þeirra reglna sem gilda skv. reglugerð 37/2009.",
+      "description": "Default charge that claims incur when they default, either a percentage or fixed amount",
+      "properties": {
+        "firstDefaultCharge": {
+          "type": "object",
+          "required": true,
+          "comment": "Fyrra vanskilagjald",
+          "description": "First default charge.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the number of days relative to reference date when rule takes effect."
+            },
+            "value": {
+              "type": "number",
+              "required": true,
+              "comment": "Upphæð eða prósenta.",
+              "description": "Amount or percentage of default charge."
+            }
+          }
+        },
+        "secondDefaultCharge": {
+          "type": "object",
+          "required": true,
+          "comment": "Seinna vanskilagjald",
+          "description": "Second default charge.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "value": {
+              "type": "number",
+              "required": true,
+              "comment": "Upphæð eða prósenta.",
+              "description": "Amount or percentage of default charge."
+            }
+          }
+        },
+        "referenceDate": {
+          "enum": ["dueDate","finalDueDate"],
+          "required": true,
+          "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+          "description": "Indicates which date is used as basis for calculation."
+        }
+      }
+    },
+    "otherCosts": {
+      "type": "number",
+      "required": false,
+      "comment": "Annar kostnaður, fyrir sérákvörðuð gjöld sem greidd eru af greiðanda innheimtukröfu.",
+      "description": "Other cost, for special charges to be paid by the payer of the claim."
+    },
+    "otherDefaultCosts": {
+      "type": "number",
+      "required": false,
+      "comment": "Fyrir sérákvörðuð gjöld, t.d. milliinnheimtugjald.",
+      "description": "For special charges, e.g. secondary collection charge, to be paid by the payer of the claim."
+    },
+    "defaultInterest": {
+      "type": "object",
+      "required": false,
+      "comment": "Upplýsingar um hvernig dráttarvextir eru reiknaðir",
+      "description": "Rule for calculating default interest.",
+      "properties": {
+        "defaultInterestRule": {
+          "enum": [ "noDefaultInterest", "defaultInterestAmount", "defaultInterestAmountAndDefaultCharge" ],
+          "required": true,
+          "comment": "Segir til um hvort dráttarvextir skuli reiknast eftir viðmiðunardag og ef svo, þá hverning. noDefaultInterest = Engir dráttavextir skulu vera á kröfu. defaultInterestAmount = Segir til um að dráttarvextir reiknast út frá upphæð kröfu. defaultInterestAmountAndDefaultCharge = Segir til um hvort dráttarvextir reiknast út frá upphæð kröfu.",
+          "description": "Determines if the claim should incur default interests after the reference date and if so, how it should be calculated. noDefaultInterest = No default interest. defaultInterestAmount = Default interests are calculations are based on claim amount. defaultInterestAmountAndDefaultCharge = Default interests are calculations are based on claim amount and default charge."
+        },
+        "percentage": {
+          "type": "number",
+          "required": true,
+          "comment": "Segir til um prósentu dráttarvaxta, má ekki vera hærra en hæsta leyfilega dráttarvaxtaprósenta Seðlabankans. Ef dráttarvaxtaregla tilgreinir að dráttarvextir eigi að reiknast og þetta gildi er ekki tilgreint, eru hæstu leyfilegu dráttarvextir Seðlabankans notaðir sjálfkrafa.",
+          "description": "If used, default interest on a claim is calculated based on this percentage and not on the default interest period, as in the case of Central Bank default interest. Not specifying the percentage ensures that the Central Bank default interest is used, and interest is compounded every twelve months, i.e. the default interest is added to the principal."
+        },
+        "specialCode": {
+          "type": "string",
+          "required": false,
+          "comment": "Til að setja tiltekin gildi á kröfu þarf að senda inn gildi sem eru í samræmi við dráttavaxtareglur RB. Frekari upplýsingar er að finna í skjölun RB.",
+          "description": "Sending in a special code is the only way to set certain interest rules that map to RB Penalty interest rules. Further documentation can be found in RB documentation."
+        }
+      }
+    },
+    "currencyInformation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "comment": "Notist ef innheimtukrafa er í erlendri mynt.",
+      "description": "For claims which are linked to a foreign currency.",
+      "properties": {
+        "currencyInformationReferenceRate": {
+          "enum": ["exchangeRate", "noteRate", "centralBankMidRate", "centralBankStatutoryRate"]
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "currencyInformationPaymentRate": {
+          "enum": ["dueDateRate", "paymentDateRate"]
+        }
+      }
+    },
+    "permitOutOfSequencePayment": {
+      "type": "boolean",
+      "required": false,
+      "comment": "Greiðsluregla, segir til um hvort megi greiða innheimtukröfu sem á ógreidda eldri gjalddaga.",
+      "description": "Payment of claim allowed if earlier due date is unpaid."
+    },
+    "discount": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "comment": "Afsláttur er gefin upp annaðhvort í prósentum eða sem föst upphæð.",
+      "description": "Two amount or percentage fields can be attached to a claim base, the first and second discount, which are used to reduce the payment if made before a fixed date.",
+      "properties": {
+        "isPostRefDate": {
+          "type": "boolean",
+          "comment": "Segir til um hvort uppgefinn dagafjöldi er fyrir eða eftir viðmiðunardag.",
+          "description": "Indicates whether number of days is before or after reference date."
+        },
+        "firstDiscount": {
+          "type": "object",
+          "required": true,
+          "comment": "Fyrri afsláttur",
+          "description": "First discount",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "amount": {
+              "type": "number",
+              "required": true,
+              "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+              "description": "Base for discount or default charge."
+            }
+          }
+        },
+        "secondDiscount": {
+          "type": "object",
+          "required": true,
+          "comment": "Seinna vanskilagjald",
+          "description": "Second discount.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "amount": {
+              "type": "number",
+              "required": true,
+              "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+              "description": "Base for discount or default charge."
+            }
+          }
+        },
+        "referenceDate": {
+          "type": "integer",
+          "required": true,
+          "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+          "description": "Indicates which date is used as basis for calculation.",
+          "enum": ["dueDate","finalDueDate"]
+        }
+      }
+    },
+    "isPartialPaymentAllowed": {
+      "type": "boolean",
+      "reqired": false,
+      "comment": "Segir til um hvort greiða megi inn á innheimtukröfu eða ekki.",
+      "description": "Indicates whether partial payment is permitted."
+    },
+    "billPresentmentSystem": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": false,
+      "description": "Indicates the bill presentment system to which the claim pertains.",
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Which bill presentment system."
+        },
+        "parameters": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Parameters and values needed to display a unique document from a bill presentment system. (URL style)"
+        }
+      }
+    },
+    "printing": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Contains information used for displaying and printing the claim. Changing this info on a claim that has already been created will not result in it being printed again.",
+      "properties": {
+        "claimantAddress": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": true,
+          "description": "Alternate address for claimant if address from the National Register should not be used.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Name of resident/recipient."
+            },
+            "addressLine1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "addressLine2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "postalCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Postal code."
+            },
+            "city": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Place of residence, be it city, town, etc."
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "The country region where the person lives."
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Country."
+            }
+          }
+        },
+        "payorAddress": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": true,
+          "description": "Alternate address for payor if address from the National Register should not be used.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Name of resident/recipient."
+            },
+            "addressLine1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "addressLine2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "postalCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Postal code."
+            },
+            "city": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Place of residence, be it city, town, etc."
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "The country region where the person lives."
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Country."
+            }
+          }
+        },
+        "itemRows": {
+          "type": "object",
+          "required": false,
+          "description": "Breakdown of items that a claim consists of.",
+          "properties": {
+            "itemRow": {
+              "type": "array",
+              "description": "Breakdown items that a claim consists of.",
+              "items": {
+                "type": "object",
+                "description": "A sub-item of a claim, used for printing.",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Item text."
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "The amount of the item."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "comments": {
+          "type": "array",
+          "description": "Comments that are displayed on the lower half of the payment slip.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}                    
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "ClaimId": "039926011462",
+  "Claimant": "6606129980",
+  "Account": "0323-66-000001",
+  "DueDate": "2016-04-14",
+  "PayorID": "6606129980",
+ }
+</code></pre></div><div class="tab-pane" id="claims_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "id": "http://jsonschema.net",
+  "comment": "Krafa",
+  "description": "Claim",
+  "required": true,
+  "properties": {
+    "claimID": {
+      "type": "string",
+      "required": true,
+      "comment": "Einkvæmt númer kröfu.",
+      "description": "The ID of the claim. Consists of claimantKennitala + dueDate + account. e.g. 660612998020160414032366000001"
+    },
+    "claimKey": {
+      "type": "object",
+      "properties": {
+        "claimantKennitala": {
+          "type": "string",
+          "required": true,
+          "comment": "Kennitala þess kröfuhafa sem verið er að fletta gögnum upp fyrir. Innskráður notandi þarf að hafa heimildir til að vinna með tiltekinn kröfuhafa.",
+          "description": "Claimant&#39;s kennitala."
+        },
+        "account": {
+          "type": "string",
+          "required": true,
+          "comment": "Bankanúmer, höfuðbók (66) og númer innheimtukröfu",
+          "description": "The branch number of the claim, ledger number (66) and number of claim. "
+        },
+        "dueDate": {
+          "type": "string",
+          "required": true,
+          "comment": "Gjalddagi innheimtukröfu",
+          "description": "Due date of the claim."
+        }
+      }
+    },
+    "payorKennitala": {
+      "type": "string",
+      "required": true,
+      "comment": "Kennitala kröfugreiðanda",
+      "description": "Payor&#39;s kennitala."
+    },
+    "cancellationDate": {
+      "type": "string",
+      "required": true,
+      "comment": "Niðurfellingardagur innheimtukröfu. Má ekki vera sami dagur og gjalddagi eða eindagi.",
+      "description": "Date of cancellation, how long should the claim be valid in the system."
+    },
+    "identifier": {
+      "type": "string",
+      "required": true,
+      "comment": "Þriggja stafa auðkenni kröfuhafa segir til um inn á hvaða bankareikning krafan greiðist. Kröfuhafar nota auðkenni t.d. til að stýra greiðsluflæði inná mismunandi reikninga eftir mismunandi þjónustu.",
+      "description": "Three letter unique identifier of the claimant that the claim relates to. Indicates which of claimant&#39;s accounts the system should use. e.g. 001"
+    },
+    "amount": {
+      "type": "string",
+      "required": true,
+      "comment": "Upphæð innheimtukröfu. Ekki hægt að breyta svæðinu ef greitt hefur verið inn á kröfuna.",
+      "description": "Amount of claim. Can&#39;t be changed after a partial payment has been made."
+    },
+    "reference": {
+      "type": "string",
+      "required": true,
+      "comment": "Tilvísunarnúmer ákveðið af kröfuhafa. Má vera tölu- og bókstafir, 16 stafa langt að hámarki.",
+      "description": "Refence determined by claimant. Alphanumeric, maximum 16 letters."
+    },
+    "finalDueDate": {
+      "type": "string",
+      "required": true,
+      "comment": "Eindagi innheimtukröfu.",
+      "description": "Final due date of claim."
+    },
+    "status":
+    {
+      "enum": ["unpaid", "paid", "cancelled", "invalid"],
+      "required": false,
+      "description": "Status of the claim."
+    },
+    "state":
+    {
+      "enum": ["primary", "secondary", "legal"],
+      "required": "false",
+      "description": "State of the claim. Indicates the collections state the claim is in."
+    },
+    "billNumber": {
+      "type": "string",
+      "required": true,
+      "comment": "Seðilnúmer, valkvætt. Upplýsingar settar af kröfuhafa.",
+      "description": "Billnumber, optional. Information provided by claimant."
+    },
+    "customerNumber": {
+      "type": "string",
+      "required": true,
+      "comment": "Viðskiptanúmer greiðanda. Einkvæmur lykill greiðanda kröfunnar hjá kröfuhafa. Nauðsynlegur ef hægt á að vera að stofna beingreiðslusamning tengdan innheimtukröfu.",
+      "description": "Customer number, optional key used by claimant to identify payor. Necessary if payor is to be able to enable automotic debiting of claims."
+    },
+    "noticeAndPaymentFee": {
+      "type": "object",
+      "required": false,
+      "comment": "Upplýsingar um gjald fyrir útreikning og útskrift greiðsluseðils ásamt sendingu hans til greiðanda",
+      "description": "Charge for calculation and printout of payment slip and sending to payer.",
+      "properties": {
+        "printing": {
+          "type": "number",
+          "required": true,
+          "comment": "Gjald fyrir prentun og póstlagningu",
+          "description": "Charge used if claim is printed."
+        },
+        "paperless": {
+          "type": "number",
+          "required": true,
+          "comment": "Gjald ef ekki er prentað og póstlagt",
+          "description": "Charge used if claim is not printed."
+        }
+      }
+    },
+    "defaultCharge": {
+      "type": "object",
+      "required": false,
+      "comment": "DefaultCharge inniheldur upplýsingar um vanskilagjald, annað hvort í fastri upphæð eða prósentum. Athugið að upphæðin þarf að vera innan þeirra reglna sem gilda skv. reglugerð 37/2009.",
+      "description": "Default charge that claims incur when they default, either a percentage or fixed amount",
+      "properties": {
+        "firstDefaultCharge": {
+          "type": "object",
+          "required": true,
+          "comment": "Fyrra vanskilagjald",
+          "description": "First default charge.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the number of days relative to reference date when rule takes effect."
+            },
+            "value": {
+              "type": "number",
+              "required": true,
+              "comment": "Upphæð eða prósenta.",
+              "description": "Amount or percentage of default charge."
+            }
+          }
+        },
+        "secondDefaultCharge": {
+          "type": "object",
+          "required": true,
+          "comment": "Seinna vanskilagjald",
+          "description": "Second default charge.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "value": {
+              "type": "number",
+              "required": true,
+              "comment": "Upphæð eða prósenta.",
+              "description": "Amount or percentage of default charge."
+            }
+          }
+        },
+        "referenceDate": {
+          "enum": ["dueDate","finalDueDate"],
+          "required": true,
+          "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+          "description": "Indicates which date is used as basis for calculation."
+        }
+      }
+    },
+    "otherCosts": {
+      "type": "number",
+      "required": false,
+      "comment": "Annar kostnaður, fyrir sérákvörðuð gjöld sem greidd eru af greiðanda innheimtukröfu.",
+      "description": "Other cost, for special charges to be paid by the payer of the claim."
+    },
+    "otherDefaultCosts": {
+      "type": "number",
+      "required": false,
+      "comment": "Fyrir sérákvörðuð gjöld, t.d. milliinnheimtugjald.",
+      "description": "For special charges, e.g. secondary collection charge, to be paid by the payer of the claim."
+    },
+    "defaultInterest": {
+      "type": "object",
+      "required": false,
+      "comment": "Upplýsingar um hvernig dráttarvextir eru reiknaðir",
+      "description": "Rule for calculating default interest.",
+      "properties": {
+        "defaultInterestRule": {
+          "enum": [ "noDefaultInterest", "defaultInterestAmount", "defaultInterestAmountAndDefaultCharge" ],
+          "required": true,
+          "comment": "Segir til um hvort dráttarvextir skuli reiknast eftir viðmiðunardag og ef svo, þá hverning. noDefaultInterest = Engir dráttavextir skulu vera á kröfu. defaultInterestAmount = Segir til um að dráttarvextir reiknast út frá upphæð kröfu. defaultInterestAmountAndDefaultCharge = Segir til um hvort dráttarvextir reiknast út frá upphæð kröfu.",
+          "description": "Determines if the claim should incur default interests after the reference date and if so, how it should be calculated. noDefaultInterest = No default interest. defaultInterestAmount = Default interests are calculations are based on claim amount. defaultInterestAmountAndDefaultCharge = Default interests are calculations are based on claim amount and default charge."
+        },
+        "percentage": {
+          "type": "number",
+          "required": true,
+          "comment": "Segir til um prósentu dráttarvaxta, má ekki vera hærra en hæsta leyfilega dráttarvaxtaprósenta Seðlabankans. Ef dráttarvaxtaregla tilgreinir að dráttarvextir eigi að reiknast og þetta gildi er ekki tilgreint, eru hæstu leyfilegu dráttarvextir Seðlabankans notaðir sjálfkrafa.",
+          "description": "If used, default interest on a claim is calculated based on this percentage and not on the default interest period, as in the case of Central Bank default interest. Not specifying the percentage ensures that the Central Bank default interest is used, and interest is compounded every twelve months, i.e. the default interest is added to the principal."
+        },
+        "specialCode": {
+          "type": "string",
+          "required": false,
+          "comment": "Til að setja tiltekin gildi á kröfu þarf að senda inn gildi sem eru í samræmi við dráttavaxtareglur RB. Frekari upplýsingar er að finna í skjölun RB.",
+          "description": "Sending in a special code is the only way to set certain interest rules that map to RB Penalty interest rules. Further documentation can be found in RB documentation."
+        }
+      }
+    },
+    "currencyInformation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "comment": "Notist ef innheimtukrafa er í erlendri mynt.",
+      "description": "For claims which are linked to a foreign currency.",
+      "properties": {
+        "currencyInformationReferenceRate": {
+          "enum": ["exchangeRate", "noteRate", "centralBankMidRate", "centralBankStatutoryRate"]
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "currencyInformationPaymentRate": {
+          "enum": ["dueDateRate", "paymentDateRate"]
+        }
+      }
+    },
+    "permitOutOfSequencePayment": {
+      "type": "boolean",
+      "required": false,
+      "comment": "Greiðsluregla, segir til um hvort megi greiða innheimtukröfu sem á ógreidda eldri gjalddaga.",
+      "description": "Payment of claim allowed if earlier due date is unpaid."
+    },
+    "discount": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "comment": "Afsláttur er gefin upp annaðhvort í prósentum eða sem föst upphæð.",
+      "description": "Two amount or percentage fields can be attached to a claim base, the first and second discount, which are used to reduce the payment if made before a fixed date.",
+      "properties": {
+        "isPostRefDate": {
+          "type": "boolean",
+          "comment": "Segir til um hvort uppgefinn dagafjöldi er fyrir eða eftir viðmiðunardag.",
+          "description": "Indicates whether number of days is before or after reference date."
+        },
+        "firstDiscount": {
+          "type": "object",
+          "required": true,
+          "comment": "Fyrri afsláttur",
+          "description": "First discount",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "amount": {
+              "type": "number",
+              "required": true,
+              "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+              "description": "Base for discount or default charge."
+            }
+          }
+        },
+        "secondDiscount": {
+          "type": "object",
+          "required": true,
+          "comment": "Seinna vanskilagjald",
+          "description": "Second discount.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "amount": {
+              "type": "number",
+              "required": true,
+              "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+              "description": "Base for discount or default charge."
+            }
+          }
+        },
+        "referenceDate": {
+          "type": "integer",
+          "required": true,
+          "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+          "description": "Indicates which date is used as basis for calculation.",
+          "enum": ["dueDate","finalDueDate"]
+        }
+      }
+    },
+    "isPartialPaymentAllowed": {
+      "type": "boolean",
+      "reqired": false,
+      "comment": "Segir til um hvort greiða megi inn á innheimtukröfu eða ekki.",
+      "description": "Indicates whether partial payment is permitted."
+    },
+    "billPresentmentSystem": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": false,
+      "description": "Indicates the bill presentment system to which the claim pertains.",
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Which bill presentment system."
+        },
+        "parameters": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Parameters and values needed to display a unique document from a bill presentment system. (URL style)"
+        }
+      }
+    },
+    "printing": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Contains information used for displaying and printing the claim. Changing this info on a claim that has already been created will not result in it being printed again.",
+      "properties": {
+        "claimantAddress": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": true,
+          "description": "Alternate address for claimant if address from the National Register should not be used.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Name of resident/recipient."
+            },
+            "addressLine1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "addressLine2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "postalCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Postal code."
+            },
+            "city": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Place of residence, be it city, town, etc."
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "The country region where the person lives."
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Country."
+            }
+          }
+        },
+        "payorAddress": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": true,
+          "description": "Alternate address for payor if address from the National Register should not be used.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Name of resident/recipient."
+            },
+            "addressLine1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "addressLine2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "postalCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Postal code."
+            },
+            "city": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Place of residence, be it city, town, etc."
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "The country region where the person lives."
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Country."
+            }
+          }
+        },
+        "itemRows": {
+          "type": "object",
+          "required": false,
+          "description": "Breakdown of items that a claim consists of.",
+          "properties": {
+            "itemRow": {
+              "type": "array",
+              "description": "Breakdown items that a claim consists of.",
+              "items": {
+                "type": "object",
+                "description": "A sub-item of a claim, used for printing.",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Item text."
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "The amount of the item."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "comments": {
+          "type": "array",
+          "description": "Comments that are displayed on the lower half of the payment slip.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}                    
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "ClaimId": "039926011462",
+  "Claimant": "6606129980",
+  "Account": "0323-66-000001",
+  "DueDate": "2016-04-14",
+  "PayorID": "6606129980",
+ }
+</code></pre></div><div class="tab-pane" id="claims_post_securedby">Secured by oauth_2_0<h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>(string)</em><p>Used to send a valid OAuth 2 access token.</p></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Unauthorized</p></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_claims__claimId_"><span class="parent">/claims</span>/{claimId}</a> <span class="methods"><a href="#claims__claimId__get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#claims__claimId__patch"><span class="badge badge_patch">patch <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_claims__claimId_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#claims__claimId__get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Returns a representation of a claim.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#claims__claimId__patch'" class="list-group-item"><span class="badge badge_patch">patch <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Allows you to modify the properties of a claim. For example to cancel a claim.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="claims__claimId__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/claims</span>/{claimId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returns a representation of a claim.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_2_0<p>OAuth2 is a protocol that lets external apps request authorization to private details in a user&#39;s financial data.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#claims__claimId__get_request" data-toggle="tab">Request</a></li><li><a href="#claims__claimId__get_response" data-toggle="tab">Response</a></li><li><a href="#claims__claimId__get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="claims__claimId__get_request"><h3>URI Parameters</h3><ul><li><strong>claimId</strong>: <em>required (string)</em></li></ul><h3>Headers</h3><ul><li><strong>Ocp-Apim-Subscription-Key</strong>: <em>(string)</em><p>Used to send a valid subscription key.</p></li></ul></div><div class="tab-pane" id="claims__claimId__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "id": "http://jsonschema.net",
+  "comment": "Krafa",
+  "description": "Claim",
+  "required": true,
+  "properties": {
+    "claimID": {
+      "type": "string",
+      "required": true,
+      "comment": "Einkvæmt númer kröfu.",
+      "description": "The ID of the claim. Consists of claimantKennitala + dueDate + account. e.g. 660612998020160414032366000001"
+    },
+    "claimKey": {
+      "type": "object",
+      "properties": {
+        "claimantKennitala": {
+          "type": "string",
+          "required": true,
+          "comment": "Kennitala þess kröfuhafa sem verið er að fletta gögnum upp fyrir. Innskráður notandi þarf að hafa heimildir til að vinna með tiltekinn kröfuhafa.",
+          "description": "Claimant&#39;s kennitala."
+        },
+        "account": {
+          "type": "string",
+          "required": true,
+          "comment": "Bankanúmer, höfuðbók (66) og númer innheimtukröfu",
+          "description": "The branch number of the claim, ledger number (66) and number of claim. "
+        },
+        "dueDate": {
+          "type": "string",
+          "required": true,
+          "comment": "Gjalddagi innheimtukröfu",
+          "description": "Due date of the claim."
+        }
+      }
+    },
+    "payorKennitala": {
+      "type": "string",
+      "required": true,
+      "comment": "Kennitala kröfugreiðanda",
+      "description": "Payor&#39;s kennitala."
+    },
+    "cancellationDate": {
+      "type": "string",
+      "required": true,
+      "comment": "Niðurfellingardagur innheimtukröfu. Má ekki vera sami dagur og gjalddagi eða eindagi.",
+      "description": "Date of cancellation, how long should the claim be valid in the system."
+    },
+    "identifier": {
+      "type": "string",
+      "required": true,
+      "comment": "Þriggja stafa auðkenni kröfuhafa segir til um inn á hvaða bankareikning krafan greiðist. Kröfuhafar nota auðkenni t.d. til að stýra greiðsluflæði inná mismunandi reikninga eftir mismunandi þjónustu.",
+      "description": "Three letter unique identifier of the claimant that the claim relates to. Indicates which of claimant&#39;s accounts the system should use. e.g. 001"
+    },
+    "amount": {
+      "type": "string",
+      "required": true,
+      "comment": "Upphæð innheimtukröfu. Ekki hægt að breyta svæðinu ef greitt hefur verið inn á kröfuna.",
+      "description": "Amount of claim. Can&#39;t be changed after a partial payment has been made."
+    },
+    "reference": {
+      "type": "string",
+      "required": true,
+      "comment": "Tilvísunarnúmer ákveðið af kröfuhafa. Má vera tölu- og bókstafir, 16 stafa langt að hámarki.",
+      "description": "Refence determined by claimant. Alphanumeric, maximum 16 letters."
+    },
+    "finalDueDate": {
+      "type": "string",
+      "required": true,
+      "comment": "Eindagi innheimtukröfu.",
+      "description": "Final due date of claim."
+    },
+    "status":
+    {
+      "enum": ["unpaid", "paid", "cancelled", "invalid"],
+      "required": false,
+      "description": "Status of the claim."
+    },
+    "state":
+    {
+      "enum": ["primary", "secondary", "legal"],
+      "required": "false",
+      "description": "State of the claim. Indicates the collections state the claim is in."
+    },
+    "billNumber": {
+      "type": "string",
+      "required": true,
+      "comment": "Seðilnúmer, valkvætt. Upplýsingar settar af kröfuhafa.",
+      "description": "Billnumber, optional. Information provided by claimant."
+    },
+    "customerNumber": {
+      "type": "string",
+      "required": true,
+      "comment": "Viðskiptanúmer greiðanda. Einkvæmur lykill greiðanda kröfunnar hjá kröfuhafa. Nauðsynlegur ef hægt á að vera að stofna beingreiðslusamning tengdan innheimtukröfu.",
+      "description": "Customer number, optional key used by claimant to identify payor. Necessary if payor is to be able to enable automotic debiting of claims."
+    },
+    "noticeAndPaymentFee": {
+      "type": "object",
+      "required": false,
+      "comment": "Upplýsingar um gjald fyrir útreikning og útskrift greiðsluseðils ásamt sendingu hans til greiðanda",
+      "description": "Charge for calculation and printout of payment slip and sending to payer.",
+      "properties": {
+        "printing": {
+          "type": "number",
+          "required": true,
+          "comment": "Gjald fyrir prentun og póstlagningu",
+          "description": "Charge used if claim is printed."
+        },
+        "paperless": {
+          "type": "number",
+          "required": true,
+          "comment": "Gjald ef ekki er prentað og póstlagt",
+          "description": "Charge used if claim is not printed."
+        }
+      }
+    },
+    "defaultCharge": {
+      "type": "object",
+      "required": false,
+      "comment": "DefaultCharge inniheldur upplýsingar um vanskilagjald, annað hvort í fastri upphæð eða prósentum. Athugið að upphæðin þarf að vera innan þeirra reglna sem gilda skv. reglugerð 37/2009.",
+      "description": "Default charge that claims incur when they default, either a percentage or fixed amount",
+      "properties": {
+        "firstDefaultCharge": {
+          "type": "object",
+          "required": true,
+          "comment": "Fyrra vanskilagjald",
+          "description": "First default charge.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the number of days relative to reference date when rule takes effect."
+            },
+            "value": {
+              "type": "number",
+              "required": true,
+              "comment": "Upphæð eða prósenta.",
+              "description": "Amount or percentage of default charge."
+            }
+          }
+        },
+        "secondDefaultCharge": {
+          "type": "object",
+          "required": true,
+          "comment": "Seinna vanskilagjald",
+          "description": "Second default charge.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "value": {
+              "type": "number",
+              "required": true,
+              "comment": "Upphæð eða prósenta.",
+              "description": "Amount or percentage of default charge."
+            }
+          }
+        },
+        "referenceDate": {
+          "enum": ["dueDate","finalDueDate"],
+          "required": true,
+          "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+          "description": "Indicates which date is used as basis for calculation."
+        }
+      }
+    },
+    "otherCosts": {
+      "type": "number",
+      "required": false,
+      "comment": "Annar kostnaður, fyrir sérákvörðuð gjöld sem greidd eru af greiðanda innheimtukröfu.",
+      "description": "Other cost, for special charges to be paid by the payer of the claim."
+    },
+    "otherDefaultCosts": {
+      "type": "number",
+      "required": false,
+      "comment": "Fyrir sérákvörðuð gjöld, t.d. milliinnheimtugjald.",
+      "description": "For special charges, e.g. secondary collection charge, to be paid by the payer of the claim."
+    },
+    "defaultInterest": {
+      "type": "object",
+      "required": false,
+      "comment": "Upplýsingar um hvernig dráttarvextir eru reiknaðir",
+      "description": "Rule for calculating default interest.",
+      "properties": {
+        "defaultInterestRule": {
+          "enum": [ "noDefaultInterest", "defaultInterestAmount", "defaultInterestAmountAndDefaultCharge" ],
+          "required": true,
+          "comment": "Segir til um hvort dráttarvextir skuli reiknast eftir viðmiðunardag og ef svo, þá hverning. noDefaultInterest = Engir dráttavextir skulu vera á kröfu. defaultInterestAmount = Segir til um að dráttarvextir reiknast út frá upphæð kröfu. defaultInterestAmountAndDefaultCharge = Segir til um hvort dráttarvextir reiknast út frá upphæð kröfu.",
+          "description": "Determines if the claim should incur default interests after the reference date and if so, how it should be calculated. noDefaultInterest = No default interest. defaultInterestAmount = Default interests are calculations are based on claim amount. defaultInterestAmountAndDefaultCharge = Default interests are calculations are based on claim amount and default charge."
+        },
+        "percentage": {
+          "type": "number",
+          "required": true,
+          "comment": "Segir til um prósentu dráttarvaxta, má ekki vera hærra en hæsta leyfilega dráttarvaxtaprósenta Seðlabankans. Ef dráttarvaxtaregla tilgreinir að dráttarvextir eigi að reiknast og þetta gildi er ekki tilgreint, eru hæstu leyfilegu dráttarvextir Seðlabankans notaðir sjálfkrafa.",
+          "description": "If used, default interest on a claim is calculated based on this percentage and not on the default interest period, as in the case of Central Bank default interest. Not specifying the percentage ensures that the Central Bank default interest is used, and interest is compounded every twelve months, i.e. the default interest is added to the principal."
+        },
+        "specialCode": {
+          "type": "string",
+          "required": false,
+          "comment": "Til að setja tiltekin gildi á kröfu þarf að senda inn gildi sem eru í samræmi við dráttavaxtareglur RB. Frekari upplýsingar er að finna í skjölun RB.",
+          "description": "Sending in a special code is the only way to set certain interest rules that map to RB Penalty interest rules. Further documentation can be found in RB documentation."
+        }
+      }
+    },
+    "currencyInformation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "comment": "Notist ef innheimtukrafa er í erlendri mynt.",
+      "description": "For claims which are linked to a foreign currency.",
+      "properties": {
+        "currencyInformationReferenceRate": {
+          "enum": ["exchangeRate", "noteRate", "centralBankMidRate", "centralBankStatutoryRate"]
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "currencyInformationPaymentRate": {
+          "enum": ["dueDateRate", "paymentDateRate"]
+        }
+      }
+    },
+    "permitOutOfSequencePayment": {
+      "type": "boolean",
+      "required": false,
+      "comment": "Greiðsluregla, segir til um hvort megi greiða innheimtukröfu sem á ógreidda eldri gjalddaga.",
+      "description": "Payment of claim allowed if earlier due date is unpaid."
+    },
+    "discount": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "comment": "Afsláttur er gefin upp annaðhvort í prósentum eða sem föst upphæð.",
+      "description": "Two amount or percentage fields can be attached to a claim base, the first and second discount, which are used to reduce the payment if made before a fixed date.",
+      "properties": {
+        "isPostRefDate": {
+          "type": "boolean",
+          "comment": "Segir til um hvort uppgefinn dagafjöldi er fyrir eða eftir viðmiðunardag.",
+          "description": "Indicates whether number of days is before or after reference date."
+        },
+        "firstDiscount": {
+          "type": "object",
+          "required": true,
+          "comment": "Fyrri afsláttur",
+          "description": "First discount",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "amount": {
+              "type": "number",
+              "required": true,
+              "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+              "description": "Base for discount or default charge."
+            }
+          }
+        },
+        "secondDiscount": {
+          "type": "object",
+          "required": true,
+          "comment": "Seinna vanskilagjald",
+          "description": "Second discount.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "amount": {
+              "type": "number",
+              "required": true,
+              "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+              "description": "Base for discount or default charge."
+            }
+          }
+        },
+        "referenceDate": {
+          "type": "integer",
+          "required": true,
+          "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+          "description": "Indicates which date is used as basis for calculation.",
+          "enum": ["dueDate","finalDueDate"]
+        }
+      }
+    },
+    "isPartialPaymentAllowed": {
+      "type": "boolean",
+      "reqired": false,
+      "comment": "Segir til um hvort greiða megi inn á innheimtukröfu eða ekki.",
+      "description": "Indicates whether partial payment is permitted."
+    },
+    "billPresentmentSystem": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": false,
+      "description": "Indicates the bill presentment system to which the claim pertains.",
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Which bill presentment system."
+        },
+        "parameters": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Parameters and values needed to display a unique document from a bill presentment system. (URL style)"
+        }
+      }
+    },
+    "printing": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Contains information used for displaying and printing the claim. Changing this info on a claim that has already been created will not result in it being printed again.",
+      "properties": {
+        "claimantAddress": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": true,
+          "description": "Alternate address for claimant if address from the National Register should not be used.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Name of resident/recipient."
+            },
+            "addressLine1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "addressLine2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "postalCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Postal code."
+            },
+            "city": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Place of residence, be it city, town, etc."
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "The country region where the person lives."
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Country."
+            }
+          }
+        },
+        "payorAddress": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": true,
+          "description": "Alternate address for payor if address from the National Register should not be used.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Name of resident/recipient."
+            },
+            "addressLine1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "addressLine2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "postalCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Postal code."
+            },
+            "city": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Place of residence, be it city, town, etc."
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "The country region where the person lives."
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Country."
+            }
+          }
+        },
+        "itemRows": {
+          "type": "object",
+          "required": false,
+          "description": "Breakdown of items that a claim consists of.",
+          "properties": {
+            "itemRow": {
+              "type": "array",
+              "description": "Breakdown items that a claim consists of.",
+              "items": {
+                "type": "object",
+                "description": "A sub-item of a claim, used for printing.",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Item text."
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "The amount of the item."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "comments": {
+          "type": "array",
+          "description": "Comments that are displayed on the lower half of the payment slip.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}                    
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "ClaimId": "039926011462",
+  "Claimant": "6606129980",
+  "Account": "0323-66-000001",
+  "DueDate": "2016-04-14",
+  "PayorID": "6606129980",
+ }
+</code></pre></div><div class="tab-pane" id="claims__claimId__get_securedby">Secured by oauth_2_0<h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>(string)</em><p>Used to send a valid OAuth 2 access token.</p></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Unauthorized</p></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="claims__claimId__patch"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_patch">patch <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/claims</span>/{claimId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Allows you to modify the properties of a claim. For example to cancel a claim.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_2_0<p>OAuth2 is a protocol that lets external apps request authorization to private details in a user&#39;s financial data.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#claims__claimId__patch_request" data-toggle="tab">Request</a></li><li><a href="#claims__claimId__patch_response" data-toggle="tab">Response</a></li><li><a href="#claims__claimId__patch_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="claims__claimId__patch_request"><h3>URI Parameters</h3><ul><li><strong>claimId</strong>: <em>required (string)</em></li></ul><h3>Headers</h3><ul><li><strong>Ocp-Apim-Subscription-Key</strong>: <em>(string)</em><p>Used to send a valid subscription key.</p></li></ul></div><div class="tab-pane" id="claims__claimId__patch_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "id": "http://jsonschema.net",
+  "comment": "Krafa",
+  "description": "Claim",
+  "required": true,
+  "properties": {
+    "claimID": {
+      "type": "string",
+      "required": true,
+      "comment": "Einkvæmt númer kröfu.",
+      "description": "The ID of the claim. Consists of claimantKennitala + dueDate + account. e.g. 660612998020160414032366000001"
+    },
+    "claimKey": {
+      "type": "object",
+      "properties": {
+        "claimantKennitala": {
+          "type": "string",
+          "required": true,
+          "comment": "Kennitala þess kröfuhafa sem verið er að fletta gögnum upp fyrir. Innskráður notandi þarf að hafa heimildir til að vinna með tiltekinn kröfuhafa.",
+          "description": "Claimant&#39;s kennitala."
+        },
+        "account": {
+          "type": "string",
+          "required": true,
+          "comment": "Bankanúmer, höfuðbók (66) og númer innheimtukröfu",
+          "description": "The branch number of the claim, ledger number (66) and number of claim. "
+        },
+        "dueDate": {
+          "type": "string",
+          "required": true,
+          "comment": "Gjalddagi innheimtukröfu",
+          "description": "Due date of the claim."
+        }
+      }
+    },
+    "payorKennitala": {
+      "type": "string",
+      "required": true,
+      "comment": "Kennitala kröfugreiðanda",
+      "description": "Payor&#39;s kennitala."
+    },
+    "cancellationDate": {
+      "type": "string",
+      "required": true,
+      "comment": "Niðurfellingardagur innheimtukröfu. Má ekki vera sami dagur og gjalddagi eða eindagi.",
+      "description": "Date of cancellation, how long should the claim be valid in the system."
+    },
+    "identifier": {
+      "type": "string",
+      "required": true,
+      "comment": "Þriggja stafa auðkenni kröfuhafa segir til um inn á hvaða bankareikning krafan greiðist. Kröfuhafar nota auðkenni t.d. til að stýra greiðsluflæði inná mismunandi reikninga eftir mismunandi þjónustu.",
+      "description": "Three letter unique identifier of the claimant that the claim relates to. Indicates which of claimant&#39;s accounts the system should use. e.g. 001"
+    },
+    "amount": {
+      "type": "string",
+      "required": true,
+      "comment": "Upphæð innheimtukröfu. Ekki hægt að breyta svæðinu ef greitt hefur verið inn á kröfuna.",
+      "description": "Amount of claim. Can&#39;t be changed after a partial payment has been made."
+    },
+    "reference": {
+      "type": "string",
+      "required": true,
+      "comment": "Tilvísunarnúmer ákveðið af kröfuhafa. Má vera tölu- og bókstafir, 16 stafa langt að hámarki.",
+      "description": "Refence determined by claimant. Alphanumeric, maximum 16 letters."
+    },
+    "finalDueDate": {
+      "type": "string",
+      "required": true,
+      "comment": "Eindagi innheimtukröfu.",
+      "description": "Final due date of claim."
+    },
+    "status":
+    {
+      "enum": ["unpaid", "paid", "cancelled", "invalid"],
+      "required": false,
+      "description": "Status of the claim."
+    },
+    "state":
+    {
+      "enum": ["primary", "secondary", "legal"],
+      "required": "false",
+      "description": "State of the claim. Indicates the collections state the claim is in."
+    },
+    "billNumber": {
+      "type": "string",
+      "required": true,
+      "comment": "Seðilnúmer, valkvætt. Upplýsingar settar af kröfuhafa.",
+      "description": "Billnumber, optional. Information provided by claimant."
+    },
+    "customerNumber": {
+      "type": "string",
+      "required": true,
+      "comment": "Viðskiptanúmer greiðanda. Einkvæmur lykill greiðanda kröfunnar hjá kröfuhafa. Nauðsynlegur ef hægt á að vera að stofna beingreiðslusamning tengdan innheimtukröfu.",
+      "description": "Customer number, optional key used by claimant to identify payor. Necessary if payor is to be able to enable automotic debiting of claims."
+    },
+    "noticeAndPaymentFee": {
+      "type": "object",
+      "required": false,
+      "comment": "Upplýsingar um gjald fyrir útreikning og útskrift greiðsluseðils ásamt sendingu hans til greiðanda",
+      "description": "Charge for calculation and printout of payment slip and sending to payer.",
+      "properties": {
+        "printing": {
+          "type": "number",
+          "required": true,
+          "comment": "Gjald fyrir prentun og póstlagningu",
+          "description": "Charge used if claim is printed."
+        },
+        "paperless": {
+          "type": "number",
+          "required": true,
+          "comment": "Gjald ef ekki er prentað og póstlagt",
+          "description": "Charge used if claim is not printed."
+        }
+      }
+    },
+    "defaultCharge": {
+      "type": "object",
+      "required": false,
+      "comment": "DefaultCharge inniheldur upplýsingar um vanskilagjald, annað hvort í fastri upphæð eða prósentum. Athugið að upphæðin þarf að vera innan þeirra reglna sem gilda skv. reglugerð 37/2009.",
+      "description": "Default charge that claims incur when they default, either a percentage or fixed amount",
+      "properties": {
+        "firstDefaultCharge": {
+          "type": "object",
+          "required": true,
+          "comment": "Fyrra vanskilagjald",
+          "description": "First default charge.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the number of days relative to reference date when rule takes effect."
+            },
+            "value": {
+              "type": "number",
+              "required": true,
+              "comment": "Upphæð eða prósenta.",
+              "description": "Amount or percentage of default charge."
+            }
+          }
+        },
+        "secondDefaultCharge": {
+          "type": "object",
+          "required": true,
+          "comment": "Seinna vanskilagjald",
+          "description": "Second default charge.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "value": {
+              "type": "number",
+              "required": true,
+              "comment": "Upphæð eða prósenta.",
+              "description": "Amount or percentage of default charge."
+            }
+          }
+        },
+        "referenceDate": {
+          "enum": ["dueDate","finalDueDate"],
+          "required": true,
+          "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+          "description": "Indicates which date is used as basis for calculation."
+        }
+      }
+    },
+    "otherCosts": {
+      "type": "number",
+      "required": false,
+      "comment": "Annar kostnaður, fyrir sérákvörðuð gjöld sem greidd eru af greiðanda innheimtukröfu.",
+      "description": "Other cost, for special charges to be paid by the payer of the claim."
+    },
+    "otherDefaultCosts": {
+      "type": "number",
+      "required": false,
+      "comment": "Fyrir sérákvörðuð gjöld, t.d. milliinnheimtugjald.",
+      "description": "For special charges, e.g. secondary collection charge, to be paid by the payer of the claim."
+    },
+    "defaultInterest": {
+      "type": "object",
+      "required": false,
+      "comment": "Upplýsingar um hvernig dráttarvextir eru reiknaðir",
+      "description": "Rule for calculating default interest.",
+      "properties": {
+        "defaultInterestRule": {
+          "enum": [ "noDefaultInterest", "defaultInterestAmount", "defaultInterestAmountAndDefaultCharge" ],
+          "required": true,
+          "comment": "Segir til um hvort dráttarvextir skuli reiknast eftir viðmiðunardag og ef svo, þá hverning. noDefaultInterest = Engir dráttavextir skulu vera á kröfu. defaultInterestAmount = Segir til um að dráttarvextir reiknast út frá upphæð kröfu. defaultInterestAmountAndDefaultCharge = Segir til um hvort dráttarvextir reiknast út frá upphæð kröfu.",
+          "description": "Determines if the claim should incur default interests after the reference date and if so, how it should be calculated. noDefaultInterest = No default interest. defaultInterestAmount = Default interests are calculations are based on claim amount. defaultInterestAmountAndDefaultCharge = Default interests are calculations are based on claim amount and default charge."
+        },
+        "percentage": {
+          "type": "number",
+          "required": true,
+          "comment": "Segir til um prósentu dráttarvaxta, má ekki vera hærra en hæsta leyfilega dráttarvaxtaprósenta Seðlabankans. Ef dráttarvaxtaregla tilgreinir að dráttarvextir eigi að reiknast og þetta gildi er ekki tilgreint, eru hæstu leyfilegu dráttarvextir Seðlabankans notaðir sjálfkrafa.",
+          "description": "If used, default interest on a claim is calculated based on this percentage and not on the default interest period, as in the case of Central Bank default interest. Not specifying the percentage ensures that the Central Bank default interest is used, and interest is compounded every twelve months, i.e. the default interest is added to the principal."
+        },
+        "specialCode": {
+          "type": "string",
+          "required": false,
+          "comment": "Til að setja tiltekin gildi á kröfu þarf að senda inn gildi sem eru í samræmi við dráttavaxtareglur RB. Frekari upplýsingar er að finna í skjölun RB.",
+          "description": "Sending in a special code is the only way to set certain interest rules that map to RB Penalty interest rules. Further documentation can be found in RB documentation."
+        }
+      }
+    },
+    "currencyInformation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "comment": "Notist ef innheimtukrafa er í erlendri mynt.",
+      "description": "For claims which are linked to a foreign currency.",
+      "properties": {
+        "currencyInformationReferenceRate": {
+          "enum": ["exchangeRate", "noteRate", "centralBankMidRate", "centralBankStatutoryRate"]
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "currencyInformationPaymentRate": {
+          "enum": ["dueDateRate", "paymentDateRate"]
+        }
+      }
+    },
+    "permitOutOfSequencePayment": {
+      "type": "boolean",
+      "required": false,
+      "comment": "Greiðsluregla, segir til um hvort megi greiða innheimtukröfu sem á ógreidda eldri gjalddaga.",
+      "description": "Payment of claim allowed if earlier due date is unpaid."
+    },
+    "discount": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "comment": "Afsláttur er gefin upp annaðhvort í prósentum eða sem föst upphæð.",
+      "description": "Two amount or percentage fields can be attached to a claim base, the first and second discount, which are used to reduce the payment if made before a fixed date.",
+      "properties": {
+        "isPostRefDate": {
+          "type": "boolean",
+          "comment": "Segir til um hvort uppgefinn dagafjöldi er fyrir eða eftir viðmiðunardag.",
+          "description": "Indicates whether number of days is before or after reference date."
+        },
+        "firstDiscount": {
+          "type": "object",
+          "required": true,
+          "comment": "Fyrri afsláttur",
+          "description": "First discount",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "amount": {
+              "type": "number",
+              "required": true,
+              "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+              "description": "Base for discount or default charge."
+            }
+          }
+        },
+        "secondDiscount": {
+          "type": "object",
+          "required": true,
+          "comment": "Seinna vanskilagjald",
+          "description": "Second discount.",
+          "properties": {
+            "days": {
+              "type": "number",
+              "required": true,
+              "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+              "description": "Indicates the count of days relative to reference date when rule takes effect."
+            },
+            "amount": {
+              "type": "number",
+              "required": true,
+              "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+              "description": "Base for discount or default charge."
+            }
+          }
+        },
+        "referenceDate": {
+          "type": "integer",
+          "required": true,
+          "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+          "description": "Indicates which date is used as basis for calculation.",
+          "enum": ["dueDate","finalDueDate"]
+        }
+      }
+    },
+    "isPartialPaymentAllowed": {
+      "type": "boolean",
+      "reqired": false,
+      "comment": "Segir til um hvort greiða megi inn á innheimtukröfu eða ekki.",
+      "description": "Indicates whether partial payment is permitted."
+    },
+    "billPresentmentSystem": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": false,
+      "description": "Indicates the bill presentment system to which the claim pertains.",
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Which bill presentment system."
+        },
+        "parameters": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Parameters and values needed to display a unique document from a bill presentment system. (URL style)"
+        }
+      }
+    },
+    "printing": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Contains information used for displaying and printing the claim. Changing this info on a claim that has already been created will not result in it being printed again.",
+      "properties": {
+        "claimantAddress": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": true,
+          "description": "Alternate address for claimant if address from the National Register should not be used.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Name of resident/recipient."
+            },
+            "addressLine1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "addressLine2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "postalCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Postal code."
+            },
+            "city": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Place of residence, be it city, town, etc."
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "The country region where the person lives."
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Country."
+            }
+          }
+        },
+        "payorAddress": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": true,
+          "description": "Alternate address for payor if address from the National Register should not be used.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Name of resident/recipient."
+            },
+            "addressLine1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "addressLine2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "First part of address."
+            },
+            "postalCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Postal code."
+            },
+            "city": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Place of residence, be it city, town, etc."
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "The country region where the person lives."
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "required": true,
+              "description": "Country."
+            }
+          }
+        },
+        "itemRows": {
+          "type": "object",
+          "required": false,
+          "description": "Breakdown of items that a claim consists of.",
+          "properties": {
+            "itemRow": {
+              "type": "array",
+              "description": "Breakdown items that a claim consists of.",
+              "items": {
+                "type": "object",
+                "description": "A sub-item of a claim, used for printing.",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Item text."
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "The amount of the item."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "comments": {
+          "type": "array",
+          "description": "Comments that are displayed on the lower half of the payment slip.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}                    
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "ClaimId": "039926011462",
+  "Claimant": "6606129980",
+  "Account": "0323-66-000001",
+  "DueDate": "2016-04-14",
+  "PayorID": "6606129980",
+ }
+</code></pre></div><div class="tab-pane" id="claims__claimId__patch_securedby">Secured by oauth_2_0<h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>(string)</em><p>Used to send a valid OAuth 2 access token.</p></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Unauthorized</p></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_claims__claimId__claimTransactions"><span class="parent">/claims/{claimId}</span>/claimTransactions</a> <span class="methods"><a href="#claims__claimId__claimTransactions_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_claims__claimId__claimTransactions" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#claims__claimId__claimTransactions_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Returnes a list of transactions that encapsulate information about the status of a claim associated with a particular event in its lifetime.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="claims__claimId__claimTransactions_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/claims/{claimId}</span>/claimTransactions</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returnes a list of transactions that encapsulate information about the status of a claim associated with a particular event in its lifetime.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_2_0<p>OAuth2 is a protocol that lets external apps request authorization to private details in a user&#39;s financial data.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#claims__claimId__claimTransactions_get_request" data-toggle="tab">Request</a></li><li><a href="#claims__claimId__claimTransactions_get_response" data-toggle="tab">Response</a></li><li><a href="#claims__claimId__claimTransactions_get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="claims__claimId__claimTransactions_get_request"><h3>URI Parameters</h3><ul><li><strong>claimId</strong>: <em>required (string)</em></li></ul><h3>Headers</h3><ul><li><strong>Ocp-Apim-Subscription-Key</strong>: <em>(string)</em><p>Used to send a valid subscription key.</p></li></ul></div><div class="tab-pane" id="claims__claimId__claimTransactions_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+   "$schema": "http://json-schema.org/draft-03/schema",
+   "type": "object",
+   "properties": {
+     "claimTransaction": {
+       "type": "array",
+       "items": {
+         "type": "object",
+         "properties": {
+           "claim": {
+             "type": "object",
+             "properties": {
+               "claimID": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Einkvæmt númer kröfu.",
+                 "description": "The ID of the claim. Consists of claimantKennitala + dueDate + account. e.g. 660612998020160414032366000001"
+               },
+               "claimKey": {
+                 "type": "object",
+                 "properties": {
+                   "claimantKennitala": {
+                     "type": "string",
+                     "required": true,
+                     "comment": "Kennitala þess kröfuhafa sem verið er að fletta gögnum upp fyrir. Innskráður notandi þarf að hafa heimildir til að vinna með tiltekinn kröfuhafa.",
+                     "description": "Claimant&#39;s kennitala."
+                   },
+                   "account": {
+                     "type": "string",
+                     "required": true,
+                     "comment": "Bankanúmer, höfuðbók (66) og númer innheimtukröfu",
+                     "description": "The branch number of the claim, ledger number (66) and number of claim. "
+                   },
+                   "dueDate": {
+                     "type": "string",
+                     "required": true,
+                     "comment": "Gjalddagi innheimtukröfu",
+                     "description": "Due date of the claim."
+                   }
+                 }
+               },
+               "payorKennitala": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Kennitala kröfugreiðanda",
+                 "description": "Payor&#39;s kennitala."
+               },
+               "cancellationDate": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Niðurfellingardagur innheimtukröfu. Má ekki vera sami dagur og gjalddagi eða eindagi.",
+                 "description": "Date of cancellation, how long should the claim be valid in the system."
+               },
+               "identifier": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Þriggja stafa auðkenni kröfuhafa segir til um inn á hvaða bankareikning krafan greiðist. Kröfuhafar nota auðkenni t.d. til að stýra greiðsluflæði inná mismunandi reikninga eftir mismunandi þjónustu.",
+                 "description": "Three letter unique identifier of the claimant that the claim relates to. Indicates which of claimant&#39;s accounts the system should use. e.g. 001"
+               },
+               "amount": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Upphæð innheimtukröfu. Ekki hægt að breyta svæðinu ef greitt hefur verið inn á kröfuna.",
+                 "description": "Amount of claim. Can&#39;t be changed after a partial payment has been made."
+               },
+               "reference": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Tilvísunarnúmer ákveðið af kröfuhafa. Má vera tölu- og bókstafir, 16 stafa langt að hámarki.",
+                 "description": "Refence determined by claimant. Alphanumeric, maximum 16 letters."
+               },
+               "finalDueDate": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Eindagi innheimtukröfu.",
+                 "description": "Final due date of claim."
+               },
+               "status":
+               {
+                 "enum": ["unpaid", "paid", "cancelled", "invalid"],
+                 "required": false,
+                 "description": "Status of the claim."
+               },
+               "state":
+               {
+                 "enum": ["primary", "secondary", "legal"],
+                 "required": "false",
+                 "description": "State of the claim. Indicates the collections state the claim is in."
+               },
+               "billNumber": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Seðilnúmer, valkvætt. Upplýsingar settar af kröfuhafa.",
+                 "description": "Billnumber, optional. Information provided by claimant."
+               },
+               "customerNumber": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Viðskiptanúmer greiðanda. Einkvæmur lykill greiðanda kröfunnar hjá kröfuhafa. Nauðsynlegur ef hægt á að vera að stofna beingreiðslusamning tengdan innheimtukröfu.",
+                 "description": "Customer number, optional key used by claimant to identify payor. Necessary if payor is to be able to enable automotic debiting of claims."
+               },
+               "noticeAndPaymentFee": {
+                 "type": "object",
+                 "required": false,
+                 "comment": "Upplýsingar um gjald fyrir útreikning og útskrift greiðsluseðils ásamt sendingu hans til greiðanda",
+                 "description": "Charge for calculation and printout of payment slip and sending to payer.",
+                 "properties": {
+                   "printing": {
+                     "type": "number",
+                     "required": true,
+                     "comment": "Gjald fyrir prentun og póstlagningu",
+                     "description": "Charge used if claim is printed."
+                   },
+                   "paperless": {
+                     "type": "number",
+                     "required": true,
+                     "comment": "Gjald ef ekki er prentað og póstlagt",
+                     "description": "Charge used if claim is not printed."
+                   }
+                 }
+               },
+               "defaultCharge": {
+                 "type": "object",
+                 "required": false,
+                 "comment": "DefaultCharge inniheldur upplýsingar um vanskilagjald, annað hvort í fastri upphæð eða prósentum. Athugið að upphæðin þarf að vera innan þeirra reglna sem gilda skv. reglugerð 37/2009.",
+                 "description": "Default charge that claims incur when they default, either a percentage or fixed amount",
+                 "properties": {
+                   "firstDefaultCharge": {
+                     "type": "object",
+                     "required": true,
+                     "comment": "Fyrra vanskilagjald",
+                     "description": "First default charge.",
+                     "properties": {
+                       "days": {
+                         "type": "number",
+                         "required": true,
+                         "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+                         "description": "Indicates the number of days relative to reference date when rule takes effect."
+                       },
+                       "value": {
+                         "type": "number",
+                         "required": true,
+                         "comment": "Upphæð eða prósenta.",
+                         "description": "Amount or percentage of default charge."
+                       }
+                     }
+                   },
+                   "secondDefaultCharge": {
+                     "type": "object",
+                     "required": true,
+                     "comment": "Seinna vanskilagjald",
+                     "description": "Second default charge.",
+                     "properties": {
+                       "days": {
+                         "type": "number",
+                         "required": true,
+                         "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+                         "description": "Indicates the count of days relative to reference date when rule takes effect."
+                       },
+                       "value": {
+                         "type": "number",
+                         "required": true,
+                         "comment": "Upphæð eða prósenta.",
+                         "description": "Amount or percentage of default charge."
+                       }
+                     }
+                   },
+                   "referenceDate": {
+                     "enum": ["dueDate","finalDueDate"],
+                     "required": true,
+                     "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+                     "description": "Indicates which date is used as basis for calculation."
+                   }
+                 }
+               },
+               "otherCosts": {
+                 "type": "number",
+                 "required": false,
+                 "comment": "Annar kostnaður, fyrir sérákvörðuð gjöld sem greidd eru af greiðanda innheimtukröfu.",
+                 "description": "Other cost, for special charges to be paid by the payer of the claim."
+               },
+               "otherDefaultCosts": {
+                 "type": "number",
+                 "required": false,
+                 "comment": "Fyrir sérákvörðuð gjöld, t.d. milliinnheimtugjald.",
+                 "description": "For special charges, e.g. secondary collection charge, to be paid by the payer of the claim."
+               },
+               "defaultInterest": {
+                 "type": "object",
+                 "required": false,
+                 "comment": "Upplýsingar um hvernig dráttarvextir eru reiknaðir",
+                 "description": "Rule for calculating default interest.",
+                 "properties": {
+                   "defaultInterestRule": {
+                     "enum": [ "noDefaultInterest", "defaultInterestAmount", "defaultInterestAmountAndDefaultCharge" ],
+                     "required": true,
+                     "comment": "Segir til um hvort dráttarvextir skuli reiknast eftir viðmiðunardag og ef svo, þá hverning. noDefaultInterest = Engir dráttavextir skulu vera á kröfu. defaultInterestAmount = Segir til um að dráttarvextir reiknast út frá upphæð kröfu. defaultInterestAmountAndDefaultCharge = Segir til um hvort dráttarvextir reiknast út frá upphæð kröfu.",
+                     "description": "Determines if the claim should incur default interests after the reference date and if so, how it should be calculated. noDefaultInterest = No default interest. defaultInterestAmount = Default interests are calculations are based on claim amount. defaultInterestAmountAndDefaultCharge = Default interests are calculations are based on claim amount and default charge."
+                   },
+                   "percentage": {
+                     "type": "number",
+                     "required": true,
+                     "comment": "Segir til um prósentu dráttarvaxta, má ekki vera hærra en hæsta leyfilega dráttarvaxtaprósenta Seðlabankans. Ef dráttarvaxtaregla tilgreinir að dráttarvextir eigi að reiknast og þetta gildi er ekki tilgreint, eru hæstu leyfilegu dráttarvextir Seðlabankans notaðir sjálfkrafa.",
+                     "description": "If used, default interest on a claim is calculated based on this percentage and not on the default interest period, as in the case of Central Bank default interest. Not specifying the percentage ensures that the Central Bank default interest is used, and interest is compounded every twelve months, i.e. the default interest is added to the principal."
+                   },
+                   "specialCode": {
+                     "type": "string",
+                     "required": false,
+                     "comment": "Til að setja tiltekin gildi á kröfu þarf að senda inn gildi sem eru í samræmi við dráttavaxtareglur RB. Frekari upplýsingar er að finna í skjölun RB.",
+                     "description": "Sending in a special code is the only way to set certain interest rules that map to RB Penalty interest rules. Further documentation can be found in RB documentation."
+                   }
+                 }
+               },
+               "currencyInformation": {
+                 "type": [
+                   "object",
+                   "null"
+                 ],
+                 "comment": "Notist ef innheimtukrafa er í erlendri mynt.",
+                 "description": "For claims which are linked to a foreign currency.",
+                 "properties": {
+                   "currencyInformationReferenceRate": {
+                     "enum": ["exchangeRate", "noteRate", "centralBankMidRate", "centralBankStatutoryRate"]
+                   },
+                   "currency": {
+                     "type": [
+                       "string",
+                       "null"
+                     ]
+                   },
+                   "currencyInformationPaymentRate": {
+                     "enum": ["dueDateRate", "paymentDateRate"]
+                   }
+                 }
+               },
+               "permitOutOfSequencePayment": {
+                 "type": "boolean",
+                 "required": false,
+                 "comment": "Greiðsluregla, segir til um hvort megi greiða innheimtukröfu sem á ógreidda eldri gjalddaga.",
+                 "description": "Payment of claim allowed if earlier due date is unpaid."
+               },
+               "discount": {
+                 "type": [
+                   "object",
+                   "null"
+                 ],
+                 "comment": "Afsláttur er gefin upp annaðhvort í prósentum eða sem föst upphæð.",
+                 "description": "Two amount or percentage fields can be attached to a claim base, the first and second discount, which are used to reduce the payment if made before a fixed date.",
+                 "properties": {
+                   "isPostRefDate": {
+                     "type": "boolean",
+                     "comment": "Segir til um hvort uppgefinn dagafjöldi er fyrir eða eftir viðmiðunardag.",
+                     "description": "Indicates whether number of days is before or after reference date."
+                   },
+                   "firstDiscount": {
+                     "type": "object",
+                     "required": true,
+                     "comment": "Fyrri afsláttur",
+                     "description": "First discount",
+                     "properties": {
+                       "days": {
+                         "type": "number",
+                         "required": true,
+                         "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+                         "description": "Indicates the count of days relative to reference date when rule takes effect."
+                       },
+                       "amount": {
+                         "type": "number",
+                         "required": true,
+                         "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+                         "description": "Base for discount or default charge."
+                       }
+                     }
+                   },
+                   "secondDiscount": {
+                     "type": "object",
+                     "required": true,
+                     "comment": "Seinna vanskilagjald",
+                     "description": "Second discount.",
+                     "properties": {
+                       "days": {
+                         "type": "number",
+                         "required": true,
+                         "comment": "Segir til um dagafjölda út frá viðmiðunardegi sem gjald á við.",
+                         "description": "Indicates the count of days relative to reference date when rule takes effect."
+                       },
+                       "amount": {
+                         "type": "number",
+                         "required": true,
+                         "comment": "Grunnur fyrir afslætti eða vanskilagjald.",
+                         "description": "Base for discount or default charge."
+                       }
+                     }
+                   },
+                   "referenceDate": {
+                     "type": "integer",
+                     "required": true,
+                     "comment": "Segir til um hvaða dagsetning er notuð sem grunnur fyrir útreikninga.",
+                     "description": "Indicates which date is used as basis for calculation.",
+                     "enum": ["dueDate","finalDueDate"]
+                   }
+                 }
+               },
+               "isPartialPaymentAllowed": {
+                 "type": "boolean",
+                 "reqired": false,
+                 "comment": "Segir til um hvort greiða megi inn á innheimtukröfu eða ekki.",
+                 "description": "Indicates whether partial payment is permitted."
+               },
+               "billPresentmentSystem": {
+                 "type": [
+                   "object",
+                   "null"
+                 ],
+                 "required": false,
+                 "description": "Indicates the bill presentment system to which the claim pertains.",
+                 "properties": {
+                   "type": {
+                     "type": [
+                       "string",
+                       "null"
+                     ],
+                     "description": "Which bill presentment system."
+                   },
+                   "parameters": {
+                     "type": [
+                       "string",
+                       "null"
+                     ],
+                     "description": "Parameters and values needed to display a unique document from a bill presentment system. (URL style)"
+                   }
+                 }
+               },
+               "printing": {
+                 "type": [
+                   "object",
+                   "null"
+                 ],
+                 "description": "Contains information used for displaying and printing the claim. Changing this info on a claim that has already been created will not result in it being printed again.",
+                 "properties": {
+                   "claimantAddress": {
+                     "type": [
+                       "object",
+                       "null"
+                     ],
+                     "required": true,
+                     "description": "Alternate address for claimant if address from the National Register should not be used.",
+                     "properties": {
+                       "name": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "Name of resident/recipient."
+                       },
+                       "addressLine1": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "First part of address."
+                       },
+                       "addressLine2": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "First part of address."
+                       },
+                       "postalCode": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "Postal code."
+                       },
+                       "city": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "Place of residence, be it city, town, etc."
+                       },
+                       "region": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "The country region where the person lives."
+                       },
+                       "country": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "Country."
+                       }
+                     }
+                   },
+                   "payorAddress": {
+                     "type": [
+                       "object",
+                       "null"
+                     ],
+                     "required": true,
+                     "description": "Alternate address for payor if address from the National Register should not be used.",
+                     "properties": {
+                       "name": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "Name of resident/recipient."
+                       },
+                       "addressLine1": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "First part of address."
+                       },
+                       "addressLine2": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "First part of address."
+                       },
+                       "postalCode": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "Postal code."
+                       },
+                       "city": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "Place of residence, be it city, town, etc."
+                       },
+                       "region": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "The country region where the person lives."
+                       },
+                       "country": {
+                         "type": [
+                           "string",
+                           "null"
+                         ],
+                         "required": true,
+                         "description": "Country."
+                       }
+                     }
+                   },
+                   "itemRows": {
+                     "type": "object",
+                     "required": false,
+                     "description": "Breakdown of items that a claim consists of.",
+                     "properties": {
+                       "itemRow": {
+                         "type": "array",
+                         "description": "Breakdown items that a claim consists of.",
+                         "items": {
+                           "type": "object",
+                           "description": "A sub-item of a claim, used for printing.",
+                           "properties": {
+                             "text": {
+                               "type": "string",
+                               "description": "Item text."
+                             },
+                             "amount": {
+                               "type": "number",
+                               "description": "The amount of the item."
+                             }
+                           }
+                         }
+                       }
+                     }
+                   },
+                   "comments": {
+                     "type": "array",
+                     "description": "Comments that are displayed on the lower half of the payment slip.",
+                     "items": {
+                       "type": "string"
+                     }
+                   }
+                 }
+               }
+             }
+           },
+           "payment": {
+             "type": "object",
+             "properties": {      
+               "claimKey": {
+                 "type": "object",
+                 "properties": {
+                   "claimantKennitala": {
+                     "type": "string",
+                     "required": true,
+                     "comment": "Kennitala þess kröfuhafa sem verið er að fletta gögnum upp fyrir. Innskráður notandi þarf að hafa heimildir til að vinna með tiltekinn kröfuhafa.",
+                     "description": "Claimant&#39;s kennitala."
+                   },
+                   "account": {
+                     "type": "string",
+                     "required": true,
+                     "comment": "Bankanúmer, höfuðbók (66) og númer innheimtukröfu",
+                     "description": "The branch number of the claim, ledger number (66) and number of claim. "
+                   },
+                   "dueDate": {
+                     "type": "string",
+                     "required": true,
+                     "comment": "Gjalddagi innheimtukröfu",
+                     "description": "Due date of the claim."
+                   }
+                 }
+               },
+               "payorKennitala": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Kennitala kröfugreiðanda",
+                 "description": "Payor&#39;s kennitala."
+               },
+               "amount": {
+                 "type": "string",
+                 "required": true,
+                 "comment": "Upphæð sem var greidd.",
+                 "description": "Amount paid."
+               },
+               "finalDueDate": {
+                 "type": "string",
+                 "comment": "Eindagi innheimtukröfu.",
+                 "description": "Final due date of claim."
+               },
+               "identifier": {
+                 "type": "string",
+                 "comment": "Núverandi auðkenni kröfuhafa sem innheimtukrafan tengist.",
+                 "description": "The current unique identifier of the claimant that the claim relates to."
+               },
+               "reference": {
+                 "type": "string",
+                 "comment": "Tilvísun ákveðin af kröfuhafa.",
+                 "description": "Reference determined by claimant."
+               },
+               "categoryCode": {
+                 "type": "string",
+                 "comment": "Textalykill kröfuhafa, skýring á greiðslu. Valkvætt eigindi á innheimtukröfu.",
+                 "description": "Claimant’s text key, explanation of payment. Optional property of claim."
+               },
+               "redeemingBank": {
+                 "type": "string",
+                 "comment": "Sá banki sem greiðsla kemur frá.",
+                 "description": "What bank the payment comes from."
+               },
+               "transactionDate": {
+                 "type": "string",
+                 "comment": "Sá dagur sem uppfærsla á kröfuskrá er framkvæmd á.",
+                 "description": "The date on which a transaction in the Claims File is effected."
+               },
+               "bookingDate": {
+                 "type": "string",
+                 "comment": "Dagsetning þegar færsla er bókuð hjá RB.",
+                 "description": "The date when the transaction is booked."
+               },
+               "valueDate": {
+                 "type": "string",
+                 "comment": "Vaxtadagsetning. Lögleg dagsetning þess dags sem gildistökudagur eða vaxtadagsetning greiðslu miðast við, mest 10 almanaksdaga aftur í tímann. Ef dagsetningin er ekki tilgreind, auð, þá er miðað við hreyfingardag. Viðgreiðslu kröfu er vaxtadagsetning gildistökudagur dráttarvaxta.",
+                 "description": "The validation date used to calculate default interests and charges."
+               },
+               "paymentType": {
+                 "enum": ["complete","partial","refund"],
+                 "comment": "Tegund greiðslu.",
+                 "description": "Type of payment that is made."
+               },
+               "amountDeposited": {
+                 "type": "number",
+                 "comment": "Upphæð sem lögð var inn til ráðstöfunar í reikning kröfuhafa.",
+                 "description": "Amount deposited in the account used for the disposal of payments."
+               },
+               "totalAmount": {
+                 "type": "number",
+                 "comment": "Heildarupphæð greiðslu með áföllnum vöxtum og gjöldum.",
+                 "description": "Total amount paid, with default interest and costs."
+               },
+               "capitalGainsTax": {
+                 "type": "number",
+                 "comment": "Afdreginn fjármagnstekjuskattur.",
+                 "description": "Withheld capital gains tax."
+               },
+               "billNumber": {
+                 "type": "string",
+                 "comment": "Seðilnúmer, valkvætt. Upplýsingar settar af kröfuhafa.",
+                 "description": "Billnumber, optional. Information provided by claimant."
+               },
+               "customerNumber": {
+                 "type": "string",
+                 "comment": "Svæði fyrir einkvæmt viðskiptanúmer greiðanda úr kerfi kröfuhafa.",
+                 "description": "Customer number of payor, claimant&#39;s unique code for the customer."
+               },
+               "noticeChargeAmount": {
+                 "type": "number",
+                 "comment": "Greitt tilkynningargjald.",
+                 "description": "Notice charge paid."
+               },
+               "defaultChargeAmount": {
+                 "type": "number",
+                 "comment": "Greitt vanskilagjald.",
+                 "description": "Default charge paid."
+               },
+               "otherCostsAmount": {
+                 "type": "number",
+                 "comment": "Greiddur annar kostnaður.",
+                 "description": "Other costs paid."
+               },
+               "otherDefaultCostsAmount": {
+                 "type": "number",
+                 "comment": "Greiddur annar vanskilakostnaður.",
+                 "description": "Other default costs paid."
+               },
+               "defaultInterestAmount": {
+                 "type": "number",
+                 "comment": "Greiddir dráttarvextir.",
+                 "description": "Paid default interest."
+               },
+               "discountAmount": {
+                 "type": "number",
+                 "comment": "Veittur afsláttur.",
+                 "description": "Discount granted."
+               },
+               "currencyInformation": {
+                 "type": [
+                   "object",
+                   "null"
+                 ],
+                 "comment": "Gengisupplýsingar, aðeins á innheimtukröfum í erlendum gjaldmiðli.",
+                 "description": "Currency information, only available for forex claims.",
+                 "properties": {
+                   "currencyInformationReferenceRate": {
+                     "enum": ["exchangeRate", "noteRate", "centralBankMidRate", "centralBankStatutoryRate"]
+                   },
+                   "currency": {
+                     "type": [
+                       "string",
+                       "null"
+                     ]
+                   },
+                   "currencyInformationPaymentRate": {
+                     "enum": ["dueDateRate", "paymentDateRate"]
+                   }
+                 }
+               },
+               "batchNumber": {
+                 "type": "string",
+                 "comment": "Bunkanúmer greiðslu.",
+                 "description": "Batch number of payment."
+               },
+               "secondaryCollectionIdentifier": {
+                 "type": "string",
+                 "comment": "Auðkenni milliinnheimtuaðila sem krafan er tengd við milliinnheimtumerkingu. Skal vera samsett með bókstöfunum MI og tölustöfunum 0-9.",
+                 "description": "The identifier of the secondary collection party that handles the claim when it has been marked for secondary collection, e.g. MI2."
+               },
+               "legalCollectionIdentifier": {
+                 "type": "string",
+                 "comment": "Auðkenni löginnheimtuaðila sem krafan er tengd við lögfræðimerkingu. Skal vera samsett með bókstöfunum LH og tölustöfunum 0-9.",
+                 "description": "The identifier of the legal collection party that handles the claim when it has been marked for legal collection, e.g. LH3."
+               },
+               "primaryIdentifier": {
+                 "type": "string",
+                 "comment": "Upprunalegt auðkenni kröfuhafa sem innheimtukrafan tengist.",
+                 "description": "The original unique identifier of the claimant that the claim relates to."
+               }
+             }
+           },
+           "transactionType": {
+             "enum": ["creation","cancellation","update","payment","refundClaimCreation","reAdjustment","paymentReAdjustment","partialPaymentReAdjustment","transferFromOldBank","optionalClaimCancellationByPayor","refundPayment"],
+             "description": "The types of transaction associated with a claim."
+           },
+           "transactionDate": {
+             "type": "string",
+             "description": "Sent letter associated with the claim."
+           }
+         }
+       }
+     }
+   }
+ }
+ 
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "TotalCount": 1,
+  "payment": [
+    {
+      "ClaimId": "039926011462",
+      "Claimant": "6606129980",
+      "Account": "0323-66-000001",
+      "DueDate": "2016-04-14",
+      "PayorID": "6606129980",
+    }
+  ]
+</code></pre></div><div class="tab-pane" id="claims__claimId__claimTransactions_get_securedby">Secured by oauth_2_0<h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>(string)</em><p>Used to send a valid OAuth 2 access token.</p></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Unauthorized</p></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#claims">Claims</a></li></ul></div></div></div></div></body></html>
