@@ -11,7 +11,7 @@ documentation:
       Hér má skoða mun ítarlegri [html lýsingu](/claims.html "sjá Claims.html") á samningnum í GitHub repo fyrir Fintech partý.
   - title: Öryggi
     content: |
-      Köll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
+      Köll á þjónustuna þurfa að innihalda API lykil sem samþykkt teymi í Fintech Party munu geta sótt um á gátt API viðmótsins. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
             
       Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar og sleppa eða jafnvel maska svæði eftir því hvað passar tengt þjónustuveitendum.
 baseUri: https://arionapi-sandbox.azure-api.net/claims/{version}
@@ -30,7 +30,7 @@ securitySchemes:
               Used to send a valid OAuth 2 access token.
             type: string
         responses:
-          404:
+          401:
             description: Unauthorized
       settings:
         authorizationUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize
@@ -1803,7 +1803,6 @@ schemas:
       
 /claims:
   securedBy: [ oauth_2_0 ]
-  is: [ pageable, subscribable ]
   displayName: Claims
   get:
     description: Returnes a list of claims belonging to the claimant used to make the API request.
@@ -1853,6 +1852,7 @@ schemas:
            required: false
            description: Date to inclusive.
            example: 2016-01-31
+    is: [ pageable, subscribable ]
     responses:
       200:
         body:
@@ -1956,5 +1956,4 @@ schemas:
                         "DueDate": "2016-04-14",
                         "PayorID": "6606129980",
                       }
-                    ]
-                 
+                    ]                 

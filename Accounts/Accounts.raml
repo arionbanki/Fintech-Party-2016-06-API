@@ -11,7 +11,7 @@ documentation:
       Hér má skoða mun ítarlegri [html lýsingu](/accounts.html "sjá Accounts.html") á samningnum í GitHub repo fyrir Fintech partý.
   - title: Öryggi
     content: |
-      Köll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
+      Köll á þjónustuna þurfa að innihalda API lykil sem samþykkt teymi í Fintech Party munu geta sótt um á gátt API viðmótsins. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
 
       Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar, eftir því sem passar þjónustuveitendum.      
 baseUri: https://arionapi-sandbox.azure-api.net/accounts/{version}
@@ -30,7 +30,7 @@ securitySchemes:
               Used to send a valid OAuth 2 access token. 
             type: string
         responses:
-          404:
+          401:
             description: Unauthorized
       settings:
         authorizationUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize
@@ -405,6 +405,7 @@ schemas:
         displayName: Account transactions
         description: Provides an overview of account transactions.It is not permitted to get all transactions at once. Instead you have to define page number and transactions per page.
         get:          
+          description: Returns list of transactions that can be filtered by transaction date. It is possible to get the data by defining page number and page size.
           queryParameters:
             accountId:
                displayName: Account number

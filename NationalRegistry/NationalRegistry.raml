@@ -9,7 +9,7 @@ documentation:
       Hér má skoða mun ítarlegri [html lýsingu](/nationalregistry.html "sjá NationalRegistry.html") á samningnum í GitHub repo fyrir Fintech partý.
   - title: Öryggi
     content: |
-      Köll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
+      Köll á þjónustuna þurfa að innihalda API lykil sem samþykkt teymi í Fintech Party munu geta sótt um á gátt API viðmótsins. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
 
       Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum undir auðlindinni.      
 baseUri: https://arionapi-sandbox.azure-api.net/nationalregistry/{version}
@@ -32,7 +32,7 @@ securitySchemes:
               Used to send a valid subscription key.
             type: string
         responses:
-          404:
+          401:
             description: Unauthorized
       settings:
         authorizationUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize
@@ -185,7 +185,6 @@ schemas:
 
 /nationalRegistryParties:
     securedBy: [ oauth_2_0 ]
-    is: [ subscribable ]
     displayName: National Registry Parties
     get:
       queryParameters:
@@ -198,8 +197,9 @@ schemas:
             description: "The kennitala, either in full or partial entry."
             type: string
             required: false
-            example: '11111'                  
-      description: Returns information about parties from the Icelandic National Registry, both individuals and corporationss.
+            example: '11111'     
+      is: [ subscribable, pageable ]             
+      description: Returns information about parties from the Icelandic National Registry, both individuals and corporations.
       responses:
         200:
           body:
