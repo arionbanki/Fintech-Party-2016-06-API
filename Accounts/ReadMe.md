@@ -26,8 +26,8 @@ A single account identified by account ID.
 
 * **get** *(secured)*: Information about an account.
 
-### /accounts/accountTransactions
-Provides an overview of account transactions.It is not permitted to get all transactions at once. Instead you have to define page number and transactions per page.
+### /accounts/{accountId}/accountTransactions
+Provides an overview of account transactions. It is not permitted to get all transactions at once. Instead you have to define page number and transactions per page.
 
 * **get** *(secured)*: Returns list of transactions that can be filtered by transaction date. It is possible to get the data by defining page number and page size.
 

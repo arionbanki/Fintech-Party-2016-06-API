@@ -1,140 +1,122 @@
-{
-  "swagger": "2.0",
-  "info": {
-    "version": "",
-    "title": "Currency Rates API - Arion banki Fintech Party",
-    "description": "Undir þessari [þjónustu](/ \"e. resource, gæti verið þýtt is. auðlind\\viðfang\") er að finna upplýsingar um skráð gengi eftir tímabilum. Gögn þjónustunnar eiga að endurspegla uppfærða stöðu gengist sem sýnilegt er á heimasíðu Arion banka.\n\nHér má skoða mun ítarlegri [html lýsingu](/Currency.html \"sjá Currency.html\") á samningnum í GitHub repo fyrir Fintech partý.\nKöll á þjónustuna þurfa að innihalda API lykil en sem samþykkt teymi í Fintech Party munu geta sótt um slíka á portal þjónustunnar. Að öðru leiti er þjónustan ekki varin auðkenningu eða kallar á frekari heimildir.",
-    "license": {
-      "name": "",
-      "url": ""
-    }
-  },
-  "host": "arionapi-sandbox.azure-api.net",
+ï»¿{
   "basePath": "/currency/v1",
-  "securityDefinitions": {},
-  "schemes": [
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
-  "produces": [
-    "application/json"
-  ],
+  "definitions": {
+    "currencyWithBuyAndSellRateCollection": {
+      "properties": {
+        "currencyWithBuyAndSellRate": {
+          "items": {
+            "properties": {
+              "buyRate": {
+                "description": "Buy rate.",
+                "type": "number"
+              },
+              "currencyCode": {
+                "description": "Currency code.",
+                "type": "string"
+              },
+              "currencyTypeName": {
+                "description": "Descriptive name for the type.",
+                "enum": [
+                  "CentralBankRate",
+                  "ValitorRate",
+                  "BorgunRate"
+                ]
+              },
+              "midRate": {
+                "description": "Mid rate.",
+                "type": "number"
+              },
+              "sellRate": {
+                "description": "Selling rate.",
+                "type": "number"
+              },
+              "timestamp": {
+                "description": "Timestamp when the currency was valid.",
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            "required": [
+              "currencyCode",
+              "currencyTypeName",
+              "timestamp",
+              "buyRate",
+              "sellRate"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "totalCount": {
+          "description": "FjÃ¶ldi fÃ¦rslna Ã­ sem hÃ¦gt er aÃ° sÃ¦kja.",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "host": "arionapi-sandbox.azure-api.net",
+  "info": {
+    "description": "<h2>Um CurrencyRates - GengisupplÃ½singar</h2><br>Undir Ã¾essari <href='/' title='e. resource, gÃ¦ti veriÃ° Ã¾Ã½tt is. auÃ°lind\\viÃ°fang'>Ã¾jÃ³nustu</a> er aÃ° finna upplÃ½singar um skrÃ¡Ã° gengi eftir tÃ­mabilum. GÃ¶gn Ã¾jÃ³nustunnar eiga aÃ° endurspegla uppfÃ¦rÃ°a stÃ¶Ã°u gengist sem sÃ½nilegt er Ã¡ heimasÃ­Ã°u Arion banka.\n\nHÃ©r mÃ¡ skoÃ°a mun Ã­tarlegri <href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Currency/Currency.html' title='sjÃ¡ Currency.html'>html lÃ½singu</a> Ã¡ samningnum Ã­ GitHub repo fyrir Fintech partÃ½.\n\n<h2>Ã–ryggi</h2><br>KÃ¶ll Ã¡ Ã¾jÃ³nustuna Ã¾urfa aÃ° innihalda API lykil sem samÃ¾ykkt teymi Ã­ Fintech Party munu geta sÃ³tt um Ã¡ gÃ¡tt API viÃ°mÃ³tsins. AÃ° Ã¶Ã°ru leiti er Ã¾jÃ³nustan ekki varin auÃ°kenningu eÃ°a kallar Ã¡ frekari heimildir.\n",
+    "title": "Currency Rates API - Arion banki Fintech Party",
+    "version": "v1"
+  },
   "paths": {
-    "/currencyRates/{currencyTypeName}": {
+    "/currencyRates": {
       "get": {
-        "description": "Returns information about a particular exchange rate",
-        "tags": [
-          "currencyRates"
-        ],
-        "operationId": "Get_CurrencyRatesByCurrencyTypeName_",
-        "produces": [
-          "application/json"
-        ],
+        "description": "Returns information about available currency exhange rates",
         "parameters": [
           {
-            "name": "currencyTypeName",
-            "in": "path",
-            "required": true,
-            "x-is-map": false,
-            "default": "",
-            "description": ""
+            "description": "Used to send a valid subscription key.\n",
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/currencyRates/{currencyTypeName}": {
+      "get": {
+        "description": "Returns information about a particular exchange rate",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "currencyTypeName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Used to send a valid subscription key.\n",
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "schema": {
               "$ref": "#/definitions/currencyWithBuyAndSellRateCollection"
             }
           }
         }
       }
-    },
-    "/currencyRates": {
-      "get": {
-        "description": "Returns information about available currency exhange rates",
-        "tags": [
-          "currencyRates"
-        ],
-        "operationId": "Get_CurrencyRates_",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
     }
   },
-  "definitions": {
-    "currencyWithBuyAndSellRateCollection": {
-      "title": "currencyWithBuyAndSellRateCollection",
-      "type": "object",
-      "properties": {
-        "totalCount": {
-          "description": "Fjöldi færslna í sem hægt er að sækja.",
-          "default": ""
-        },
-        "currencyWithBuyAndSellRate": {
-          "description": "",
-          "type": "array",
-          "default": "",
-          "items": {
-            "$ref": "#/definitions/CurrencyWithBuyAndSellRate"
-          }
-        }
-      }
-    },
-    "CurrencyWithBuyAndSellRate": {
-      "title": "CurrencyWithBuyAndSellRate",
-      "type": "object",
-      "properties": {
-        "currencyCode": {
-          "description": "Currency code.",
-          "default": ""
-        },
-        "currencyTypeName": {
-          "description": "Descriptive name for the type.",
-          "$ref": "#/definitions/CurrencyTypeName",
-          "default": ""
-        },
-        "timestamp": {
-          "description": "Timestamp when the currency was valid.",
-          "default": ""
-        },
-        "buyRate": {
-          "description": "Buy rate.",
-          "default": ""
-        },
-        "sellRate": {
-          "description": "Selling rate.",
-          "default": ""
-        },
-        "midRate": {
-          "description": "Mid rate.",
-          "default": ""
-        }
-      },
-      "required": [
-        "currencyCode",
-        "currencyTypeName",
-        "timestamp",
-        "buyRate",
-        "sellRate"
-      ]
-    },
-    "CurrencyTypeName": {
-      "title": "CurrencyTypeName",
-      "enum": [
-        "CentralBankRate",
-        "ValitorRate",
-        "BorgunRate"
-      ]
-    }
-  }
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {},
+  "swagger": "2.0"
 }

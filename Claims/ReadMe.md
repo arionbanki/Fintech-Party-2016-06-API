@@ -2,7 +2,7 @@
 https://arionapi-sandbox.azure-api.net/claims/v1
 
 ### Um Claims - Innheimtukröfur
-Undir þessari [þjónustu](/ "e. resource, gæti verið þýtt is. auðlind\viðfang") er að vinna með innheimtukröfur innskráður notandi sem kröfuhafi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram. Þess utan uppfærir notandi gögnin með eigin aðgerðum og halda þau sér milli innskráninga.
+Undir þessari [þjónustu](/ "e. resource, gæti verið þýtt is. auðlind\viðfang") er að unnið með innheimtukröfur innskráður notandi sem kröfuhafi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram. Þess utan uppfærir notandi gögnin með eigin aðgerðum og halda þau sér milli innskráninga.
 
 Upplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka og B2B lausnir Arion banka og er því ekki  í boðið að vinna með auðkenni, kröfustofna eða aðgerðir félagaþjónustu sem stendur.
       
@@ -19,7 +19,7 @@ Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgan
 
 ### /claims
 
-* **get** *(secured)*: Returnes a list of claims belonging to the claimant used to make the API request.
+* **get** *(secured)*: Returns a list of claims belonging to the claimant used to make the API request.
 * **post** *(secured)*: Create a new claim.
 
 ### /claims/{claimId}
