@@ -1,0 +1,348 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Accounts API - Arion banki Fintech Party",
+    "version": "v1"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "description": "Retrieves information about available accounts.",
+        "operationId":  "Get Accounts",
+        "parameters": [
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "description": "Used to send a valid subscription key.\n",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/accountCollection"
+            }
+          }
+        }
+      }
+    },
+    "/{accountId}": {
+      "get": {
+        "description": "Information about an account.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "description": "Used to send a valid subscription key.\n",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/account"
+            }
+          }
+        }
+      }
+    },
+    "/accountTransactions": {
+      "get": {
+        "description": "Returns list of transactions that can be filtered by transaction date. It is possible to get the data by defining page number and page size.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page parameter defines the page number of the result set to return the data. For example, if your query returns 500 records, you can specify pageCount as 50 to return 50 records in a page, which implies that you’ll have 10 pages of data (50 records * 10 pages = 500). Now, if you want to return records 100-150, specify the page value as 3",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "minimum": 1
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "The perPage parameter defines the number of records to return per page.",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "maximum": 500
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "description": "Date from, inclusive",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "description": "Date to, inclusive",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "Account number being queried",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "description": "Used to send a valid subscription key.\n",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/transactionCollection"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "transactionCollection": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "type": "object",
+          "description": "Contains information on paging on the transaction overview.",
+          "properties": {
+            "totalPages": {
+              "type": "integer",
+              "description": "Total pages"
+            },
+            "totalRecords": {
+              "type": "integer",
+              "description": "Total number of transactions during period"
+            }
+          }
+        },
+        "transaction": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "AccountID": {
+                "type": "string",
+                "description": "The ID of the account. Unique number of an account issued by the bank."
+              },
+              "transactionID": {
+                "type": "string",
+                "description": "Unique identifier for this transaction with the originating system."
+              },
+              "transactionDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The date when this transaction was booked."
+              },
+              "valueDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Value Date. Used when transactions need to be corrected and new date for interest calculation is used instead. Notuð þegar verið er að leiðrétta færslur aftur í tímann og þá segir þessi dagsetning hvaða vaxtadag er miðað við."
+              },
+              "batchNumber": {
+                "type": "string",
+                "description": "Bunkan"
+              },
+              "redeemingBank": {
+                "type": "string",
+                "description": "The bank where the transaction originated."
+              },
+              "transactionKey": {
+                "type": "string",
+                "description": "Transaction Key. Indicates the type of transaction."
+              },
+              "reference": {
+                "type": "string"
+              },
+              "billNumber": {
+                "type": "string",
+                "description": "Bill number. Seven letter reference number."
+              },
+              "categoryCode": {
+                "type": "string",
+                "description": "Category code. Descripes the type of transaction, defined by the bank."
+              },
+              "category": {
+                "type": "string",
+                "description": "Expands on the category code and gives the fulltext explanation."
+              },
+              "referenceDetail": {
+                "type": "string",
+                "description": "Expands on the information in the reference, usually by trying to matching the information entered with person identification numbers."
+              },
+              "payorID": {
+                "type": "string",
+                "description": "Person ID of payor."
+              },
+              "amount": {
+                "type": "number",
+                "description": "The balance of the account after this transaction."
+              },
+              "balance": {
+                "type": "number",
+                "description": "The balance of the account after this transaction "
+              }
+            },
+            "required": [
+              "AccountID",
+              "transactionID",
+              "transactionDate",
+              "valueDate",
+              "batchNumber",
+              "redeemingBank",
+              "transactionKey",
+              "reference",
+              "billNumber",
+              "categoryCode",
+              "category",
+              "referenceDetail",
+              "payorID",
+              "amount",
+              "balance"
+            ]
+          }
+        }
+      },
+      "required": [
+        "paging"
+      ]
+    },
+    "account": {
+      "type": "object",
+      "description": "A bank account.",
+      "required": [
+        "accountID",
+        "overdraft",
+        "balance",
+        "availableAmount",
+        "totalAmountWaiting"
+      ],
+      "properties": {
+        "accountID": {
+          "type": "string",
+          "description": "The ID of the account."
+        },
+        "overdraft": {
+          "type": "number",
+          "description": "Overdraft permission of the account."
+        },
+        "balance": {
+          "type": "number",
+          "description": "The balance of the account."
+        },
+        "availableAmount": {
+          "type": "number",
+          "description": "The amount available to the account holder. Balance and overdraft used for calculation."
+        },
+        "status": {
+          "enum": [
+            "open",
+            "closed",
+            "onhold"
+          ],
+          "description": "The status of the account (open/closed/onhold)."
+        },
+        "totalAmountWaiting": {
+          "type": "number",
+          "description": "The total amount of transactions waiting and exceeding amount available. Transaction is executed as soon as the amount becomes available."
+        },
+        "accountOwnerID": {
+          "type": "string",
+          "description": "PersonID of account owner."
+        },
+        "customAccountName": {
+          "type": "string",
+          "description": "Name set by account owner. Account owner can name his/hers account. Name set by account owner. Account owner can name his/her description."
+        }
+      }
+    },
+    "accountCollection": {
+      "type": "object",
+      "properties": {
+        "totalCount": {
+          "type": "integer",
+          "description": "Fjöldi færslna í sem hægt er að sækja."
+        },
+        "account": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "accountID": {
+                "type": "string",
+                "description": "The ID of the account."
+              },
+              "overdraft": {
+                "type": "number",
+                "description": "Overdraft permission of the account."
+              },
+              "balance": {
+                "type": "number",
+                "description": "The balance of the account."
+              },
+              "availableAmount": {
+                "type": "number",
+                "description": "The amount available to the account holder. Balance and overdraft used for calculation."
+              },
+              "status": {
+                "enum": [
+                  "open",
+                  "closed",
+                  "onhold"
+                ],
+                "description": "The status of the account (open/closed/onhold)."
+              },
+              "totalAmountWaiting": {
+                "type": "number",
+                "description": "The total amount of transactions waiting and exceeding amount available. Transaction is executed as soon as the amount becomes available."
+              },
+              "accountOwnerID": {
+                "type": "string",
+                "description": "Personal identifier, kennitala, of account owner."
+              },
+              "customAccountName": {
+                "type": "string",
+                "description": "Name set by account owner. Account owner can name his/hers account. Name set by account owner. Account owner can name his/her account."
+              }
+            },
+            "required": [
+              "accountID",
+              "overdraft",
+              "balance",
+              "availableAmount",
+              "totalAmountWaiting"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "host": "arionapi-sandbox.azure-api.net",
+  "basePath": "/accounts/v1",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ]
+}

@@ -116,8 +116,8 @@
   },
   "host": "arionapi-sandbox.azure-api.net",
   "info": {
-    "description": "<h2>Um NationalRegistry - Þjóðskrá</h2><br>Undir þessari <href='/' title='e. resource, gæti verið þýtt is. auðlind\\viðfang'>þjónustu</a> má fletta upp í þjóðskrá, ef innskráður notandi hefur aðgang að henni. Virknin er sambærileg við uppflettingar sem notendur hafa aðgang í gegnum netbanka Arion banka. Ákveðið þýði af kennitölum er til staðar sem nota má fyrir aðgang að prófunargögnum.\n            \nHér má skoða mun ítarlegri <href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/NationalRegistry/NationalRegistry.html' title='sjá NationalRegistry.html'>html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.\n\n<h2>Öryggi</h2><br>Köll á þjónustuna þurfa að innihalda API lykil sem samþykkt teymi í Fintech Party munu geta sótt um á gátt API viðmótsins. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.\n\nSem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum undir auðlindinni.      \n",
-    "title": "National Registry API - Arion banki Fintech Party",
+    "description": "<h2>Um NationalRegistry - Þjóðskrá</h2><br>Undir þessari <a href='/' title='e. resource, gæti verið þýtt is. auðlind\\viðfang'>þjónustu</a> má fletta upp í þjóðskrá, ef innskráður notandi hefur aðgang að henni. Virknin er sambærileg við uppflettingar sem notendur hafa aðgang í gegnum netbanka Arion banka. Ákveðið þýði af kennitölum er til staðar sem nota má fyrir aðgang að prófunargögnum.\n            \nHér má skoða mun ítarlegri <a href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/NationalRegistry/NationalRegistry.html' title='sjá NationalRegistry.html'>html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.\n",
+    "title": "National Registry API",
     "version": "v1"
   },
   "paths": {
