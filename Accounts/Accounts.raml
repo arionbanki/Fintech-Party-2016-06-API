@@ -378,6 +378,7 @@ schemas:
                     ]
                   }
     /{accountId}:
+        displayName: Accounts - Get single account
         securedBy: [ oauth_2_0 ]
         is: [ subscribable ]
         description: A single account identified by account ID.
@@ -399,39 +400,33 @@ schemas:
                         "CustomAccountName": "Félag áhugamanna um heimabanka",
                         "Id": 1
                       }          
-    /accountTransactions:
-        securedBy: [ oauth_2_0 ]
-        is: [ date_searchable, pageable, subscribable ]        
-        displayName: Account transactions
-        description: Provides an overview of account transactions.It is not permitted to get all transactions at once. Instead you have to define page number and transactions per page.
-        get:          
-          description: Returns list of transactions that can be filtered by transaction date. It is possible to get the data by defining page number and page size.
-          queryParameters:
-            accountId:
-               displayName: Account number
-               type: string 
-               required: true
-               description: Account number being queried
-               example: 117526011462
-            dateFrom:
-               displayName: Start date
-               type: string
-               required: false
-               description: Date from, inclusive
-               example: 2012-01-31
-            dateTo:
-               displayName: Final date
-               type: string
-               required: false
-               description: Date to, inclusive
-               example: 2012-01-31
-          responses:
-            200:
-              body:
-                  application/json:
-                    schema: transactionCollection
-                    example: |
-                      {
-                        "transactionID": "1725704905",
-                        "transactionDate": "2012-01-30"
-                      }
+        /accountTransactions:
+            securedBy: [ oauth_2_0 ]
+            is: [ date_searchable, pageable, subscribable ]        
+            displayName: Account transactions
+            description: Provides an overview of account transactions. It is not permitted to get all transactions at once. Instead you have to define page number and transactions per page.
+            get:          
+              description: Returns list of transactions that can be filtered by transaction date. It is possible to get the data by defining page number and page size.
+              queryParameters:
+                dateFrom:
+                   displayName: Start date
+                   type: string
+                   required: false
+                   description: Date from, inclusive
+                   example: 2012-01-31
+                dateTo:
+                   displayName: Final date
+                   type: string
+                   required: false
+                   description: Date to, inclusive
+                   example: 2012-01-31
+              responses:
+                200:
+                  body:
+                      application/json:
+                        schema: transactionCollection
+                        example: |
+                          {
+                            "transactionID": "1725704905",
+                            "transactionDate": "2012-01-30"
+                          }

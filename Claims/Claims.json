@@ -1,291 +1,1330 @@
-{
-  "swagger": "2.0",
-  "info": {
-    "version": "",
-    "title": "Claims API - Arion banki Fintech Party",
-    "description": "Undir ˛essari [˛jÛnustu](/ \"e. resource, gÊti veri ˛˝tt is. aulind\\vifang\") er a vinna me innheimtukrˆfur innskr·ur notandi sem krˆfuhafi hefur agang a. ﬁegar um er a rÊa prÛfananotanda, eru b˙in til slembigˆgnin Ì fyrstu innskr·ningu sem notu eru svo ·fram. ﬁess utan uppfÊrir notandi gˆgnin me eigin agerum og halda ˛au sÈr milli innskr·ninga.\n\nUppl˝singarnar eru sambÊrilegar vi gˆgn sem notendur hafa agang Ì gegnum netbanka og B2B lausnir Arion banka og er ˛vÌ ekki  Ì boi a vinna me aukenni, krˆfustofna ea agerir fÈlaga˛jÛnustu sem stendur.\n      \nHÈr m· skoa mun Ìtarlegri [html l˝singu](/claims.html \"sj· Claims.html\") · samningnum Ì GitHub repo fyrir Fintech part˝.\nKˆll · ˛jÛnustuna ˛urfa a innihalda API lykil en sem sam˛ykkt teymi Ì Fintech Party munu geta sÛtt um slÌka · portal ˛jÛnustunnar. ﬁess utan er ˛jÛnustan varinn me OAuth 2.0 heimildarveitingu, sem ˝mist fylgir authorization_code ea implicit flÊi.\n      \nSem stendur er afmˆrkun heimilda nokku grÛf, aukenndur notandi fÊr agang a ˆllum uppl˝singum og agerum undir aulindinni. Õ framtÌinni m· sj· fyrir sÈr a mila tilteknum uppl˝singum sem notandi heimilar og sleppa ea jafnvel maska svÊi eftir ˛vÌ hva passar tengt ˛jÛnustuveitendum.",
-    "license": {
-      "name": "",
-      "url": ""
-    }
-  },
-  "host": "arionapi-sandbox.azure-api.net",
+Ôªø{
   "basePath": "/claims/v1",
-  "securityDefinitions": {
-    "auth": {
-      "type": "oauth2",
-      "flow": "implicit",
-      "authorizationUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize",
-      "tokenUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/token"
-    }
-  },
-  "schemes": [
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
-  "produces": [
-    "application/json"
-  ],
-  "paths": {
-    "/claims/{claimId}/claimTransactions": {
-      "get": {
-        "description": "Returnes a list of transactions that encapsulate†information about the status of a claim associated with a†particular†event in its lifetime.",
-        "tags": [
-          "claims"
-        ],
-        "operationId": "Get_ClaimsClaimTransactionsByClaimId_",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "claimId",
-            "in": "path",
-            "required": true,
-            "x-is-map": false,
-            "default": "",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
+  "definitions": {
+    "claim": {
+      "description": "Claim",
+      "properties": {
+        "amount": {
+          "description": "Amount of claim. Can't be changed after a partial payment has been made.",
+          "type": "string"
         },
-        "security": [
-          {
-            "auth": []
-          }
-        ]
-      }
-    },
-    "/claims/{claimId}": {
-      "get": {
-        "description": "Returns a representation of a claim.",
-        "tags": [
-          "claims"
-        ],
-        "operationId": "Get_ClaimsByClaimId_",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "claimId",
-            "in": "path",
-            "required": true,
-            "x-is-map": false,
-            "default": "",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
+        "billNumber": {
+          "description": "Billnumber, optional. Information provided by claimant.",
+          "type": "string"
         },
-        "security": [
-          {
-            "auth": []
-          }
-        ]
+        "billPresentmentSystem": {
+          "description": "Indicates the bill presentment system to which the claim pertains.",
+          "properties": {
+            "parameters": {
+              "description": "Parameters and values needed to display a unique document from a bill presentment system. (URL style)",
+              "type": "string"
+            },
+            "type": {
+              "description": "Which bill presentment system.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "cancellationDate": {
+          "description": "Date of cancellation, how long should the claim be valid in the system.",
+          "type": "string"
+        },
+        "claimID": {
+          "description": "The ID of the claim. Consists of claimantKennitala + dueDate + account. e.g. 660612998020160414032366000001",
+          "type": "string"
+        },
+        "claimKey": {
+          "properties": {
+            "account": {
+              "description": "The branch number of the claim, ledger number (66) and number of claim. ",
+              "type": "string"
+            },
+            "claimantKennitala": {
+              "description": "Claimant's kennitala.",
+              "type": "string"
+            },
+            "dueDate": {
+              "description": "Due date of the claim.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "claimantKennitala",
+            "account",
+            "dueDate"
+          ],
+          "type": "object"
+        },
+        "currencyInformation": {
+          "description": "For claims which are linked to a foreign currency.",
+          "properties": {
+            "currency": {
+              "type": "string"
+            },
+            "currencyInformationPaymentRate": {
+              "enum": [
+                "dueDateRate",
+                "paymentDateRate"
+              ]
+            },
+            "currencyInformationReferenceRate": {
+              "enum": [
+                "exchangeRate",
+                "noteRate",
+                "centralBankMidRate",
+                "centralBankStatutoryRate"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "customerNumber": {
+          "description": "Customer number, optional key used by claimant to identify payor. Necessary if payor is to be able to enable automotic debiting of claims.",
+          "type": "string"
+        },
+        "defaultCharge": {
+          "description": "Default charge that claims incur when they default, either a percentage or fixed amount",
+          "properties": {
+            "firstDefaultCharge": {
+              "description": "First default charge.",
+              "properties": {
+                "days": {
+                  "description": "Indicates the number of days relative to reference date when rule takes effect.",
+                  "type": "number"
+                },
+                "value": {
+                  "description": "Amount or percentage of default charge.",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "days",
+                "value"
+              ],
+              "type": "object"
+            },
+            "referenceDate": {
+              "description": "Indicates which date is used as basis for calculation.",
+              "enum": [
+                "dueDate",
+                "finalDueDate"
+              ]
+            },
+            "secondDefaultCharge": {
+              "description": "Second default charge.",
+              "properties": {
+                "days": {
+                  "description": "Indicates the count of days relative to reference date when rule takes effect.",
+                  "type": "number"
+                },
+                "value": {
+                  "description": "Amount or percentage of default charge.",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "days",
+                "value"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "firstDefaultCharge",
+            "secondDefaultCharge",
+            "referenceDate"
+          ],
+          "type": "object"
+        },
+        "defaultInterest": {
+          "description": "Rule for calculating default interest.",
+          "properties": {
+            "defaultInterestRule": {
+              "description": "Determines if the claim should incur default interests after the reference date and if so, how it should be calculated. noDefaultInterest = No default interest. defaultInterestAmount = Default interests are calculations are based on claim amount. defaultInterestAmountAndDefaultCharge = Default interests are calculations are based on claim amount and default charge.",
+              "enum": [
+                "noDefaultInterest",
+                "defaultInterestAmount",
+                "defaultInterestAmountAndDefaultCharge"
+              ]
+            },
+            "percentage": {
+              "description": "If used, default interest on a claim is calculated based on this percentage and not on the default interest period, as in the case of Central Bank default interest. Not specifying the percentage ensures that the Central Bank default interest is used, and interest is compounded every twelve months, i.e. the default interest is added to the principal.",
+              "type": "number"
+            },
+            "specialCode": {
+              "description": "Sending in a special code is the only way to set certain interest rules that map to RB Penalty interest rules. Further documentation can be found in RB documentation.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "defaultInterestRule",
+            "percentage"
+          ],
+          "type": "object"
+        },
+        "discount": {
+          "description": "Two amount or percentage fields can be attached to a claim base, the first and second discount, which are used to reduce the payment if made before a fixed date.",
+          "properties": {
+            "firstDiscount": {
+              "description": "First discount",
+              "properties": {
+                "amount": {
+                  "description": "Base for discount or default charge.",
+                  "type": "number"
+                },
+                "days": {
+                  "description": "Indicates the count of days relative to reference date when rule takes effect.",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "days",
+                "amount"
+              ],
+              "type": "object"
+            },
+            "isPostRefDate": {
+              "description": "Indicates whether number of days is before or after reference date.",
+              "type": "boolean"
+            },
+            "referenceDate": {
+              "description": "Indicates which date is used as basis for calculation.",
+              "enum": [
+                "dueDate",
+                "finalDueDate"
+              ],
+              "type": "integer"
+            },
+            "secondDiscount": {
+              "description": "Second discount.",
+              "properties": {
+                "amount": {
+                  "description": "Base for discount or default charge.",
+                  "type": "number"
+                },
+                "days": {
+                  "description": "Indicates the count of days relative to reference date when rule takes effect.",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "days",
+                "amount"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "firstDiscount",
+            "secondDiscount",
+            "referenceDate"
+          ],
+          "type": "object"
+        },
+        "finalDueDate": {
+          "description": "Final due date of claim.",
+          "type": "string"
+        },
+        "identifier": {
+          "description": "Three letter unique identifier of the claimant that the claim relates to. Indicates which of claimant's accounts the system should use. e.g. 001",
+          "type": "string"
+        },
+        "isPartialPaymentAllowed": {
+          "description": "Indicates whether partial payment is permitted.",
+          "type": "boolean"
+        },
+        "noticeAndPaymentFee": {
+          "description": "Charge for calculation and printout of payment slip and sending to payer.",
+          "properties": {
+            "paperless": {
+              "description": "Charge used if claim is not printed.",
+              "type": "number"
+            },
+            "printing": {
+              "description": "Charge used if claim is printed.",
+              "type": "number"
+            }
+          },
+          "required": [
+            "printing",
+            "paperless"
+          ],
+          "type": "object"
+        },
+        "otherCosts": {
+          "description": "Other cost, for special charges to be paid by the payer of the claim.",
+          "type": "number"
+        },
+        "otherDefaultCosts": {
+          "description": "For special charges, e.g. secondary collection charge, to be paid by the payer of the claim.",
+          "type": "number"
+        },
+        "payorKennitala": {
+          "description": "Payor's kennitala.",
+          "type": "string"
+        },
+        "permitOutOfSequencePayment": {
+          "description": "Payment of claim allowed if earlier due date is unpaid.",
+          "type": "boolean"
+        },
+        "printing": {
+          "description": "Contains information used for displaying and printing the claim. Changing this info on a claim that has already been created will not result in it being printed again.",
+          "properties": {
+            "claimantAddress": {
+              "description": "Alternate address for claimant if address from the National Register should not be used.",
+              "properties": {
+                "addressLine1": {
+                  "description": "First part of address.",
+                  "type": "string"
+                },
+                "addressLine2": {
+                  "description": "First part of address.",
+                  "type": "string"
+                },
+                "city": {
+                  "description": "Place of residence, be it city, town, etc.",
+                  "type": "string"
+                },
+                "country": {
+                  "description": "Country.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of resident/recipient.",
+                  "type": "string"
+                },
+                "postalCode": {
+                  "description": "Postal code.",
+                  "type": "string"
+                },
+                "region": {
+                  "description": "The country region where the person lives.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "addressLine1",
+                "addressLine2",
+                "postalCode",
+                "city",
+                "region",
+                "country"
+              ],
+              "type": "object"
+            },
+            "comments": {
+              "description": "Comments that are displayed on the lower half of the payment slip.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "itemRows": {
+              "description": "Breakdown of items that a claim consists of.",
+              "properties": {
+                "itemRow": {
+                  "description": "Breakdown items that a claim consists of.",
+                  "items": {
+                    "description": "A sub-item of a claim, used for printing.",
+                    "properties": {
+                      "amount": {
+                        "description": "The amount of the item.",
+                        "type": "number"
+                      },
+                      "text": {
+                        "description": "Item text.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "payorAddress": {
+              "description": "Alternate address for payor if address from the National Register should not be used.",
+              "properties": {
+                "addressLine1": {
+                  "description": "First part of address.",
+                  "type": "string"
+                },
+                "addressLine2": {
+                  "description": "First part of address.",
+                  "type": "string"
+                },
+                "city": {
+                  "description": "Place of residence, be it city, town, etc.",
+                  "type": "string"
+                },
+                "country": {
+                  "description": "Country.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of resident/recipient.",
+                  "type": "string"
+                },
+                "postalCode": {
+                  "description": "Postal code.",
+                  "type": "string"
+                },
+                "region": {
+                  "description": "The country region where the person lives.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "addressLine1",
+                "addressLine2",
+                "postalCode",
+                "city",
+                "region",
+                "country"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "claimantAddress",
+            "payorAddress"
+          ],
+          "type": "object"
+        },
+        "reference": {
+          "description": "Refence determined by claimant. Alphanumeric, maximum 16 letters.",
+          "type": "string"
+        },
+        "state": {
+          "description": "State of the claim. Indicates the collections state the claim is in.",
+          "enum": [
+            "primary",
+            "secondary",
+            "legal"
+          ]
+        },
+        "status": {
+          "description": "Status of the claim.",
+          "enum": [
+            "unpaid",
+            "paid",
+            "cancelled",
+            "invalid"
+          ]
+        }
       },
-      "patch": {
-        "description": "Allows you to modify the properties of a claim. For example to cancel a claim.",
-        "tags": [
-          "claims"
-        ],
-        "operationId": "Update_ClaimsByClaimId_",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "claimId",
-            "in": "path",
-            "required": true,
-            "x-is-map": false,
-            "default": "",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "auth": []
-          }
-        ]
-      }
+      "required": [
+        "claimID",
+        "payorKennitala",
+        "cancellationDate",
+        "identifier",
+        "amount",
+        "reference",
+        "finalDueDate",
+        "billNumber",
+        "customerNumber"
+      ],
+      "type": "object"
     },
+    "claimCollection": {
+      "properties": {
+        "claim": {
+          "items": {
+            "$ref": "#/definitions/claim"
+          },
+          "type": "array"
+        },
+        "paging": {
+          "description": "Contains information on paging on the claim overview.",
+          "properties": {
+            "totalPages": {
+              "description": "Total pages",
+              "type": "integer"
+            },
+            "totalRecords": {
+              "description": "Total number of claims during period",
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "paging"
+      ],
+      "type": "object"
+    },
+    "claimTransaction": {
+      "description": "Claim Transaction",
+      "properties": {
+        "claim": {
+          "properties": {
+            "amount": {
+              "description": "Amount of claim. Can't be changed after a partial payment has been made.",
+              "type": "string"
+            },
+            "billNumber": {
+              "description": "Billnumber, optional. Information provided by claimant.",
+              "type": "string"
+            },
+            "billPresentmentSystem": {
+              "description": "Indicates the bill presentment system to which the claim pertains.",
+              "properties": {
+                "parameters": {
+                  "description": "Parameters and values needed to display a unique document from a bill presentment system. (URL style)",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Which bill presentment system.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "cancellationDate": {
+              "description": "Date of cancellation, how long should the claim be valid in the system.",
+              "type": "string"
+            },
+            "claimID": {
+              "description": "The ID of the claim. Consists of claimantKennitala + dueDate + account. e.g. 660612998020160414032366000001",
+              "type": "string"
+            },
+            "claimKey": {
+              "properties": {
+                "account": {
+                  "description": "The branch number of the claim, ledger number (66) and number of claim. ",
+                  "type": "string"
+                },
+                "claimantKennitala": {
+                  "description": "Claimant's kennitala.",
+                  "type": "string"
+                },
+                "dueDate": {
+                  "description": "Due date of the claim.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "claimantKennitala",
+                "account",
+                "dueDate"
+              ],
+              "type": "object"
+            },
+            "currencyInformation": {
+              "description": "For claims which are linked to a foreign currency.",
+              "properties": {
+                "currency": {
+                  "type": "string"
+                },
+                "currencyInformationPaymentRate": {
+                  "enum": [
+                    "dueDateRate",
+                    "paymentDateRate"
+                  ]
+                },
+                "currencyInformationReferenceRate": {
+                  "enum": [
+                    "exchangeRate",
+                    "noteRate",
+                    "centralBankMidRate",
+                    "centralBankStatutoryRate"
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            "customerNumber": {
+              "description": "Customer number, optional key used by claimant to identify payor. Necessary if payor is to be able to enable automotic debiting of claims.",
+              "type": "string"
+            },
+            "defaultCharge": {
+              "description": "Default charge that claims incur when they default, either a percentage or fixed amount",
+              "properties": {
+                "firstDefaultCharge": {
+                  "description": "First default charge.",
+                  "properties": {
+                    "days": {
+                      "description": "Indicates the number of days relative to reference date when rule takes effect.",
+                      "type": "number"
+                    },
+                    "value": {
+                      "description": "Amount or percentage of default charge.",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "value"
+                  ],
+                  "type": "object"
+                },
+                "referenceDate": {
+                  "description": "Indicates which date is used as basis for calculation.",
+                  "enum": [
+                    "dueDate",
+                    "finalDueDate"
+                  ]
+                },
+                "secondDefaultCharge": {
+                  "description": "Second default charge.",
+                  "properties": {
+                    "days": {
+                      "description": "Indicates the count of days relative to reference date when rule takes effect.",
+                      "type": "number"
+                    },
+                    "value": {
+                      "description": "Amount or percentage of default charge.",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "value"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "firstDefaultCharge",
+                "secondDefaultCharge",
+                "referenceDate"
+              ],
+              "type": "object"
+            },
+            "defaultInterest": {
+              "description": "Rule for calculating default interest.",
+              "properties": {
+                "defaultInterestRule": {
+                  "description": "Determines if the claim should incur default interests after the reference date and if so, how it should be calculated. noDefaultInterest = No default interest. defaultInterestAmount = Default interests are calculations are based on claim amount. defaultInterestAmountAndDefaultCharge = Default interests are calculations are based on claim amount and default charge.",
+                  "enum": [
+                    "noDefaultInterest",
+                    "defaultInterestAmount",
+                    "defaultInterestAmountAndDefaultCharge"
+                  ]
+                },
+                "percentage": {
+                  "description": "If used, default interest on a claim is calculated based on this percentage and not on the default interest period, as in the case of Central Bank default interest. Not specifying the percentage ensures that the Central Bank default interest is used, and interest is compounded every twelve months, i.e. the default interest is added to the principal.",
+                  "type": "number"
+                },
+                "specialCode": {
+                  "description": "Sending in a special code is the only way to set certain interest rules that map to RB Penalty interest rules. Further documentation can be found in RB documentation.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "defaultInterestRule",
+                "percentage"
+              ],
+              "type": "object"
+            },
+            "discount": {
+              "description": "Two amount or percentage fields can be attached to a claim base, the first and second discount, which are used to reduce the payment if made before a fixed date.",
+              "properties": {
+                "firstDiscount": {
+                  "description": "First discount",
+                  "properties": {
+                    "amount": {
+                      "description": "Base for discount or default charge.",
+                      "type": "number"
+                    },
+                    "days": {
+                      "description": "Indicates the count of days relative to reference date when rule takes effect.",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "amount"
+                  ],
+                  "type": "object"
+                },
+                "isPostRefDate": {
+                  "description": "Indicates whether number of days is before or after reference date.",
+                  "type": "boolean"
+                },
+                "referenceDate": {
+                  "description": "Indicates which date is used as basis for calculation.",
+                  "enum": [
+                    "dueDate",
+                    "finalDueDate"
+                  ],
+                  "type": "integer"
+                },
+                "secondDiscount": {
+                  "description": "Second discount.",
+                  "properties": {
+                    "amount": {
+                      "description": "Base for discount or default charge.",
+                      "type": "number"
+                    },
+                    "days": {
+                      "description": "Indicates the count of days relative to reference date when rule takes effect.",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "amount"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "firstDiscount",
+                "secondDiscount",
+                "referenceDate"
+              ],
+              "type": "object"
+            },
+            "finalDueDate": {
+              "description": "Final due date of claim.",
+              "type": "string"
+            },
+            "identifier": {
+              "description": "Three letter unique identifier of the claimant that the claim relates to. Indicates which of claimant's accounts the system should use. e.g. 001",
+              "type": "string"
+            },
+            "isPartialPaymentAllowed": {
+              "description": "Indicates whether partial payment is permitted.",
+              "type": "boolean"
+            },
+            "noticeAndPaymentFee": {
+              "description": "Charge for calculation and printout of payment slip and sending to payer.",
+              "properties": {
+                "paperless": {
+                  "description": "Charge used if claim is not printed.",
+                  "type": "number"
+                },
+                "printing": {
+                  "description": "Charge used if claim is printed.",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "printing",
+                "paperless"
+              ],
+              "type": "object"
+            },
+            "otherCosts": {
+              "description": "Other cost, for special charges to be paid by the payer of the claim.",
+              "type": "number"
+            },
+            "otherDefaultCosts": {
+              "description": "For special charges, e.g. secondary collection charge, to be paid by the payer of the claim.",
+              "type": "number"
+            },
+            "payorKennitala": {
+              "description": "Payor's kennitala.",
+              "type": "string"
+            },
+            "permitOutOfSequencePayment": {
+              "description": "Payment of claim allowed if earlier due date is unpaid.",
+              "type": "boolean"
+            },
+            "printing": {
+              "description": "Contains information used for displaying and printing the claim. Changing this info on a claim that has already been created will not result in it being printed again.",
+              "properties": {
+                "claimantAddress": {
+                  "description": "Alternate address for claimant if address from the National Register should not be used.",
+                  "properties": {
+                    "addressLine1": {
+                      "description": "First part of address.",
+                      "type": "string"
+                    },
+                    "addressLine2": {
+                      "description": "First part of address.",
+                      "type": "string"
+                    },
+                    "city": {
+                      "description": "Place of residence, be it city, town, etc.",
+                      "type": "string"
+                    },
+                    "country": {
+                      "description": "Country.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Name of resident/recipient.",
+                      "type": "string"
+                    },
+                    "postalCode": {
+                      "description": "Postal code.",
+                      "type": "string"
+                    },
+                    "region": {
+                      "description": "The country region where the person lives.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "addressLine1",
+                    "addressLine2",
+                    "postalCode",
+                    "city",
+                    "region",
+                    "country"
+                  ],
+                  "type": "object"
+                },
+                "comments": {
+                  "description": "Comments that are displayed on the lower half of the payment slip.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "itemRows": {
+                  "description": "Breakdown of items that a claim consists of.",
+                  "properties": {
+                    "itemRow": {
+                      "description": "Breakdown items that a claim consists of.",
+                      "items": {
+                        "description": "A sub-item of a claim, used for printing.",
+                        "properties": {
+                          "amount": {
+                            "description": "The amount of the item.",
+                            "type": "number"
+                          },
+                          "text": {
+                            "description": "Item text.",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                },
+                "payorAddress": {
+                  "description": "Alternate address for payor if address from the National Register should not be used.",
+                  "properties": {
+                    "addressLine1": {
+                      "description": "First part of address.",
+                      "type": "string"
+                    },
+                    "addressLine2": {
+                      "description": "First part of address.",
+                      "type": "string"
+                    },
+                    "city": {
+                      "description": "Place of residence, be it city, town, etc.",
+                      "type": "string"
+                    },
+                    "country": {
+                      "description": "Country.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Name of resident/recipient.",
+                      "type": "string"
+                    },
+                    "postalCode": {
+                      "description": "Postal code.",
+                      "type": "string"
+                    },
+                    "region": {
+                      "description": "The country region where the person lives.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "addressLine1",
+                    "addressLine2",
+                    "postalCode",
+                    "city",
+                    "region",
+                    "country"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "claimantAddress",
+                "payorAddress"
+              ],
+              "type": "object"
+            },
+            "reference": {
+              "description": "Refence determined by claimant. Alphanumeric, maximum 16 letters.",
+              "type": "string"
+            },
+            "state": {
+              "description": "State of the claim. Indicates the collections state the claim is in.",
+              "enum": [
+                "primary",
+                "secondary",
+                "legal"
+              ]
+            },
+            "status": {
+              "description": "Status of the claim.",
+              "enum": [
+                "unpaid",
+                "paid",
+                "cancelled",
+                "invalid"
+              ]
+            }
+          },
+          "required": [
+            "claimID",
+            "payorKennitala",
+            "cancellationDate",
+            "identifier",
+            "amount",
+            "reference",
+            "finalDueDate",
+            "billNumber",
+            "customerNumber"
+          ],
+          "type": "object"
+        },
+        "payment": {
+          "properties": {
+            "amount": {
+              "description": "Amount paid.",
+              "type": "string"
+            },
+            "amountDeposited": {
+              "description": "Amount deposited in the account used for the disposal of payments.",
+              "type": "number"
+            },
+            "batchNumber": {
+              "description": "Batch number of payment.",
+              "type": "string"
+            },
+            "billNumber": {
+              "description": "Billnumber, optional. Information provided by claimant.",
+              "type": "string"
+            },
+            "bookingDate": {
+              "description": "The date when the transaction is booked.",
+              "type": "string"
+            },
+            "capitalGainsTax": {
+              "description": "Withheld capital gains tax.",
+              "type": "number"
+            },
+            "categoryCode": {
+              "description": "Claimant‚Äôs text key, explanation of payment. Optional property of claim.",
+              "type": "string"
+            },
+            "claimKey": {
+              "properties": {
+                "account": {
+                  "description": "The branch number of the claim, ledger number (66) and number of claim. ",
+                  "type": "string"
+                },
+                "claimantKennitala": {
+                  "description": "Claimant's kennitala.",
+                  "type": "string"
+                },
+                "dueDate": {
+                  "description": "Due date of the claim.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "claimantKennitala",
+                "account",
+                "dueDate"
+              ],
+              "type": "object"
+            },
+            "currencyInformation": {
+              "description": "Currency information, only available for forex claims.",
+              "properties": {
+                "currency": {
+                  "type": "string"
+                },
+                "currencyInformationPaymentRate": {
+                  "enum": [
+                    "dueDateRate",
+                    "paymentDateRate"
+                  ]
+                },
+                "currencyInformationReferenceRate": {
+                  "enum": [
+                    "exchangeRate",
+                    "noteRate",
+                    "centralBankMidRate",
+                    "centralBankStatutoryRate"
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            "customerNumber": {
+              "description": "Customer number of payor, claimant's unique code for the customer.",
+              "type": "string"
+            },
+            "defaultChargeAmount": {
+              "description": "Default charge paid.",
+              "type": "number"
+            },
+            "defaultInterestAmount": {
+              "description": "Paid default interest.",
+              "type": "number"
+            },
+            "discountAmount": {
+              "description": "Discount granted.",
+              "type": "number"
+            },
+            "finalDueDate": {
+              "description": "Final due date of claim.",
+              "type": "string"
+            },
+            "identifier": {
+              "description": "The current unique identifier of the claimant that the claim relates to.",
+              "type": "string"
+            },
+            "legalCollectionIdentifier": {
+              "description": "The identifier of the legal collection party that handles the claim when it has been marked for legal collection, e.g. LH3.",
+              "type": "string"
+            },
+            "noticeChargeAmount": {
+              "description": "Notice charge paid.",
+              "type": "number"
+            },
+            "otherCostsAmount": {
+              "description": "Other costs paid.",
+              "type": "number"
+            },
+            "otherDefaultCostsAmount": {
+              "description": "Other default costs paid.",
+              "type": "number"
+            },
+            "paymentType": {
+              "description": "Type of payment that is made.",
+              "enum": [
+                "complete",
+                "partial",
+                "refund"
+              ]
+            },
+            "payorKennitala": {
+              "description": "Payor's kennitala.",
+              "type": "string"
+            },
+            "primaryIdentifier": {
+              "description": "The original unique identifier of the claimant that the claim relates to.",
+              "type": "string"
+            },
+            "redeemingBank": {
+              "description": "What bank the payment comes from.",
+              "type": "string"
+            },
+            "reference": {
+              "description": "Reference determined by claimant.",
+              "type": "string"
+            },
+            "secondaryCollectionIdentifier": {
+              "description": "The identifier of the secondary collection party that handles the claim when it has been marked for secondary collection, e.g. MI2.",
+              "type": "string"
+            },
+            "totalAmount": {
+              "description": "Total amount paid, with default interest and costs.",
+              "type": "number"
+            },
+            "transactionDate": {
+              "description": "The date on which a transaction in the Claims File is effected.",
+              "type": "string"
+            },
+            "valueDate": {
+              "description": "The validation date used to calculate default interests and charges.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "payorKennitala",
+            "amount"
+          ],
+          "type": "object"
+        },
+        "transactionDate": {
+          "description": "Sent letter associated with the claim.",
+          "type": "string"
+        },
+        "transactionType": {
+          "description": "The types of transaction associated with a claim.",
+          "enum": [
+            "creation",
+            "cancellation",
+            "update",
+            "payment",
+            "refundClaimCreation",
+            "reAdjustment",
+            "paymentReAdjustment",
+            "partialPaymentReAdjustment",
+            "transferFromOldBank",
+            "optionalClaimCancellationByPayor",
+            "refundPayment"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "claimTransactionCollection": {
+      "properties": {
+        "claimTransaction": {
+          "items": {
+            "$ref": "#/definitions/claimTransaction"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "host": "arionapi-sandbox.azure-api.net",
+  "info": {
+    "description": "<h2>Um Claims - Innheimtukr√∂fur</h2><br>Undir √æessari <href='/' title='e. resource, g√¶ti veri√∞ √æ√Ωtt is. au√∞lind\\vi√∞fang'>√æj√≥nustu</a> er a√∞ unni√∞ me√∞ innheimtukr√∂fur innskr√°√∞ur notandi sem kr√∂fuhafi hefur a√∞gang a√∞. √ûegar um er a√∞ r√¶√∞a pr√≥fananotanda, eru b√∫in til slembig√∂gnin √≠ fyrstu innskr√°ningu sem notu√∞ eru svo √°fram. √ûess utan uppf√¶rir notandi g√∂gnin me√∞ eigin a√∞ger√∞um og halda √æau s√©r milli innskr√°ninga.\n\nUppl√Ωsingarnar eru samb√¶rilegar vi√∞ g√∂gn sem notendur hafa a√∞gang √≠ gegnum netbanka og B2B lausnir Arion banka og er √æv√≠ ekki  √≠ bo√∞i√∞ a√∞ vinna me√∞ au√∞kenni, kr√∂fustofna e√∞a a√∞ger√∞ir f√©laga√æj√≥nustu sem stendur.\n      \nH√©r m√° sko√∞a mun √≠tarlegri <href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Claims/Claims.html' title='sj√° Claims.html'>html l√Ωsingu</a> √° samningnum √≠ GitHub repo fyrir Fintech part√Ω.\n\n<h2>√ñryggi</h2><br>K√∂ll √° √æj√≥nustuna √æurfa a√∞ innihalda API lykil sem sam√æykkt teymi √≠ Fintech Party munu geta s√≥tt um √° g√°tt API vi√∞m√≥tsins. √ûess utan er √æj√≥nustan varinn me√∞ OAuth 2.0 heimildarveitingu, sem √Ωmist fylgir authorization_code e√∞a implicit fl√¶√∞i.\n      \nSem stendur er afm√∂rkun heimilda nokku√∞ gr√≥f, au√∞kenndur notandi f√¶r a√∞gang a√∞ √∂llum uppl√Ωsingum og a√∞ger√∞um undir au√∞lindinni. √ç framt√≠√∞inni m√° sj√° fyrir s√©r a√∞ mi√∞la tilteknum uppl√Ωsingum sem notandi heimilar og sleppa e√∞a jafnvel maska sv√¶√∞i eftir √æv√≠ hva√∞ passar tengt √æj√≥nustuveitendum.\n",
+    "title": "Claims API - Arion banki Fintech Party",
+    "version": "v1"
+  },
+  "paths": {
     "/claims": {
       "get": {
-        "description": "Returnes a list of claims belonging to the claimant used to make the API request.",
-        "tags": [
-          "claims"
-        ],
-        "operationId": "Get_Claims_",
-        "produces": [
-          "application/json"
-        ],
+        "description": "Returns a list of claims belonging to the claimant used to make the API request.",
         "parameters": [
           {
+            "default": 1,
+            "description": "The page parameter defines the page number of the result set to return the data. For example, if your query returns 500 records, you can specify pageCount as 50 to return 50 records in a page, which implies that you‚Äôll have 10 pages of data (50 records * 10 pages = 500). Now, if you want to return records 100-150, specify the page value as 3",
+            "in": "query",
+            "minimum": 1,
+            "name": "page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "default": 10,
+            "description": "The perPage parameter defines the number of records to return per page.",
+            "in": "query",
+            "maximum": 500,
+            "name": "perPage",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "description": "The kennitala of the claimant whose data is being queried. If empty, data will be returned for all claimants linked to the authenticated user.",
+            "in": "query",
             "name": "claimantKennitala",
-            "in": "query",
             "required": false,
-            "x-is-map": false,
-            "default": "",
-            "description": "The kennitala of the claimant whose data is being queried. If empty, data will be returned for all claimants linked to the authenticated user."
+            "type": "string"
           },
           {
+            "description": "The unique identifier of the claimant used to filter the query. If empty, data will be returned for all identifiers.",
+            "in": "query",
             "name": "identifier",
-            "in": "query",
             "required": false,
-            "x-is-map": false,
-            "default": "",
-            "description": "The unique identifier of the claimant used to filter the query. If empty, data will be returned for all identifiers."
+            "type": "string"
           },
           {
+            "description": "Payor's kennitala.",
+            "in": "query",
             "name": "payorKennitala",
-            "in": "query",
             "required": false,
-            "x-is-map": false,
-            "default": "",
-            "description": "Payor's kennitala."
+            "type": "string"
           },
           {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "x-is-map": false,
+            "description": "Status of the claim.",
             "enum": [
               "unpaid",
               "paid",
               "cancelled",
               "invalid"
             ],
-            "default": "",
-            "description": "Status of the claim."
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "type": "string"
           },
           {
-            "name": "state",
-            "in": "query",
-            "required": false,
-            "x-is-map": false,
+            "description": "State of the claim. Indicates the collections state the claim is in.",
             "enum": [
               "primary",
               "secondary",
               "legal"
             ],
-            "default": "",
-            "description": "State of the claim. Indicates the collections state the claim is in."
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "type": "string"
           },
           {
-            "name": "referenceDate",
-            "in": "query",
-            "required": false,
-            "x-is-map": false,
+            "description": "Reference date for the datespan of the query.",
             "enum": [
               "duedate",
               "finalduedate",
               "cancellationdate",
               "creationdate"
             ],
-            "default": "",
-            "description": "Reference date for the datespan of the query."
+            "in": "query",
+            "name": "referenceDate",
+            "required": false,
+            "type": "string"
           },
           {
+            "description": "Date from inclusive.",
+            "in": "query",
             "name": "dateFrom",
-            "in": "query",
             "required": false,
-            "x-is-map": false,
-            "default": "",
-            "description": "Date from inclusive."
+            "type": "string"
           },
           {
-            "name": "dateTo",
+            "description": "Date to inclusive.",
             "in": "query",
+            "name": "dateTo",
             "required": false,
-            "x-is-map": false,
-            "default": "",
-            "description": "Date to inclusive."
+            "type": "string"
+          },
+          {
+            "description": "Used to send a valid subscription key.\n",
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/claimCollection"
+            }
           }
-        },
-        "security": [
-          {
-            "auth": []
-          }
-        ]
+        }
       },
       "post": {
         "description": "Create a new claim.",
-        "tags": [
-          "claims"
-        ],
-        "operationId": "Create_Claims_",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
             "required": true,
-            "x-is-map": false,
-            "default": "",
-            "description": "",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/claim"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/claim"
+            }
           }
-        },
-        "security": [
+        }
+      }
+    },
+    "/claims/{claimId}": {
+      "get": {
+        "description": "Returns a representation of a claim.",
+        "parameters": [
           {
-            "auth": []
+            "in": "path",
+            "name": "claimId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Used to send a valid subscription key.\n",
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "type": "string"
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/claim"
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Allows you to modify the properties of a claim. For example to cancel a claim.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "claimId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Used to send a valid subscription key.\n",
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/claim"
+            }
+          }
+        }
+      }
+    },
+    "/claims/{claimId}/claimTransactions": {
+      "get": {
+        "description": "Returnes a list of transactions that encapsulate¬†information about the status of a claim associated with a¬†particular¬†event in its lifetime.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "claimId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Used to send a valid subscription key.\n",
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/claimTransactionCollection"
+            }
+          }
+        }
       }
     }
   },
-  "definitions": {
-    "statusEnum": {
-      "title": "statusEnum",
-      "enum": [
-        "unpaid",
-        "paid",
-        "cancelled",
-        "invalid"
-      ]
-    },
-    "stateEnum": {
-      "title": "stateEnum",
-      "enum": [
-        "primary",
-        "secondary",
-        "legal"
-      ]
-    },
-    "referenceDateEnum": {
-      "title": "referenceDateEnum",
-      "enum": [
-        "duedate",
-        "finalduedate",
-        "cancellationdate",
-        "creationdate"
-      ]
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "oauth_2_0_undefined": {
+      "authorizationUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize",
+      "description": "OAuth2 is a protocol that lets external apps request authorization to private\ndetails in a user's financial data.\n",
+      "scopes": {
+        "financial": ""
+      },
+      "flow": "implicit",
+      "type": "oauth2"
     }
-  }
+  },
+  "swagger": "2.0"
 }
