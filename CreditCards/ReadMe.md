@@ -6,7 +6,7 @@ Undir þessari [þjónustu](/ "e. resource, gæti verið þýtt is. auðlind\vi�
 
 Upplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Grunnupplýsingar um eiginleika greiðslukorts má skoða en undir hverjum korti má svo nálgast hreyfingar eftir tímabilum.
       
-Hér má skoða mun ítarlegri [html lýsingu](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/CreditCards/CreditCards.html "sjá CreditCards.html") á samningnum í GitHub repo fyrir Fintech partý.
+Hér má skoða [html lýsingu](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/CreditCards/CreditCards.html "sjá CreditCards.html") á samningnum í GitHub repo fyrir Fintech partý.
 
 ### Öryggi
 Köll á þjónustuna þurfa að innihalda API lykil sem samþykkt teymi í Fintech Party munu geta sótt um á gátt API viðmótsins. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.

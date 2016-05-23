@@ -60,7 +60,7 @@
   },
   "host": "arionapi-sandbox.azure-api.net",
   "info": {
-    "description": "<h2>Um CurrencyRates - Gengisupplýsingar</h2><br>Undir þessari <a href='/' title='e. resource, gæti verið þýtt is. auðlind\\viðfang'>þjónustu</a> er að finna upplýsingar um skráð gengi eftir tímabilum. Gögn þjónustunnar eiga að endurspegla uppfærða stöðu gengist sem sýnilegt er á heimasíðu Arion banka.\n\nHér má skoða mun ítarlegri <a href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Currency/Currency.html' title='sjá Currency.html'>html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.\n",
+    "description": "<h2>Um CurrencyRates - Gengisupplýsingar</h2><br>Undir þessari <a href='/' title='e. resource, gæti verið þýtt is. auðlind\\viðfang'>þjónustu</a> er að finna upplýsingar um skráð gengi eftir tímabilum. Gögn þjónustunnar eiga að endurspegla uppfærða stöðu gengist sem sýnilegt er á heimasíðu Arion banka.\n\nHér má skoða <a href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Currency/Currency.html' title='sjá Currency.html'>html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.\n",
     "title": "Currency Rates API",
     "version": "v1"
   },
