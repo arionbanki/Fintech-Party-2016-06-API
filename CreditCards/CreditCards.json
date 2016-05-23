@@ -424,7 +424,7 @@
   },
   "host": "arionapi-sandbox.azure-api.net",
   "info": {
-    "description": "<h2>Um CreditCards - Greiðslukort</h2><br>Undir þessari <a href='/' title='e. resource, gæti verið þýtt is. auðlind\\viðfang'>þjónustu</a> er að finna upplýsingar um greiðslukort sem innskráður notandi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram.\n\nUpplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Grunnupplýsingar um eiginleika greiðslukorts má skoða en undir hverjum korti má svo nálgast hreyfingar eftir tímabilum.\n      \nHér má skoða <a href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/CreditCards/CreditCards.html' title='sjá CreditCards.html'>html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.\n",
+    "description": "<h3>Greiðslukort</h3><br>Undir þessari þjónustu er að finna upplýsingar um greiðslukort sem innskráður notandi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram.\n\nUpplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Grunnupplýsingar um eiginleika greiðslukorts má skoða en undir hverjum korti má svo nálgast hreyfingar eftir tímabilum.\n      \nHér má skoða <a href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/CreditCards/CreditCards.html' title='sjá CreditCards.html'>html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.\n",
     "title": "Creditcards API",
     "version": "v1"
   },

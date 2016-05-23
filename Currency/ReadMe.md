@@ -2,7 +2,7 @@
 https://arionapi-sandbox.azure-api.net/currency/v1
 
 ### Um CurrencyRates - Gengisupplýsingar
-Undir þessari [þjónustu](/ "e. resource, gæti verið þýtt is. auðlind\viðfang") er að finna upplýsingar um skráð gengi eftir tímabilum. Gögn þjónustunnar eiga að endurspegla uppfærða stöðu gengist sem sýnilegt er á heimasíðu Arion banka.
+Undir þessari þjónustu er að finna upplýsingar um skráð gengi eftir tímabilum. Gögn þjónustunnar eiga að endurspegla uppfærða stöðu gengist sem sýnilegt er á heimasíðu Arion banka.
 
 Hér má skoða [html lýsingu](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Currency/Currency.html "sjá Currency.html") á samningnum í GitHub repo fyrir Fintech partý.
 

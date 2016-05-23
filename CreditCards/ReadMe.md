@@ -2,7 +2,7 @@
 https://arionapi-sandbox.azure-api.net/creditcards/v1
 
 ### Um CreditCards - Greiðslukort
-Undir þessari [þjónustu](/ "e. resource, gæti verið þýtt is. auðlind\viðfang") er að finna upplýsingar um greiðslukort sem innskráður notandi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram.
+Undir þessari þjónustu er að finna upplýsingar um greiðslukort sem innskráður notandi hefur aðgang að. Þegar um er að ræða prófananotanda, eru búin til slembigögnin í fyrstu innskráningu sem notuð eru svo áfram.
 
 Upplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Grunnupplýsingar um eiginleika greiðslukorts má skoða en undir hverjum korti má svo nálgast hreyfingar eftir tímabilum.
       
