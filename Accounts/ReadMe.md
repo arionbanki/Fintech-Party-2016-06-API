@@ -6,7 +6,7 @@ Undir þessari [þjónustu](/ "e. resource, gæti verið þýtt is. auðlind\vi�
 
 Upplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka, smáforrit og B2B lausnir Arion banka. Þannig sér notandi bæði veltureikninga sína sem og sparnaðarreikninga. Grunnupplýsingar um eiginleika reiknings eru á honum sjálfum en undir hverjum reikningi má svo nálgast hreyfingar og stöður.
       
-Hér má skoða mun ítarlegri [html lýsingu](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Accounts/Accounts.html "sjá Accounts.html") á samningnum í GitHub repo fyrir Fintech partý.
+Hér má skoða [html lýsingu](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Accounts/Accounts.html "sjá Accounts.html") á samningnum í GitHub repo fyrir Fintech partý.
 
 ### Öryggi
 Köll á þjónustuna þurfa að innihalda API lykil sem samþykkt teymi í Fintech Party munu geta sótt um á gátt API viðmótsins. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
