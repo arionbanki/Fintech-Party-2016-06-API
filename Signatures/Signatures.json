@@ -1,0 +1,265 @@
+﻿{
+  "basePath": "/digitalSignatures/v1",
+  "consumes": [
+    "application/json"
+  ],
+  "definitions": {
+    "digitalSignature": {
+      "description": "Digital signature.",
+      "properties": {
+        "digitalSignatureRequestStatus": {
+          "description": "The overall status of the request for digital signatures.",
+          "enum": [
+            "created",
+            "insigning",
+            "cancelled",
+            "signed",
+            "deleted",
+            "rejected"
+          ]
+        },
+        "displayTitle": {
+          "description": "The title that will be displayed in the signature UI.",
+          "type": "string"
+        },
+        "finalSigningDate": {
+          "description": "Optional date until which the document is available for signing. Must be an ISO 8601 formatted string",
+          "format": "date-time",
+          "type": "string"
+        },
+        "group": {
+          "items": {
+            "description": "The groups that encapsulate the signees that share one or more signature fields. The order of appearance determines the order of signing if so specified.",
+            "id": "http://jsonschema.net",
+            "properties": {
+              "isOptional": {
+                "default": false,
+                "description": "Indicates that the group is optional. This value will be used to reason about the number of signatures needed, if false for all groups, then all signature fields must be filled in.",
+                "type": "boolean"
+              },
+              "numberOfSignaturesNeededForGroup": {
+                "description": "If not set, only one signature is needed for the group. Must be a positive integer and not higher than the number of signees. NOT FUNCTIONAL.",
+                "minimum": 1,
+                "type": "integer"
+              },
+              "signee": {
+                "description": "The signees that can sign the document.",
+                "items": {
+                  "id": "http://jsonschema.net",
+                  "properties": {
+                    "email": {
+                      "description": "Email address to which communication with the signee should be directed.",
+                      "type": "string"
+                    },
+                    "kennitala": {
+                      "description": "National Identification Number, kennitala, of the signee (not SSN but some services expose it as such).",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Optional name, else the National Registry Name of the signee will be looked up by kennitala",
+                      "type": "string"
+                    },
+                    "signatureText": {
+                      "description": "Text that appears as the text for this particular signee. Can e.g. be used to describe role or job function.",
+                      "type": "string"
+                    },
+                    "signingStatus": {
+                      "description": "The status of the signature for this signee.",
+                      "enum": [
+                        "waiting",
+                        "declined",
+                        "hasSigned"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "kennitala",
+                    "email"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "isOptional"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "signaturesShouldBeOrderedByGroups": {
+          "default": false,
+          "description": "If true, the groups determine the order that signees will be prompted to sign the document. Else they can happen in parallel.",
+          "type": "boolean"
+        },
+        "startSigningDate": {
+          "description": "Optional date from which the document is available for signing. Must be an ISO 8601 formatted string.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "uuid": {
+          "description": "The universal unique identifier that will be used to retrieve the signature.",
+          "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$",
+          "type": "string"
+        },
+        "visibleDescription": {
+          "description": "The description of the document that is visible in the signature UI.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uuid",
+        "displayTitle",
+        "visibleDescription",
+        "signaturesShouldBeOrderedByGroups"
+      ],
+      "type": "object"
+    }
+  },
+  "host": "arionapi-sandbox.azure-api.net",
+  "info": {
+    "description": "<h3>Rafrænar undirritanir</h3><br>Undir þessari þjónustu er að finna möguleika tengda því að undirrita skjöl. Fyrir prófunarumhverfi er það ávallt Arion banki sem kemur fram sem beiðandi undirritunar en raunverulegar kennitölur þurfa að vera gefnar upp fyrir undirritendur. Farið er gegnum <a href='https://prufa.signet.is/' title='Signet prófunarumhverfi'>https://prufa.signet.is/</a> til að framkvæma undirritanir.\n\nVirknin er að öðru leiti sambærilegar við þá möguleika sem Signet býður upp á, utan að API viðmótið einfaldar eilítið ákveðna þætti í þessum fyrsta fasa.\n      \nHér má skoða mun ítarlegri <a href='https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/DigitalSignature/DigitalSignature.html' title='sjá DigitalSignature.html'>html lýsingu</a> á samningnum í GitHub repo fyrir Fintech partý.\n",
+    "title": "Digital Signature API",
+    "version": "v1"
+  },
+  "paths": {
+    "/digitalSignatures": {
+      "post": {
+        "description": "Creates a new digital signature",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/digitalSignature"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      }
+    },
+    "/digitalSignatures/{uuid}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "uuid",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/digitalSignature"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "uuid",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/digitalSignature"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/digitalSignatures/{uuid}/documentContent": {
+      "get": {
+        "description": "Gets the content.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "uuid",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "text/plain"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "text/plain"
+        ],
+        "description": "Uploads the file content to be digitally signed. Until this has happened, the signature remains invalid.\nAfter the upload is finished, the processing starts.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "uuid",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "oauth_2_0_undefined": {
+      "authorizationUrl": "https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize",
+      "description": "OAuth2 is a protocol that lets external apps request authorization to private\ndetails in a user's financial data.\n",
+      "scopes": {
+        "financial": ""
+      },
+      "flow": "implicit",
+      "type": "oauth2"
+    }
+  },
+  "swagger": "2.0"
+}
