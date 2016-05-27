@@ -1,0 +1,278 @@
+﻿#%RAML 0.8
+---
+title: Digital Signature API - Arion banki Fintech Party
+documentation: 
+  - title: Um DigitalSignature - Rafrænar undirritanir
+    content: |
+      Undir þessari þjónustu er að finna möguleika tengda því að undirrita skjöl. Fyrir prófunarumhverfi er það ávallt Arion banki sem kemur fram sem beiðandi undirritunar en raunverulegar kennitölur þurfa að vera gefnar upp fyrir undirritendur. Farið er gegnum [https://prufa.signet.is/](https://prufa.signet.is/ "Signet prófunarumhverfi") til að framkvæma undirritanir.
+
+      Virknin er að öðru leiti sambærilegar við þá möguleika sem Signet býður upp á, utan að API viðmótið einfaldar eilítið ákveðna þætti í þessum fyrsta fasa.
+            
+      Hér má skoða mun ítarlegri [html lýsingu](/Digitalsignature.html "sjá DigitalSignature.html") á samningnum í GitHub repo fyrir Fintech partý.
+  - title: Öryggi
+    content: |
+      Köll á þjónustuna þurfa að innihalda API lykil sem samþykkt teymi í Fintech Party munu geta sótt um á gátt API viðmótsins. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
+
+      Sem stendur er afmörkun heimilda nokkuð gróf, auðkenndur notandi fær aðgang að öllum upplýsingum og aðgerðum undir auðlindinni. Í framtíðinni má sjá fyrir sér að miðla tilteknum upplýsingum sem notandi heimilar, eftir því sem passar þjónustuveitendum.      
+baseUri: https://arionapi-sandbox.azure-api.net/digitalSignatures/{version}
+version: v1
+mediaType: application/json
+securitySchemes:
+  - oauth_2_0:
+      description: |
+        OAuth2 is a protocol that lets external apps request authorization to private
+        details in a user's financial data.
+      type: OAuth 2.0
+      describedBy:
+        headers:
+          Authorization:
+            description: |
+              Used to send a valid OAuth 2 access token. 
+            type: string
+        responses:
+          404:
+            description: Unauthorized
+      settings:
+        authorizationUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/authorize
+        accessTokenUri: https://arionapi-identityserver3-sandbox.azurewebsites.net/connect/token
+        authorizationGrants: [ authorization_code, implicit ]
+        scopes:
+          - "financial"
+securedBy: [ oauth_2_0 ]
+
+traits:  
+  - subscribable:
+      usage: Include your API subscription.
+      headers:
+        Ocp-Apim-Subscription-Key:
+          description: |
+            Used to send a valid subscription key.
+          type: string   
+  - pageable:
+        queryParameters:
+          offset:
+            description: Skip a certain number of entries by given offset
+            type: integer
+            required: false
+            example: 20 
+            default: 0
+          limit:
+            description: Limit number of entries in reply 
+            type: integer
+            required: false
+            example: 80
+            default: 100
+schemas:
+  - digitalSignature: |
+      {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "id": "http://jsonschema.net",
+        "comment": "Rafræn undirritun.",
+        "description": "Digital signature.",
+        "required": true,
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "required": true,
+            "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$",
+            "comment": "Einkvæmt auðkenni fyrir undirritunina.",
+            "description": "The universal unique identifier that will be used to retrieve the signature."
+          },
+          "displayTitle": {
+            "type": "string",
+            "required": true,
+            "comment": "Titill til birtingar.",
+            "description": "The title that will be displayed in the signature UI."
+          },
+          "visibleDescription": {
+            "type": "string",
+            "required": true,
+            "comment": "Sýnileg lýsing.",
+            "description": "The description of the document that is visible in the signature UI."
+          },
+          "startSigningDate": {
+            "format": "date-time",
+            "type": "string",
+            "required": false,
+            "comment": "Sýnileg lýsing.",
+            "description": "Optional date from which the document is available for signing. Must be an ISO 8601 formatted string."
+          },
+          "finalSigningDate": {
+            "format": "date-time",
+            "type": "string",
+            "required": false,
+            "comment": "Lokadagsetning undirritunar.",
+            "description": "Optional date until which the document is available for signing. Must be an ISO 8601 formatted string"
+          },
+          "signaturesShouldBeOrderedByGroups": {
+            "type": "boolean",
+            "default": false,
+            "required": true,
+            "comment": "Shall the signing be done in certain order or not.",
+            "description": "If true, the groups determine the order that signees will be prompted to sign the document. Else they can happen in parallel."
+          },
+          "digitalSignatureRequestStatus": {
+            "enum": [ "created", "insigning", "cancelled", "signed", "deleted", "rejected" ],
+            "required": "true",
+            "description": "The overall status of the request for digital signatures."
+          },
+          "group": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "id": "http://jsonschema.net",
+              "comment": "An instance of a signee group.",
+              "description": "The groups that encapsulate the signees that share one or more signature fields. The order of appearance determines the order of signing if so specified.",
+              "properties": {
+                "isOptional": {
+                  "type": "boolean",
+                  "default": false,
+                  "required": true,
+                  "comment": "Segir til um hvort undirritanir viðkomandi eru valkvæðar. Sé þetta gildi neikvætt fyrir alla hópa, þá verða allir að undirrita skjalið.",
+                  "description": "Indicates that the group is optional. This value will be used to reason about the number of signatures needed, if false for all groups, then all signature fields must be filled in."
+                },
+                "numberOfSignaturesNeededForGroup": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "required": false,
+                  "comment": "Þegar þetta gildi er sett, þá verða til jafnmargir undirritunarreitir og tilgreindir eru en allir í hópnum eru settir sem mögulegir undirritendur á hvern þeirra.",
+                  "description": "If not set, only one signature is needed for the group. Must be a positive integer and not higher than the number of signees. NOT FUNCTIONAL."
+                },
+                "signee": {
+                  "type": "array",
+                  "description": "The signees that can sign the document.",
+                  "items": {
+                    "type": "object",
+                    "$schema": "http://json-schema.org/draft-03/schema",
+                    "id": "http://jsonschema.net",
+                    "properties": {
+                      "kennitala": {
+                        "type": "string",
+                        "required": true,
+                        "comment": "Kennitala.",
+                        "description": "National Identification Number, kennitala, of the signee (not SSN but some services expose it as such)."
+                      },
+                      "name": {
+                        "type": "string",
+                        "required": false,
+                        "comment": "Nafn.",
+                        "description": "Optional name, else the National Registry Name of the signee will be looked up by kennitala"
+                      },
+                      "email": {
+                        "type": "string",
+                        "required": true,
+                        "comment": "Tölvupóstur.",
+                        "description": "Email address to which communication with the signee should be directed."
+                      },
+                      "signatureText": {
+                        "type": "string",
+                        "required": false,
+                        "comment": "Texti sem birtist fyrir stakan undirritanda, sem segir til um hlutverk hans og ástæður fyrir undirritun.",
+                        "description": "Text that appears as the text for this particular signee. Can e.g. be used to describe role or job function."
+                      },
+                      "signingStatus": {
+                        "enum": [ "waiting", "declined", "hasSigned" ],
+                        "required": "true",
+                        "description": "The status of the signature for this signee."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+resourceTypes:
+  - digitalSignaturesResource:
+      post:
+        description: Creates a new digital signature
+        body:
+          application/json:
+            schema: digitalSignature
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  The digital signature has been accepted. Waiting for document content.
+          405:
+            body:
+              application/json:
+                example: |
+                  Digital signature uuid already exists.
+  - digitalSignaturesByUuid:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                schema: digitalSignature
+          400:
+            body:
+              application/json:
+                example: |
+                  Digital signature uuid not valid.
+          404:
+            body:
+              application/json:
+                example: |
+                  Digital signature not found
+      delete:
+        responses:
+          200:
+            body:
+              application/json:
+                schema: digitalSignature
+          400:
+            body:
+              application/json:
+                example: |
+                  Digital signature uuid not valid.
+          404:
+            body:
+              application/json:
+                example: |
+                  Digital signature not found.
+  - digitalSignaturesByUuidDocumentContent:
+      get:
+        description: Gets the content.
+        responses:
+          200:
+            body:
+              text/plain:
+          400:
+            body:
+              application/json:
+                example: |
+                  Digital signature has no document.
+      post:
+        description: |
+          Uploads the file content to be digitally signed. Until this has happened, the signature remains invalid.
+          After the upload is finished, the processing starts.
+        body:
+          text/plain:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  The document has been accepted. Signature flow will be initated.
+          400:
+            body:
+              application/json:
+                example: |
+                  Digital signature already has document.
+/digitalSignatures:
+  displayName: Digital signatures
+  type: digitalSignaturesResource
+  /{uuid}:
+    displayName: A single signature.
+    description: Universal unique identifier for signature.
+    type: digitalSignaturesByUuid
+    /documentContent:
+      displayName: The document for signing
+      description: The document that is to be signed by the receiving parties
+      type: digitalSignaturesByUuidDocumentContent

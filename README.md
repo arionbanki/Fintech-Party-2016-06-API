@@ -10,6 +10,7 @@ Annars má átta sig á API forritunarviðmótinu með því að nota beinar sl�
 * [Claims - innheimtukröfur](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Claims/Claims.html)
 * [NationalRegistry - þjóðskrá](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/NationalRegistry/NationalRegistry.html)
 * [Currency - gengisupplýsingar](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Currency/Currency.html)
+* [Signatures - rafrænar undirritanir](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Signatures/Signatures.html)
 
 Einnig eru í boði RAML og Swagger lýsingar fyrir viðmótið sem  innihalda m.a. skilgreiningar fyrir JSON eigindin sem þjónusturnar nota. Sjá nánar í einstökum undirmöppum:
 
@@ -18,3 +19,4 @@ Einnig eru í boði RAML og Swagger lýsingar fyrir viðmótið sem  innihalda m
 * [Claims - innheimtukröfur](https://github.com/arionbanki/Fintech-Party-2016-06-API/tree/master/Claims)
 * [NationalRegistry - þjóðskrá](https://github.com/arionbanki/Fintech-Party-2016-06-API/tree/master/NationalRegistry)
 * [Currency - gengisupplýsingar](https://github.com/arionbanki/Fintech-Party-2016-06-API/tree/master/Currency)
+* [Signatures - rafrænar undirritanir](https://github.com/arionbanki/Fintech-Party-2016-06-API/tree/master/Signatures)
