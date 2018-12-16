@@ -6,7 +6,7 @@ Undir þessari þjónustu er að unnið með innheimtukröfur innskráður notan
 
 Upplýsingarnar eru sambærilegar við gögn sem notendur hafa aðgang í gegnum netbanka og B2B lausnir Arion banka og er því ekki  í boðið að vinna með auðkenni, kröfustofna eða aðgerðir félagaþjónustu sem stendur.
       
-Hér má skoða [html lýsingu](https://rawgit.com/arionbanki/Fintech-Party-2016-06-API/master/Claims/Claims.html "sjá Claims.html") á samningnum í GitHub repo fyrir Fintech partý.
+Hér má skoða [html lýsingu](https://combinatronics.com/arionbanki/Fintech-Party-2016-06-API/master/Claims/Claims.html "sjá Claims.html") á samningnum í GitHub repo fyrir Fintech partý.
 
 ### Öryggi
 Köll á þjónustuna þurfa að innihalda API lykil sem samþykkt teymi í Fintech Party munu geta sótt um á gátt API viðmótsins. Þess utan er þjónustan varinn með OAuth 2.0 heimildarveitingu, sem ýmist fylgir authorization_code eða implicit flæði.
